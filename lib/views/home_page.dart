@@ -1,3 +1,4 @@
+import 'package:boszhan_sales/components/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,16 +23,8 @@ class _HomePageState extends State<HomePage> {
           }
         },
         child: Scaffold(
-          appBar: AppBar(
-              elevation: 0,
-              centerTitle: true,
-              title: Text('₸',
-                  style: TextStyle(color: Colors.white, fontSize: 18)),
-              automaticallyImplyLeading: true,
-              backgroundColor: Colors.red,
-              shadowColor: Colors.white,
-              bottomOpacity: 1,
-              iconTheme: IconThemeData(color: Colors.white)),
+          appBar: PreferredSize(
+              child: buildAppBar('Title'), preferredSize: Size.fromHeight(60)),
           body: Container(
               // child:
               ),
