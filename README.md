@@ -1,4 +1,4 @@
-# boszhan_sales
+# Boszhan Sales
 
 A new Flutter project.
 
