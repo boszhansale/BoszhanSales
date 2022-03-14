@@ -14,8 +14,10 @@ class AuthProvider {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(
-          <String, dynamic>{"email": email, "password": password, "role": 2}),
+          <String, dynamic>{"email": email, "password": password, "role": 1}),
     );
+
+    print(response.body);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);

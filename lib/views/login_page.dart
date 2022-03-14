@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.grey[300],
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60.0),
             child: buildAppBar('Авторизация')),
@@ -35,26 +36,26 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
               Image.asset("assets/images/logo.png",
-                  width: MediaQuery.of(context).size.width * 0.5),
+                  width: MediaQuery.of(context).size.height * 0.5),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 80, vertical: 10),
                 child: TextFormField(
                   controller: emailController,
-                  style: const TextStyle(color: Colors.black, fontSize: 20),
-                  decoration: const InputDecoration(
-                      fillColor: Colors.red,
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  decoration: InputDecoration(
+                      fillColor: Colors.yellow[700],
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red)),
+                          borderSide: BorderSide(color: Colors.yellow[700]!)),
                       enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red)),
+                          borderSide: BorderSide(color: Colors.yellow[700]!)),
                       hintText: 'Введите логин',
                       helperText: 'Your login to enter the app.',
                       labelText: 'Логин',
                       labelStyle:
                           TextStyle(color: Colors.black87, fontSize: 20),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red)),
+                          borderSide: BorderSide(color: Colors.yellow[700]!)),
                       prefixIcon: Icon(
                         Icons.person,
                         color: Colors.black87,
@@ -71,20 +72,20 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextFormField(
                   controller: passwordController,
                   style: const TextStyle(color: Colors.black, fontSize: 20),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
-                      fillColor: Colors.red,
+                      fillColor: Colors.yellow[700],
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white)),
                       enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red)),
+                          borderSide: BorderSide(color: Colors.yellow[700]!)),
                       hintText: 'Пароль',
                       helperText: 'Your password to enter the app.',
                       labelText: 'Пароль',
                       labelStyle:
                           TextStyle(color: Colors.black87, fontSize: 20),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red)),
+                          borderSide: BorderSide(color: Colors.yellow[700]!)),
                       prefixIcon: Icon(
                         Icons.vpn_key,
                         color: Colors.black87,
@@ -100,15 +101,18 @@ class _LoginPageState extends State<LoginPage> {
                   width: MediaQuery.of(context).size.width * 0.3,
                   height: MediaQuery.of(context).size.width * 0.07,
                   child: ElevatedButton.icon(
-                    icon: const Icon(Icons.login, color: Colors.white),
-                    label: const Text('ВОЙТИ'),
+                    icon: const Icon(Icons.login, color: Colors.black),
+                    label: const Text(
+                      'ВОЙТИ',
+                      style: TextStyle(color: Colors.black),
+                    ),
                     onPressed: () {
                       login();
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
+                      primary: Colors.yellow[700]!,
                       textStyle:
-                          const TextStyle(color: Colors.white, fontSize: 20),
+                          const TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ),
                 ),
@@ -121,7 +125,6 @@ class _LoginPageState extends State<LoginPage> {
     var response = await AuthProvider()
         .login(emailController.text, passwordController.text);
     // TODO: Действие при авторизации пользователя...
-    // print(response);
     if (response != 'Error') {
       prefs.setString("token", response['token']);
       prefs.setInt("user_id", response['user']['id']);

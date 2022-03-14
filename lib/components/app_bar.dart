@@ -6,11 +6,11 @@ Widget buildAppBar(String title) {
           elevation: 0,
           centerTitle: true,
           title:
-              Text(title, style: TextStyle(color: Colors.white, fontSize: 20)),
+              Text(title, style: TextStyle(color: Colors.black, fontSize: 20)),
           automaticallyImplyLeading: true,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.yellow[700]!,
           shadowColor: Colors.white,
           bottomOpacity: 1,
-          iconTheme: IconThemeData(color: Colors.white)),
+          iconTheme: IconThemeData(color: Colors.black)),
       preferredSize: Size.fromHeight(60));
 }
