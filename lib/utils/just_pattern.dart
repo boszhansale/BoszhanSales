@@ -1,3 +1,4 @@
+import 'package:boszhan_sales/components/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class JustPage extends StatefulWidget {
@@ -25,16 +26,10 @@ class _JustPageState extends State<JustPage> {
           }
         },
         child: Scaffold(
-          appBar: AppBar(
-              elevation: 0,
-              centerTitle: true,
-              title: Text('₸',
-                  style: TextStyle(color: Colors.white, fontSize: 18)),
-              automaticallyImplyLeading: true,
-              backgroundColor: Colors.red,
-              shadowColor: Colors.white,
-              bottomOpacity: 1,
-              iconTheme: IconThemeData(color: Colors.white)),
+          backgroundColor: Colors.grey[200],
+          appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(60.0),
+              child: buildAppBar('Авторизация')),
           body: Container(
               // child:
               ),

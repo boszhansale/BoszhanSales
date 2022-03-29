@@ -1,3 +1,4 @@
+import 'package:boszhan_sales/views/catalog_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -142,9 +143,16 @@ class _HomePageState extends State<HomePage> {
                               child: const Text(
                                 'Каталог',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 28),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 28,
+                                    color: Colors.black),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CatalogPage()));
+                              },
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.yellow[700],
                                 textStyle: const TextStyle(
