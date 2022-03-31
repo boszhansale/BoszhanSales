@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'catalog_page.dart';
 import 'home_page.dart';
+import 'legal_entities_list.dart';
 
 class NewOrderPage extends StatefulWidget {
   @override
@@ -84,7 +84,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CatalogPage()));
+                                                LegalEntitiesList()));
                                   },
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.yellow[700],
