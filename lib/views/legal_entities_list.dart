@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'home_page.dart';
+import 'order/product_list_page.dart';
 
 class LegalEntitiesList extends StatefulWidget {
   @override
@@ -99,6 +100,8 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
       DataRow(
           onSelectChanged: (newValue) {
             print('row 1 pressed');
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProductListPage()));
           },
           cells: [
             DataCell(Text('')),

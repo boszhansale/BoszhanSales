@@ -25,14 +25,24 @@ class _JustPageState extends State<JustPage> {
             currentFocus.unfocus();
           }
         },
-        child: Scaffold(
-          backgroundColor: Colors.grey[200],
-          appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(60.0),
-              child: buildAppBar('Авторизация')),
-          body: Container(
-              // child:
-              ),
+        child: Stack(
+          children: [
+            Image.asset(
+              "assets/images/bbq_bg.jpg",
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
+            ),
+            Scaffold(
+              backgroundColor: Colors.white.withOpacity(0.85),
+              appBar: PreferredSize(
+                  preferredSize: const Size.fromHeight(60.0),
+                  child: buildAppBar('Авторизация')),
+              body: Container(
+                  // child:
+                  ),
+            ),
+          ],
         ));
   }
 }
