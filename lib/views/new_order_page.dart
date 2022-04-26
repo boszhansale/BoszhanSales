@@ -24,135 +24,151 @@ class _NewOrderPageState extends State<NewOrderPage> {
             currentFocus.unfocus();
           }
         },
-        child: Scaffold(
-          backgroundColor: Colors.grey[200],
-          body: SingleChildScrollView(
-            child: SizedBox(
+        child: Stack(
+          children: [
+            Image.asset(
+              "assets/images/bbq_bg.jpg",
+              height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 50),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.yellow[700],
-                            borderRadius: BorderRadius.circular(130)),
-                        child: Image.asset("assets/images/logo.png",
-                            width: MediaQuery.of(context).size.height * 0.5),
+              fit: BoxFit.cover,
+            ),
+            Scaffold(
+              backgroundColor: Colors.white.withOpacity(0.85),
+              body: SingleChildScrollView(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 50),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.yellow[700],
+                                borderRadius: BorderRadius.circular(130)),
+                            child: Image.asset("assets/images/logo.png",
+                                width:
+                                    MediaQuery.of(context).size.height * 0.5),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      "новый заказ".toUpperCase(),
-                      style:
-                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 80),
-                    child: Row(
-                      children: [
-                        Column(
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          "новый заказ".toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 28, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 80),
+                        child: Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.width * 0.07,
-                                child: ElevatedButton(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    child: const Text(
-                                      'Юридические лица',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 24,
-                                          color: Colors.black),
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: SizedBox(
+                                    height: MediaQuery.of(context).size.width *
+                                        0.07,
+                                    child: ElevatedButton(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        child: const Text(
+                                          'Юридические лица',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LegalEntitiesList()));
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.yellow[700],
+                                        textStyle: const TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LegalEntitiesList()));
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.yellow[700],
-                                    textStyle: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
                                 ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.width * 0.07,
-                                child: ElevatedButton(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    child: const Text(
-                                      'Физические лица',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 24,
-                                          color: Colors.black),
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: SizedBox(
+                                    height: MediaQuery.of(context).size.width *
+                                        0.07,
+                                    child: ElevatedButton(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        child: const Text(
+                                          'Физические лица',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NewOrderPage()));
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.yellow[700],
+                                        textStyle: const TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                NewOrderPage()));
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.yellow[700],
-                                    textStyle: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.yellow[700],
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Image.asset(
+                                        "assets/images/qr_code.png",
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.3,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.3),
                                   ),
                                 ),
-                              ),
-                            ),
+                              ],
+                            )
                           ],
                         ),
-                        Spacer(),
-                        Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.yellow[700],
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Image.asset("assets/images/qr_code.png",
-                                    width: MediaQuery.of(context).size.height *
-                                        0.3,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.3),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
+          ],
         ));
   }
 }
