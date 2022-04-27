@@ -186,18 +186,30 @@ class _ProductListPageState extends State<ProductListPage> {
                                       height: 450,
                                       child: Column(
                                         children: [
-                                          Image.network(
-                                            'https://arbuz.kz/image/f/254211-sosiski_pervomaiskie_delikatesy_delikatesnye_iz_govyadiny_460_g.jpg?w=260&h=260&_c=1649574980',
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.3,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.19,
-                                            fit: BoxFit.fitWidth,
-                                          ),
+                                          Stack(children: [
+                                            Image.network(
+                                              'https://arbuz.kz/image/f/254211-sosiski_pervomaiskie_delikatesy_delikatesnye_iz_govyadiny_460_g.jpg?w=260&h=260&_c=1649574980',
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.19,
+                                              fit: BoxFit.fitWidth,
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Возврат",
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.red),
+                                            )
+                                          ]),
                                           Padding(
                                             padding: const EdgeInsets.all(5),
                                             child: Text(
