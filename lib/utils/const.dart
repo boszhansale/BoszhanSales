@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -7,5 +8,5 @@ class AppColors {
 }
 
 class AppConstants {
-  static final String baseUrl = "https://boszhan.kz/";
+  static final String baseUrl = "http://new.boszhan.kz/";
 }

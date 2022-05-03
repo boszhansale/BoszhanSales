@@ -3,7 +3,7 @@ import 'package:boszhan_sales/services/auth_api_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'home_page.dart';
+import '../home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,8 +18,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    emailController.text = 'test@test.te';
-    passwordController.text = '123456';
+    emailController.text = 'agabek';
+    passwordController.text = '1';
 
     super.initState();
   }
@@ -143,10 +143,12 @@ class _LoginPageState extends State<LoginPage> {
         .login(emailController.text, passwordController.text);
     // TODO: Действие при авторизации пользователя...
     if (response != 'Error') {
-      prefs.setString("token", response['token']);
+      prefs.setString("token", response['access_token']);
       prefs.setInt("user_id", response['user']['id']);
-      prefs.setString("full_name", response['user']['full_name']);
-      // print(response['token']);
+      prefs.setString("full_name", response['user']['name']);
+      prefs.setString("user_phone", response['user']['phone']);
+      prefs.setString("driver_name", response['user']['driver']['name']);
+      prefs.setString("driver_phone", response['user']['driver']['phone']);
 
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomePage()));

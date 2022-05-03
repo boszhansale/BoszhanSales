@@ -1,16 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'home_page.dart';
-import 'order/product_list_page.dart';
+import '../home_page.dart';
+import '../order/product_list_page.dart';
 
-class LegalEntitiesList extends StatefulWidget {
+class OutletListPage extends StatefulWidget {
   @override
-  _LegalEntitiesListState createState() => _LegalEntitiesListState();
+  _OutletListPageState createState() => _OutletListPageState();
 }
 
-class _LegalEntitiesListState extends State<LegalEntitiesList> {
+class _OutletListPageState extends State<OutletListPage> {
+  List<dynamic> outletList = [];
   @override
   void initState() {
+    getOutlets();
     super.initState();
   }
 
@@ -52,7 +57,7 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
                             )),
                         Spacer(),
                         Text(
-                          'Справочник юридических лиц'.toUpperCase(),
+                          'Торговые точки'.toUpperCase(),
                           style: TextStyle(
                               color: Colors.red,
                               fontWeight: FontWeight.bold,
@@ -76,53 +81,61 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
   Theme _createDataTable() {
     return Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.yellow[700]),
-        child: DataTable(
-          showCheckboxColumn: false,
-          columns: _createColumns(),
-          rows: _createRows(),
-          dataRowHeight: 80,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: DataTable(
+            showCheckboxColumn: false,
+            columns: _createColumns(),
+            rows: _createRows(),
+            dataRowHeight: 80,
+          ),
         ));
   }
 
   List<DataColumn> _createColumns() {
     return [
-      DataColumn(label: Text('Статус')),
-      DataColumn(label: Text('Наименование юридического лица')),
-      DataColumn(label: Text('Прайс')),
-      DataColumn(label: Text('Тип оплаты')),
-      DataColumn(label: Text('Долг')),
-      DataColumn(label: Text('Проср.')),
+      DataColumn(label: Text('Название')),
+      DataColumn(label: Text('Адрес')),
+      DataColumn(label: Text('Номер телефона')),
     ];
   }
 
   List<DataRow> _createRows() {
     return [
-      DataRow(
-          onSelectChanged: (newValue) {
-            print('row 1 pressed');
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProductListPage()));
-          },
-          cells: [
-            DataCell(Text('')),
-            DataCell(Text('Fast Meals and Goods TOO')),
-            DataCell(Text('B+')),
-            DataCell(Text('безнал')),
-            DataCell(Text('56 742')),
-            DataCell(Text('')),
-          ]),
-      DataRow(
-          onSelectChanged: (newValue) {
-            print('row 2 pressed');
-          },
-          cells: [
-            DataCell(Text('Заблокирован')),
-            DataCell(Text('JARDI KZ(ЖАРДИ КЗ) TOO')),
-            DataCell(Text('A')),
-            DataCell(Text('безнал')),
-            DataCell(Text('1 156 742')),
-            DataCell(Text('485 758')),
-          ]),
+      for (int i = 0; i < outletList.length; i++)
+        DataRow(
+            onSelectChanged: (newValue) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductListPage(
+                          outletList[i]['name'],
+                          outletList[i]['id'],
+                          0,
+                          '-',
+                          '0')));
+            },
+            cells: [
+              DataCell(Text(outletList[i]['name'])),
+              DataCell(Text(outletList[i]['address'])),
+              DataCell(Text(outletList[i]['phone'])),
+            ]),
     ];
+  }
+
+  void getOutlets() async {
+    outletList = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("responsePhysicalOutlets")!;
+    if (data != 'Error') {
+      List<dynamic> responseList = jsonDecode(data);
+      setState(() {
+        outletList = responseList;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
   }
 }

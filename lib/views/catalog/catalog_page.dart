@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
-import 'new_order_page.dart';
+import '../home_page.dart';
+import '../order/new_order_page.dart';
 
 class CatalogPage extends StatefulWidget {
   @override

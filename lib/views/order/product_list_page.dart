@@ -1,47 +1,60 @@
+import 'dart:convert';
+
+import 'package:boszhan_sales/views/basket/basket_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
 
 class ProductListPage extends StatefulWidget {
+  ProductListPage(this.outletName, this.outletId, this.counteragentID,
+      this.counteragentName, this.debt);
+  final String outletName;
+  final int outletId;
+  final int counteragentID;
+  final String counteragentName;
+  final String debt;
   @override
   _ProductListPageState createState() => _ProductListPageState();
 }
 
 class _ProductListPageState extends State<ProductListPage> {
-  List<Map<String, Object>> brands = [
-    {
-      "id": 1,
-      "title": "Возвраты",
-    },
-    {"id": 2, "title": "Первомайские деликатесы"},
-    {"id": 3, "title": "Народные колбасы"},
-  ];
+  String name = '';
+  List<Map<String, Object>> brands = [];
 
-  List<Map<String, Object>> categories = [
-    {"id": 1, "brandId": 1, "title": "Колбаски гриль"},
-    {"id": 2, "brandId": 1, "title": "Стейки"},
-    {"id": 3, "brandId": 1, "title": "Фарши"},
-    {"id": 4, "brandId": 1, "title": "Субпродукты"},
-    {"id": 5, "brandId": 2, "title": "Варенные колбасы"},
-    {"id": 6, "brandId": 2, "title": "Копченные колбасы"},
-    {"id": 7, "brandId": 2, "title": "Ветчины"},
-    {"id": 8, "brandId": 2, "title": "Сырокопченные колбасы"},
-    {"id": 9, "brandId": 2, "title": "Субпродуктовые колбасы"},
-    {"id": 10, "brandId": 2, "title": "Сосискиб сардельки"},
-    {"id": 11, "brandId": 2, "title": "Деликатесы"},
-    {"id": 12, "brandId": 2, "title": "Полуфабрикаты"},
-    {"id": 13, "brandId": 3, "title": "Варенные колбасы"},
-    {"id": 14, "brandId": 3, "title": "Копченные колбасы"},
-    {"id": 15, "brandId": 3, "title": "Ветчины"},
-    {"id": 16, "brandId": 3, "title": "Субпродуктовые колбасы"},
-    {"id": 17, "brandId": 3, "title": "Сосиски, сардельки"},
-    {"id": 18, "brandId": 3, "title": "Деликатесы"},
-    {"id": 19, "brandId": 3, "title": "Полуфабрикаты"},
-  ];
+  List<dynamic> categories = [];
 
   @override
   void initState() {
+    getInfo();
     super.initState();
+  }
+
+  getInfo() async {
+    categories = [];
+    brands = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('full_name')!;
+    });
+    var data = prefs.getString("responseBrends")!;
+    if (data != 'Error') {
+      setState(() {
+        List<dynamic> brandsData = List.from(jsonDecode(data));
+        for (int i = 0; i < brandsData.length; i++) {
+          brands
+              .add({"id": brandsData[i]["id"], "title": brandsData[i]["name"]});
+          List<dynamic> categoriesData = brandsData[i]["categories"]!;
+          for (int j = 0; j < categoriesData.length; j++) {
+            categories.add(categoriesData[j]);
+          }
+        }
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
   }
 
   @override
@@ -90,37 +103,27 @@ class _ProductListPageState extends State<ProductListPage> {
                               width: MediaQuery.of(context).size.width * 0.75,
                               child: Row(
                                 children: [
-                                  Text(
-                                    'Сумма покупок: 15 000 тг',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    'Сумма возврата: 15 000 тг',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    'Итого к оплате: 15 000 тг',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  Spacer(),
-                                  GestureDetector(
-                                    onTap: () {
-                                      print("Shopping!");
-                                    },
-                                    child: Icon(
-                                      Icons.shopping_cart_outlined,
-                                      size: 40,
-                                    ),
-                                  )
+                                  // Text(
+                                  //   'Сумма покупок: 15 000 тг',
+                                  //   style: TextStyle(fontSize: 16),
+                                  // ),
+                                  // Spacer(),
+                                  // Text(
+                                  //   'Сумма возврата: 15 000 тг',
+                                  //   style: TextStyle(fontSize: 16),
+                                  // ),
+                                  // Spacer(),
+                                  // Text(
+                                  //   'Итого к оплате: 15 000 тг',
+                                  //   style: TextStyle(
+                                  //       fontWeight: FontWeight.bold,
+                                  //       fontSize: 16),
+                                  // ),
                                 ],
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 0,
                             ),
                             Container(
                                 color: Colors.yellow[700],
@@ -129,15 +132,37 @@ class _ProductListPageState extends State<ProductListPage> {
                                 child: Row(
                                   children: [
                                     Spacer(),
-                                    Text('Контрагент: Нияселение Сураншиев А.',
+                                    Text(
+                                        'Контрагент: ${widget.counteragentName}',
                                         style: TextStyle(fontSize: 16)),
                                     Spacer(),
-                                    Text('Торговая точка: Нур',
+                                    Text('Торговая точка: ${widget.outletName}',
                                         style: TextStyle(fontSize: 16)),
                                     Spacer(),
-                                    Text('Долг: 15 000 тг',
+                                    Text('Долг: ${widget.debt} тг',
                                         style: TextStyle(fontSize: 16)),
                                     Spacer(),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BasketPage(
+                                                        widget.outletName,
+                                                        widget.outletId,
+                                                        widget.counteragentID,
+                                                        widget.counteragentName,
+                                                        widget.debt)));
+                                      },
+                                      child: Icon(
+                                        Icons.shopping_cart_outlined,
+                                        size: 40,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    )
                                   ],
                                 )),
                           ],
@@ -227,9 +252,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                             height: 5,
                                           ),
                                           ElevatedButton.icon(
-                                            onPressed: () {
-                                              print("Add to basket!");
-                                            },
+                                            onPressed: () {},
                                             label: Text(
                                               "В корзину",
                                               style: TextStyle(
@@ -266,18 +289,17 @@ class _ProductListPageState extends State<ProductListPage> {
 
   List<Widget> createListOfCategories() {
     List<Widget> listOfWidgets = [];
-    for (int i = 1; i < 4; i++) {
-      if (i == brands[i - 1]["id"]) {
-        listOfWidgets.add(Text(
-          brands[i - 1]["title"].toString(),
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ));
-        listOfWidgets.add(Divider(
-          color: Colors.yellow[700],
-        ));
-      }
-      for (int j = 0; j < 19; j++) {
-        if (i == categories[j]["brandId"]) {
+    for (int i = 0; i < brands.length; i++) {
+      listOfWidgets.add(Text(
+        brands[i]["title"].toString(),
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ));
+      listOfWidgets.add(Divider(
+        color: Colors.yellow[700],
+      ));
+
+      for (int j = 0; j < categories.length; j++) {
+        if (brands[i]["id"] == categories[j]["brand_id"]) {
           listOfWidgets.add(Padding(
             padding: const EdgeInsets.fromLTRB(20, 2, 5, 2),
             child: SizedBox(
@@ -292,7 +314,7 @@ class _ProductListPageState extends State<ProductListPage> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: Text(
-                      categories[j]["title"].toString(),
+                      categories[j]["name"].toString(),
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Colors.black,

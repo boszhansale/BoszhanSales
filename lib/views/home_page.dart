@@ -1,6 +1,10 @@
-import 'package:boszhan_sales/views/catalog_page.dart';
+import 'dart:convert';
+
+import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
+import 'package:boszhan_sales/views/catalog/catalog_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,8 +12,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String name = "";
+  String driverName = "";
+  String driverPhone = "";
   @override
   void initState() {
+    getProfile();
     super.initState();
   }
 
@@ -99,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Container(
                             decoration: BoxDecoration(
                                 color: Colors.yellow[700],
@@ -126,14 +134,21 @@ class _HomePageState extends State<HomePage> {
                                           fontSize: 20),
                                     ),
                                     Text(
-                                      'ТП: Сураншиев Асхат',
+                                      'ТП: $name',
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
                                     ),
                                     Text(
-                                      'Водитель: Ибрагимов Асхат',
+                                      'Водитель: $driverName',
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      'Номер водителя: $driverPhone',
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
@@ -144,6 +159,30 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 50),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                height: MediaQuery.of(context).size.width * 0.1,
+                                child: ElevatedButton(
+                                  child: const Text(
+                                    'Обновить',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 28,
+                                        color: Colors.black),
+                                  ),
+                                  onPressed: () {
+                                    getAllData();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.yellow[700],
+                                    textStyle: const TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                ),
+                              ),
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(right: 50),
                               child: SizedBox(
@@ -178,5 +217,61 @@ class _HomePageState extends State<HomePage> {
                 )),
           ],
         ));
+  }
+
+  void getProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      name = prefs.getString('full_name')!;
+      driverName = prefs.getString('driver_name')!;
+      driverPhone = prefs.getString('driver_phone')!;
+    });
+  }
+
+  void getAllData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var responseCounteragents = await SalesRepProvider().getCounteragents();
+    var responseBrends = await SalesRepProvider().getBrends();
+    var responseLegalOutlets = await SalesRepProvider().getLegalOutlets();
+    var responsePhysicalOutlets = await SalesRepProvider().getPhysicalOutlets();
+
+    if (responseCounteragents != 'Error') {
+      prefs.setString(
+          "responseCounteragents", jsonEncode(responseCounteragents));
+    } else {
+      prefs.setString("responseCounteragents", 'Error');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+
+    if (responseBrends != 'Error') {
+      prefs.setString("responseBrends", jsonEncode(responseBrends));
+    } else {
+      prefs.setString("responseBrends", 'Error');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+
+    if (responseLegalOutlets != 'Error') {
+      prefs.setString("responseLegalOutlets", jsonEncode(responseLegalOutlets));
+    } else {
+      prefs.setString("responseLegalOutlets", 'Error');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+
+    if (responsePhysicalOutlets != 'Error') {
+      prefs.setString(
+          "responsePhysicalOutlets", jsonEncode(responsePhysicalOutlets));
+    } else {
+      prefs.setString("responsePhysicalOutlets", 'Error');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
   }
 }

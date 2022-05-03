@@ -7,21 +7,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthProvider {
   String API_URL = AppConstants.baseUrl;
 
-  Future<dynamic> login(String email, String password) async {
+  Future<dynamic> login(String login, String password) async {
     final response = await http.post(
-      Uri.parse(API_URL + 'api/auth/login'),
+      Uri.parse(API_URL + 'api/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(
-          <String, dynamic>{"email": email, "password": password, "role": 1}),
+      body: jsonEncode(<String, dynamic>{"login": login, "password": password}),
     );
-
-    print(response.body);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);
-      return result['data'];
+      print(result);
+      return result;
     } else {
       return 'Error';
     }
@@ -51,12 +49,12 @@ class AuthProvider {
     }
   }
 
-  Future<Map<String, dynamic>> getProfileInfo(int id) async {
+  Future<dynamic> getProfileInfo(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/delivery-order/my-payments-info'),
+      Uri.parse(API_URL + 'api/profile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
@@ -67,7 +65,7 @@ class AuthProvider {
       Map<String, dynamic> result = jsonDecode(response.body);
       return result;
     } else {
-      final result = {'data': 'Error'};
+      final result = 'Error';
       return result;
     }
   }

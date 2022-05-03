@@ -1,7 +1,8 @@
+import 'package:boszhan_sales/views/physical_persons/outlet_list.dart';
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
-import 'legal_entities_list.dart';
+import '../home_page.dart';
+import '../legal_entities/legal_entities_list.dart';
 
 class NewOrderPage extends StatefulWidget {
   @override
@@ -127,7 +128,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    NewOrderPage()));
+                                                    OutletListPage()));
                                       },
                                       style: ElevatedButton.styleFrom(
                                         primary: Colors.yellow[700],
