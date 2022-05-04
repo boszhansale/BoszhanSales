@@ -114,6 +114,8 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
                       builder: (context) => LegalOutletListPage(
                           counteragents[i]['id'],
                           counteragents[i]['name'],
+                          counteragents[i]['discount'],
+                          counteragents[i]['price_type']['id'],
                           counteragents[i]['debt'].toString())));
             },
             cells: [

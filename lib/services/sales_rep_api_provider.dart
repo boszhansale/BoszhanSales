@@ -97,7 +97,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/product?store_id=1'),
+      Uri.parse(API_URL + 'api/product'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"

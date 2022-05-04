@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:boszhan_sales/utils/const.dart';
 import 'package:boszhan_sales/views/basket/basket_page.dart';
 import 'package:boszhan_sales/views/order/product_info_page.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../home_page.dart';
 
 class ProductListPage extends StatefulWidget {
-  ProductListPage(this.outletName, this.outletId, this.counteragentID,
-      this.counteragentName, this.debt);
+  ProductListPage(
+      this.outletName,
+      this.outletDiscount,
+      this.outletId,
+      this.counteragentID,
+      this.counteragentName,
+      this.counteragentDiscount,
+      this.priceTypeId,
+      this.debt);
   final String outletName;
+  final int outletDiscount;
   final int outletId;
   final int counteragentID;
   final String counteragentName;
+  final int counteragentDiscount;
+  final int priceTypeId;
   final String debt;
   @override
   _ProductListPageState createState() => _ProductListPageState();
@@ -26,11 +37,21 @@ class _ProductListPageState extends State<ProductListPage> {
   List<dynamic> categories = [];
   List<dynamic> products = [];
   int selectedCategoryID = 1;
+  int discount = 0;
 
   @override
   void initState() {
     getInfo();
     getProductsFromPrefs();
+    if (widget.counteragentDiscount != 0) {
+      discount = widget.counteragentDiscount;
+    } else {
+      if (widget.outletDiscount != 0) {
+        discount = widget.outletDiscount;
+      } else {
+        discount = 0;
+      }
+    }
     super.initState();
   }
 
@@ -177,6 +198,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                                         widget.outletId,
                                                         widget.counteragentID,
                                                         widget.counteragentName,
+                                                        discount,
+                                                        widget.priceTypeId,
                                                         widget.debt)));
                                       },
                                       child: Icon(
@@ -240,7 +263,12 @@ class _ProductListPageState extends State<ProductListPage> {
                                                     widget.counteragentID,
                                                     widget.counteragentName,
                                                     widget.debt,
-                                                    products[i])));
+                                                    products[i],
+                                                    discount != 0
+                                                        ? discount
+                                                        : products[i]
+                                                            ['discount'],
+                                                    widget.priceTypeId)));
                                   },
                                   child: Card(
                                     child: Padding(
@@ -283,7 +311,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                               ),
                                             ),
                                             Text(
-                                              "${products[i]['price']} тг/шт",
+                                              "${discount != 0 ? products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - discount) / 100 : products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - products[i]['discount']) / 100} тг/шт",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -291,7 +319,18 @@ class _ProductListPageState extends State<ProductListPage> {
                                               height: 5,
                                             ),
                                             ElevatedButton.icon(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                if (!AppConstants.basketIDs
+                                                    .contains(
+                                                        products[i]['id'])) {
+                                                  AppConstants.basket.add({
+                                                    'product': products[i],
+                                                    'count': 1
+                                                  });
+                                                  AppConstants.basketIDs
+                                                      .add(products[i]['id']);
+                                                }
+                                              },
                                               label: Text(
                                                 "В корзину",
                                                 style: TextStyle(

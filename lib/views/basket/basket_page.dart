@@ -5,11 +5,13 @@ import '../home_page.dart';
 
 class BasketPage extends StatefulWidget {
   BasketPage(this.outletName, this.outletId, this.counteragentID,
-      this.counteragentName, this.debt);
+      this.counteragentName, this.discount, this.priceTypeId, this.debt);
   final String outletName;
   final int outletId;
   final int counteragentID;
   final String counteragentName;
+  final int discount;
+  final int priceTypeId;
   final String debt;
   @override
   _BasketPageState createState() => _BasketPageState();
@@ -205,6 +207,7 @@ class _BasketPageState extends State<BasketPage> {
       DataColumn(label: Text('кл.')),
       DataColumn(label: Text('цена')),
       DataColumn(label: Text('итого')),
+      DataColumn(label: Text('')),
     ];
   }
 
@@ -212,30 +215,64 @@ class _BasketPageState extends State<BasketPage> {
     return [
       for (int i = 0; i < products.length; i++)
         DataRow(onSelectChanged: (newValue) {}, cells: [
-          DataCell(Text(products[i]['name'])),
+          DataCell(Text(products[i]['product']['name'])),
           DataCell(Row(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(Icons.add),
+                  onPressed: () {
+                    setState(() {
+                      if (products[i]['count'] > 1) {
+                        products[i]['count'] -= 1;
+                      }
+                    });
+                  },
+                  child: Icon(Icons.remove),
                   style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                 ),
               ),
-              Text(products[i]['name']),
+              Text(products[i]['count'].toString()),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      products[i]['count'] += 1;
+                    });
+                  },
                   child: Icon(Icons.add),
                   style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                 ),
               ),
             ],
           )),
-          DataCell(Text(products[i]['name'])),
-          DataCell(Text(products[i]['name'])),
+          DataCell(Text((products[i]['product']['prices']
+                      .where((e) => e['price_type_id'] == widget.priceTypeId)
+                      .toList()[0]['price'] *
+                  (100 - widget.discount) /
+                  100)
+              .toString())),
+          DataCell(Text((products[i]['count'] *
+                  (products[i]['product']['prices']
+                          .where(
+                              (e) => e['price_type_id'] == widget.priceTypeId)
+                          .toList()[0]['price'] *
+                      (100 - widget.discount) /
+                      100))
+              .toString())),
+          DataCell(GestureDetector(
+            onTap: () {
+              setState(() {
+                AppConstants.basketIDs.remove(products[i]['product']['id']);
+                AppConstants.basket.remove(products[i]);
+              });
+            },
+            child: Icon(
+              Icons.cancel,
+              size: 35,
+            ),
+          ))
         ]),
     ];
   }

@@ -110,9 +110,12 @@ class _OutletListPageState extends State<OutletListPage> {
                   MaterialPageRoute(
                       builder: (context) => ProductListPage(
                           outletList[i]['name'],
+                          outletList[i]['discount'],
                           outletList[i]['id'],
                           0,
                           '-',
+                          0,
+                          1,
                           '0')));
             },
             cells: [

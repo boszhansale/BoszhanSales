@@ -1,17 +1,27 @@
+import 'package:boszhan_sales/utils/const.dart';
 import 'package:boszhan_sales/views/basket/basket_page.dart';
 import 'package:flutter/material.dart';
 
 import '../home_page.dart';
 
 class ProductInfoPage extends StatefulWidget {
-  const ProductInfoPage(this.outletName, this.outletId, this.counteragentID,
-      this.counteragentName, this.debt, this.product);
+  const ProductInfoPage(
+      this.outletName,
+      this.outletId,
+      this.counteragentID,
+      this.counteragentName,
+      this.debt,
+      this.product,
+      this.discount,
+      this.priceTypeId);
   final String outletName;
   final int outletId;
   final int counteragentID;
   final String counteragentName;
   final String debt;
   final Map<String, dynamic> product;
+  final int discount;
+  final priceTypeId;
   @override
   _ProductInfoPageState createState() => _ProductInfoPageState();
 }
@@ -118,6 +128,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                                 widget.outletId,
                                                 widget.counteragentID,
                                                 widget.counteragentName,
+                                                widget.discount,
+                                                widget.priceTypeId,
                                                 widget.debt)));
                                   },
                                   child: Icon(
@@ -197,7 +209,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                   child: Text(
-                                    "${widget.product['prices'][0]['price']} тг/шт",
+                                    "${widget.product['prices'][widget.priceTypeId - 1]['price']} тг/шт",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -211,7 +223,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                   child: Text(
-                                    "${widget.product['price']} тг/шт",
+                                    "${widget.product['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - widget.discount) / 100} тг/шт",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -222,7 +234,15 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                               ],
                             ),
                             ElevatedButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                if (!AppConstants.basketIDs
+                                    .contains(widget.product['id'])) {
+                                  AppConstants.basket.add(
+                                      {'product': widget.product, 'count': 1});
+                                  AppConstants.basketIDs
+                                      .add(widget.product['id']);
+                                }
+                              },
                               label: Text(
                                 "В корзину",
                                 style: TextStyle(color: Colors.black),

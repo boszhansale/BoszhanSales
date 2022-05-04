@@ -7,10 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../home_page.dart';
 
 class LegalOutletListPage extends StatefulWidget {
-  LegalOutletListPage(this.id, this.counteragentName, this.debt);
+  LegalOutletListPage(this.id, this.counteragentName, this.counteragentDiscount,
+      this.priceTypeId, this.debt);
   final int id;
   final String debt;
   final String counteragentName;
+  final int counteragentDiscount;
+  final int priceTypeId;
 
   @override
   _LegalOutletListPageState createState() => _LegalOutletListPageState();
@@ -115,9 +118,12 @@ class _LegalOutletListPageState extends State<LegalOutletListPage> {
                   MaterialPageRoute(
                       builder: (context) => ProductListPage(
                           outletList[i]['name'],
+                          outletList[i]['discount'],
                           outletList[i]['id'],
                           widget.id,
                           widget.counteragentName,
+                          widget.counteragentDiscount,
+                          widget.priceTypeId,
                           widget.debt)));
             },
             cells: [
