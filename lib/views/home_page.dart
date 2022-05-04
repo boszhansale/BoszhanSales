@@ -235,6 +235,7 @@ class _HomePageState extends State<HomePage> {
     var responseBrends = await SalesRepProvider().getBrends();
     var responseLegalOutlets = await SalesRepProvider().getLegalOutlets();
     var responsePhysicalOutlets = await SalesRepProvider().getPhysicalOutlets();
+    var responseProducts = await SalesRepProvider().getProducts();
 
     if (responseCounteragents != 'Error') {
       prefs.setString(
@@ -269,6 +270,15 @@ class _HomePageState extends State<HomePage> {
           "responsePhysicalOutlets", jsonEncode(responsePhysicalOutlets));
     } else {
       prefs.setString("responsePhysicalOutlets", 'Error');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+
+    if (responseProducts != 'Error') {
+      prefs.setString("responseProducts", jsonEncode(responseProducts));
+    } else {
+      prefs.setString("responseProducts", 'Error');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
       ));

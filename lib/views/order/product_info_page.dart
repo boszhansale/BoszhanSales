@@ -5,21 +5,23 @@ import '../home_page.dart';
 
 class ProductInfoPage extends StatefulWidget {
   const ProductInfoPage(this.outletName, this.outletId, this.counteragentID,
-      this.counteragentName, this.debt);
+      this.counteragentName, this.debt, this.product);
   final String outletName;
   final int outletId;
   final int counteragentID;
   final String counteragentName;
   final String debt;
+  final Map<String, dynamic> product;
   @override
   _ProductInfoPageState createState() => _ProductInfoPageState();
 }
 
 class _ProductInfoPageState extends State<ProductInfoPage> {
-  String mainImageURL =
-      'https://arbuz.kz/image/f/254211-sosiski_pervomaiskie_delikatesy_delikatesnye_iz_govyadiny_460_g.jpg?w=260&h=260&_c=1649574980';
+  String mainImageURL = '';
+  int indexOfImage = 0;
   @override
   void initState() {
+    mainImageURL = widget.product['images'][indexOfImage]['path'];
     super.initState();
   }
 
@@ -181,7 +183,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(5),
                                 child: Text(
-                                  "Сосиски 'Тигренек'",
+                                  widget.product['name'],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 18,
@@ -195,7 +197,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                   child: Text(
-                                    "850 тг/шт",
+                                    "${widget.product['prices'][0]['price']} тг/шт",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -209,7 +211,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                   child: Text(
-                                    "800 тг/шт",
+                                    "${widget.product['price']} тг/шт",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -251,7 +253,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                           mainImageURL,
                           width: MediaQuery.of(context).size.width * 0.3,
                           height: MediaQuery.of(context).size.width * 0.19,
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.fitHeight,
                         ),
                       ),
                       SizedBox(
@@ -267,7 +269,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     onPressed: () {
                                       previousImage();
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.arrow_left,
                                       color: Colors.black,
                                       size: 55,
@@ -289,7 +291,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     onPressed: () {
                                       nextImage();
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.arrow_right,
                                       color: Colors.black,
                                       size: 55,
@@ -314,16 +316,20 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
   }
 
   void previousImage() {
-    setState(() {
-      mainImageURL =
-          'https://arbuz.kz/image/f/254211-sosiski_pervomaiskie_delikatesy_delikatesnye_iz_govyadiny_460_g.jpg?w=260&h=260&_c=1649574980';
-    });
+    if (indexOfImage > 0) {
+      setState(() {
+        indexOfImage -= 1;
+        mainImageURL = widget.product['images'][indexOfImage]['path'];
+      });
+    }
   }
 
   void nextImage() {
-    setState(() {
-      mainImageURL =
-          'https://eldala.kz/uploads/all/8a/f3/ec/8af3ecea1f990bfe1ebab57149766eee.jpg';
-    });
+    if (indexOfImage < widget.product['images'].length - 1) {
+      setState(() {
+        indexOfImage += 1;
+        mainImageURL = widget.product['images'][indexOfImage]['path'];
+      });
+    }
   }
 }

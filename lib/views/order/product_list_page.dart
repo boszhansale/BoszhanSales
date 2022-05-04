@@ -24,10 +24,13 @@ class _ProductListPageState extends State<ProductListPage> {
   List<Map<String, Object>> brands = [];
 
   List<dynamic> categories = [];
+  List<dynamic> products = [];
+  int selectedCategoryID = 1;
 
   @override
   void initState() {
     getInfo();
+    getProductsFromPrefs();
     super.initState();
   }
 
@@ -48,6 +51,26 @@ class _ProductListPageState extends State<ProductListPage> {
           List<dynamic> categoriesData = brandsData[i]["categories"]!;
           for (int j = 0; j < categoriesData.length; j++) {
             categories.add(categoriesData[j]);
+          }
+        }
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+  }
+
+  getProductsFromPrefs() async {
+    products = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("responseProducts")!;
+    if (data != 'Error') {
+      setState(() {
+        List<dynamic> productsData = List.from(jsonDecode(data));
+        for (int i = 0; i < productsData.length; i++) {
+          if (productsData[i]['category_id'] == selectedCategoryID) {
+            products.add(productsData[i]);
           }
         }
       });
@@ -204,7 +227,7 @@ class _ProductListPageState extends State<ProductListPage> {
                               crossAxisCount: 2,
                             ),
                             children: [
-                              for (int i = 0; i < 12; i++)
+                              for (int i = 0; i < products.length; i++)
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
@@ -216,7 +239,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                                     widget.outletId,
                                                     widget.counteragentID,
                                                     widget.counteragentName,
-                                                    widget.debt)));
+                                                    widget.debt,
+                                                    products[i])));
                                   },
                                   child: Card(
                                     child: Padding(
@@ -227,7 +251,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                           children: [
                                             Stack(children: [
                                               Image.network(
-                                                'https://arbuz.kz/image/f/254211-sosiski_pervomaiskie_delikatesy_delikatesnye_iz_govyadiny_460_g.jpg?w=260&h=260&_c=1649574980',
+                                                products[i]['images'][0]
+                                                    ['path'],
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
@@ -236,7 +261,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                                         .size
                                                         .width *
                                                     0.19,
-                                                fit: BoxFit.fitWidth,
+                                                fit: BoxFit.fitHeight,
                                               ),
                                               ElevatedButton(
                                                 onPressed: () {},
@@ -252,13 +277,13 @@ class _ProductListPageState extends State<ProductListPage> {
                                             Padding(
                                               padding: const EdgeInsets.all(5),
                                               child: Text(
-                                                "Сосиски 'Тигренек'",
+                                                products[i]['name'],
                                                 style: TextStyle(fontSize: 16),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                             Text(
-                                              "1250 тг/шт",
+                                              "${products[i]['price']} тг/шт",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -321,7 +346,8 @@ class _ProductListPageState extends State<ProductListPage> {
               width: MediaQuery.of(context).size.width * 0.3,
               child: ElevatedButton(
                 onPressed: () {
-                  print(categories[j]["id"]);
+                  selectedCategoryID = categories[j]["id"];
+                  getProductsFromPrefs();
                 },
                 style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                 child: Padding(
