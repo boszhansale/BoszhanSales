@@ -1,7 +1,5 @@
-import 'dart:convert';
-
+import 'package:boszhan_sales/utils/const.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
 
@@ -19,6 +17,11 @@ class BasketPage extends StatefulWidget {
 
 class _BasketPageState extends State<BasketPage> {
   List<dynamic> products = [];
+
+  double sumBuy = 0;
+  double sumReturn = 0;
+  double sumAll = 0;
+
   @override
   void initState() {
     getBasket();
@@ -27,16 +30,17 @@ class _BasketPageState extends State<BasketPage> {
 
   getBasket() async {
     products = [];
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("BasketData") != null) {
-      setState(() {
-        products = jsonDecode(prefs.getString('BasketData')!);
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Пусто.", style: TextStyle(fontSize: 20)),
-      ));
-    }
+    products = AppConstants.basket;
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // if (prefs.getString("BasketData") != null) {
+    //   setState(() {
+    //     products = jsonDecode(prefs.getString('BasketData')!);
+    //   });
+    // } else {
+    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text("Пусто.", style: TextStyle(fontSize: 20)),
+    //   ));
+    // }
   }
 
   @override
@@ -107,6 +111,74 @@ class _BasketPageState extends State<BasketPage> {
                     color: Colors.yellow[700],
                   ),
                   _createDataTable(),
+                  Container(
+                      color: Colors.yellow[700],
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      child: Row(
+                        children: [
+                          Spacer(),
+                          Text('Сумма покупок: $sumBuy тг',
+                              style: TextStyle(fontSize: 16)),
+                          Spacer(),
+                          Text('Сумма возврата: $sumReturn тг',
+                              style: TextStyle(fontSize: 16)),
+                          Spacer(),
+                          Text('Итого к оплате: $sumAll тг',
+                              style: TextStyle(fontSize: 16)),
+                          Spacer(),
+                        ],
+                      )),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 60,
+                    child: Row(children: [
+                      Spacer(),
+                      SizedBox(
+                        height: 40,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          label: Text(
+                            "Отправить заказ клиенту",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          icon: Icon(
+                            Icons.share,
+                            color: Colors.black,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            // NEW
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      SizedBox(
+                        height: 40,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          label: Text(
+                            "Подтвердить заказ",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          icon: Icon(
+                            Icons.shopping_cart_outlined,
+                            color: Colors.black,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green[700],
+                            // NEW
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                    ]),
+                  )
                 ]))),
           ],
         ));
@@ -116,6 +188,7 @@ class _BasketPageState extends State<BasketPage> {
     return Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.yellow[700]),
         child: SizedBox(
+          // height: MediaQuery.of(context).size.height * 0.55,
           width: MediaQuery.of(context).size.width,
           child: DataTable(
             showCheckboxColumn: false,

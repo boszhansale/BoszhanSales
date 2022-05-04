@@ -18,7 +18,6 @@ class AuthProvider {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);
-      print(result);
       return result;
     } else {
       return 'Error';

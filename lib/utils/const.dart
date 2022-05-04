@@ -9,4 +9,5 @@ class AppColors {
 
 class AppConstants {
   static final String baseUrl = "http://new.boszhan.kz/";
+  static List<dynamic> basket = [];
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/views/basket/basket_page.dart';
+import 'package:boszhan_sales/views/order/product_info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -204,72 +205,86 @@ class _ProductListPageState extends State<ProductListPage> {
                             ),
                             children: [
                               for (int i = 0; i < 12; i++)
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: SizedBox(
-                                      height: 450,
-                                      child: Column(
-                                        children: [
-                                          Stack(children: [
-                                            Image.network(
-                                              'https://arbuz.kz/image/f/254211-sosiski_pervomaiskie_delikatesy_delikatesnye_iz_govyadiny_460_g.jpg?w=260&h=260&_c=1649574980',
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.3,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.19,
-                                              fit: BoxFit.fitWidth,
-                                            ),
-                                            ElevatedButton(
-                                              onPressed: () {},
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductInfoPage(
+                                                    widget.outletName,
+                                                    widget.outletId,
+                                                    widget.counteragentID,
+                                                    widget.counteragentName,
+                                                    widget.debt)));
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: SizedBox(
+                                        height: 450,
+                                        child: Column(
+                                          children: [
+                                            Stack(children: [
+                                              Image.network(
+                                                'https://arbuz.kz/image/f/254211-sosiski_pervomaiskie_delikatesy_delikatesnye_iz_govyadiny_460_g.jpg?w=260&h=260&_c=1649574980',
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.3,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.19,
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "Возврат",
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: Colors.red),
+                                              )
+                                            ]),
+                                            Padding(
+                                              padding: const EdgeInsets.all(5),
                                               child: Text(
-                                                "Возврат",
+                                                "Сосиски 'Тигренек'",
+                                                style: TextStyle(fontSize: 16),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Text(
+                                              "1250 тг/шт",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            ElevatedButton.icon(
+                                              onPressed: () {},
+                                              label: Text(
+                                                "В корзину",
                                                 style: TextStyle(
                                                     color: Colors.black),
                                               ),
+                                              icon: Icon(
+                                                Icons.shopping_cart_outlined,
+                                                color: Colors.black,
+                                              ),
                                               style: ElevatedButton.styleFrom(
-                                                  primary: Colors.red),
+                                                primary: Colors.green[700],
+                                                minimumSize:
+                                                    const Size.fromHeight(
+                                                        50), // NEW
+                                              ),
                                             )
-                                          ]),
-                                          Padding(
-                                            padding: const EdgeInsets.all(5),
-                                            child: Text(
-                                              "Сосиски 'Тигренек'",
-                                              style: TextStyle(fontSize: 16),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Text(
-                                            "1250 тг/шт",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          ElevatedButton.icon(
-                                            onPressed: () {},
-                                            label: Text(
-                                              "В корзину",
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            icon: Icon(
-                                              Icons.shopping_cart_outlined,
-                                              color: Colors.black,
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.green[700],
-                                              minimumSize:
-                                                  const Size.fromHeight(
-                                                      50), // NEW
-                                            ),
-                                          )
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
