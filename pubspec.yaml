@@ -43,6 +43,7 @@ dependencies:
   firebase_messaging: ^10.0.8
   flutter_local_notifications: ^9.0.0
   flutter_share: ^2.0.0
+  syncfusion_flutter_charts: ^20.1.52
 
 dev_dependencies:
   flutter_test:

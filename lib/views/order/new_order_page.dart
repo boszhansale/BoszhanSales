@@ -77,19 +77,17 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: SizedBox(
-                                    height: MediaQuery.of(context).size.width *
-                                        0.07,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.12,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
                                     child: ElevatedButton(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
-                                        child: const Text(
-                                          'Юридические лица',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 24,
-                                              color: Colors.black),
-                                        ),
+                                      child: const Text(
+                                        'Юридические лица',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: Colors.black),
                                       ),
                                       onPressed: () {
                                         Navigator.push(
@@ -109,19 +107,17 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: SizedBox(
-                                    height: MediaQuery.of(context).size.width *
-                                        0.07,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.12,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
                                     child: ElevatedButton(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
-                                        child: const Text(
-                                          'Физические лица',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 24,
-                                              color: Colors.black),
-                                        ),
+                                      child: const Text(
+                                        'Физические лица',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: Colors.black),
                                       ),
                                       onPressed: () {
                                         Navigator.push(

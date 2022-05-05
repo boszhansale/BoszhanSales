@@ -20,8 +20,16 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     emailController.text = 'sad@mail.ru';
     passwordController.text = '123456';
-
+    checkLogIn();
     super.initState();
+  }
+
+  void checkLogIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('isLogedIn') == true) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
   }
 
   @override
@@ -149,6 +157,7 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString("user_phone", response['user']['phone']);
       prefs.setString("driver_name", response['user']['driver']['name']);
       prefs.setString("driver_phone", response['user']['driver']['phone']);
+      prefs.setBool("isLogedIn", true);
 
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomePage()));

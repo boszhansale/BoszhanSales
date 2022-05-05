@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
+import 'package:boszhan_sales/views/analitics_page.dart';
 import 'package:boszhan_sales/views/catalog/catalog_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,20 +51,27 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.2,
-                                height: MediaQuery.of(context).size.width * 0.1,
+                                width: MediaQuery.of(context).size.width * 0.17,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.08,
                                 child: OutlinedButton(
                                   child: const Text(
                                     'Прочее',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 28,
+                                        fontSize: 20,
                                         color: Colors.black),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AnaliticsPage()));
+                                  },
                                   style: OutlinedButton.styleFrom(
                                     side: BorderSide(
-                                        width: 8, color: Colors.yellow[700]!),
+                                        width: 4, color: Colors.yellow[700]!),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(50)),
@@ -84,21 +92,21 @@ class _HomePageState extends State<HomePage> {
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                          fontSize: 16),
                                     ),
                                     Text(
                                       'Первомайские деликатесы: 152 356тг.',
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                          fontSize: 16),
                                     ),
                                     Text(
                                       'Народные колбасы: 135 485тг.',
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                          fontSize: 16),
                                     ),
                                   ],
                                 ),
@@ -117,6 +125,9 @@ class _HomePageState extends State<HomePage> {
                                     MediaQuery.of(context).size.height * 0.5),
                           ),
                         ),
+                        SizedBox(
+                          height: 40,
+                        ),
                         Row(
                           children: [
                             Padding(
@@ -131,28 +142,28 @@ class _HomePageState extends State<HomePage> {
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                          fontSize: 16),
                                     ),
                                     Text(
                                       'ТП: $name',
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                          fontSize: 16),
                                     ),
                                     Text(
                                       'Водитель: $driverName',
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                          fontSize: 16),
                                     ),
                                     Text(
                                       'Номер водителя: $driverPhone',
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                          fontSize: 16),
                                     ),
                                   ],
                                 ),
@@ -162,14 +173,15 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: const EdgeInsets.only(right: 50),
                               child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.2,
-                                height: MediaQuery.of(context).size.width * 0.1,
+                                width: MediaQuery.of(context).size.width * 0.17,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.08,
                                 child: ElevatedButton(
                                   child: const Text(
                                     'Обновить',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 28,
+                                        fontSize: 20,
                                         color: Colors.black),
                                   ),
                                   onPressed: () {
@@ -186,14 +198,15 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: const EdgeInsets.only(right: 50),
                               child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.2,
-                                height: MediaQuery.of(context).size.width * 0.1,
+                                width: MediaQuery.of(context).size.width * 0.17,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.08,
                                 child: ElevatedButton(
                                   child: const Text(
                                     'Каталог',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 28,
+                                        fontSize: 20,
                                         color: Colors.black),
                                   ),
                                   onPressed: () {

@@ -1,4 +1,5 @@
 'token' - String => 'Token of user.'
+'isLogedIn' - Bool => 'Is loged in?'
 'user_id' - int => 'Users id.'
 'full_name' - String => 'Users full name.'
 'user_phone'  - String => 'Users phone.'

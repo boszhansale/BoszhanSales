@@ -72,18 +72,15 @@ class _CatalogPageState extends State<CatalogPage> {
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.width * 0.07,
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          width: MediaQuery.of(context).size.width * 0.3,
                           child: ElevatedButton(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: const Text(
-                                'Продолжить заказ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24,
-                                    color: Colors.black),
-                              ),
+                            child: const Text(
+                              'Продолжить заказ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black),
                             ),
                             onPressed: () async {
                               SharedPreferences prefs =
@@ -127,18 +124,15 @@ class _CatalogPageState extends State<CatalogPage> {
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.width * 0.07,
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          width: MediaQuery.of(context).size.width * 0.3,
                           child: ElevatedButton(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: const Text(
-                                'Новый заказ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24,
-                                    color: Colors.black),
-                              ),
+                            child: const Text(
+                              'Новый заказ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black),
                             ),
                             onPressed: () async {
                               SharedPreferences prefs =
@@ -148,7 +142,9 @@ class _CatalogPageState extends State<CatalogPage> {
                                   // set up the buttons
                                   Widget cancelButton = TextButton(
                                     child: Text("Отмена"),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
                                   );
                                   Widget continueButton = TextButton(
                                     child: Text("Да"),
@@ -181,6 +177,8 @@ class _CatalogPageState extends State<CatalogPage> {
                                     },
                                   );
                                 }
+
+                                showAlertDialog(context);
                               } else {
                                 Navigator.push(
                                     context,
