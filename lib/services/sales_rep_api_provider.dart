@@ -112,4 +112,32 @@ class SalesRepProvider {
       return result;
     }
   }
+
+  Future<dynamic> createOrder(
+      int storeId, String mobileId, List<dynamic> basket) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+
+    final response = await http.post(
+      Uri.parse(API_URL + 'api/order'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': "Bearer $token"
+      },
+      body: jsonEncode(<String, dynamic>{
+        "store_id": storeId,
+        "mobile_id": mobileId,
+        "baskets": basket
+      }),
+    );
+
+    print(jsonDecode(response.body));
+
+    if (response.statusCode == 200) {
+      return 'Success';
+    } else {
+      return 'Error';
+    }
+  }
 }

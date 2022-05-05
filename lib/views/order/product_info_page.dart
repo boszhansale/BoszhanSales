@@ -177,7 +177,18 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (!AppConstants.basketIDs
+                                      .contains(widget.product['id'])) {
+                                    AppConstants.basket.add({
+                                      'product': widget.product,
+                                      'count': 1,
+                                      'type': 0
+                                    });
+                                    AppConstants.basketIDs
+                                        .add(widget.product['id']);
+                                  }
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Text(

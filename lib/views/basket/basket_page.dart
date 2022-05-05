@@ -1,5 +1,7 @@
+import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/utils/const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 import '../home_page.dart';
 
@@ -19,6 +21,7 @@ class BasketPage extends StatefulWidget {
 
 class _BasketPageState extends State<BasketPage> {
   List<dynamic> products = [];
+  List<dynamic> returns = [];
 
   double sumBuy = 0;
   double sumReturn = 0;
@@ -27,12 +30,20 @@ class _BasketPageState extends State<BasketPage> {
   @override
   void initState() {
     getBasket();
+    calculateSum();
     super.initState();
   }
 
   getBasket() async {
     products = [];
-    products = AppConstants.basket;
+    returns = [];
+    for (int i = 0; i < AppConstants.basket.length; i++) {
+      if (AppConstants.basket[i]['type'] == 0) {
+        products.add(AppConstants.basket[i]);
+      } else {
+        returns.add(AppConstants.basket[i]);
+      }
+    }
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // if (prefs.getString("BasketData") != null) {
     //   setState(() {
@@ -43,6 +54,91 @@ class _BasketPageState extends State<BasketPage> {
     //     content: Text("Пусто.", style: TextStyle(fontSize: 20)),
     //   ));
     // }
+  }
+
+  void calculateSum() {
+    double sum1 = 0;
+    double sum2 = 0;
+
+    for (int i = 0; i < products.length; i++) {
+      sum1 += (products[i]['count'] *
+          (products[i]['product']['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - widget.discount) /
+              100));
+    }
+
+    for (int j = 0; j < returns.length; j++) {
+      sum2 += (returns[j]['count'] *
+          (returns[j]['product']['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - widget.discount) /
+              100));
+    }
+
+    sumAll = sumBuy - sumReturn;
+    sumBuy = sum1;
+    sumReturn = sum2;
+  }
+
+  void createOrder() async {
+    List<dynamic> basket = [];
+    for (int i = 0; i < products.length; i++) {
+      basket.add({
+        'product_id': products[i]['product']['id'],
+        'count': products[i]['count'],
+        'type': products[i]['type']
+      });
+    }
+
+    for (int i = 0; i < returns.length; i++) {
+      basket.add({
+        'product_id': returns[i]['product']['id'],
+        'count': returns[i]['count'],
+        'type': returns[i]['type']
+      });
+    }
+
+    String mobileId = DateTime.now().millisecondsSinceEpoch.toString();
+
+    var response =
+        await SalesRepProvider().createOrder(widget.outletId, mobileId, basket);
+
+    if (response != 'Error') {
+      setState(() {
+        AppConstants.basket = [];
+        AppConstants.basketIDs = [];
+        Navigator.of(context).pop();
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+  }
+
+  Future<void> share() async {
+    String text = '';
+    for (int i = 0; i < products.length; i++) {
+      text += products[i]['product']['name'] +
+          "  " +
+          products[i]['count'].toString() +
+          'шт - покупка; ' +
+          "\n";
+    }
+    for (int i = 0; i < returns.length; i++) {
+      text += returns[i]['product']['name'] +
+          "  " +
+          returns[i]['count'].toString() +
+          'шт - возврат; ' +
+          "\n";
+    }
+    await FlutterShare.share(
+      title: 'Первомайские деликатесы',
+      text: text,
+    );
   }
 
   @override
@@ -143,7 +239,9 @@ class _BasketPageState extends State<BasketPage> {
                         height: 40,
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            share();
+                          },
                           label: Text(
                             "Отправить заказ клиенту",
                             style: TextStyle(color: Colors.black),
@@ -163,7 +261,9 @@ class _BasketPageState extends State<BasketPage> {
                         height: 40,
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            createOrder();
+                          },
                           label: Text(
                             "Подтвердить заказ",
                             style: TextStyle(color: Colors.black),
@@ -226,6 +326,7 @@ class _BasketPageState extends State<BasketPage> {
                       if (products[i]['count'] > 1) {
                         products[i]['count'] -= 1;
                       }
+                      calculateSum();
                     });
                   },
                   child: Icon(Icons.remove),
@@ -239,6 +340,7 @@ class _BasketPageState extends State<BasketPage> {
                   onPressed: () {
                     setState(() {
                       products[i]['count'] += 1;
+                      calculateSum();
                     });
                   },
                   child: Icon(Icons.add),
@@ -274,6 +376,76 @@ class _BasketPageState extends State<BasketPage> {
             ),
           ))
         ]),
+      for (int i = 0; i < returns.length; i++)
+        DataRow(
+            color: MaterialStateColor.resolveWith(
+                (states) => Colors.redAccent.withOpacity(0.3)),
+            onSelectChanged: (newValue) {},
+            cells: [
+              DataCell(Text(returns[i]['product']['name'])),
+              DataCell(Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          if (returns[i]['count'] > 1) {
+                            returns[i]['count'] -= 1;
+                          }
+                          calculateSum();
+                        });
+                      },
+                      child: Icon(Icons.remove),
+                      style:
+                          ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+                    ),
+                  ),
+                  Text(returns[i]['count'].toString()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          returns[i]['count'] += 1;
+                          calculateSum();
+                        });
+                      },
+                      child: Icon(Icons.add),
+                      style:
+                          ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+                    ),
+                  ),
+                ],
+              )),
+              DataCell(Text((returns[i]['product']['prices']
+                          .where(
+                              (e) => e['price_type_id'] == widget.priceTypeId)
+                          .toList()[0]['price'] *
+                      (100 - widget.discount) /
+                      100)
+                  .toString())),
+              DataCell(Text((returns[i]['count'] *
+                      (returns[i]['product']['prices']
+                              .where((e) =>
+                                  e['price_type_id'] == widget.priceTypeId)
+                              .toList()[0]['price'] *
+                          (100 - widget.discount) /
+                          100))
+                  .toString())),
+              DataCell(GestureDetector(
+                onTap: () {
+                  setState(() {
+                    AppConstants.basketIDs.remove(returns[i]['product']['id']);
+                    AppConstants.basket.remove(returns[i]);
+                  });
+                },
+                child: Icon(
+                  Icons.cancel,
+                  size: 35,
+                ),
+              ))
+            ]),
     ];
   }
 }

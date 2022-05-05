@@ -292,7 +292,19 @@ class _ProductListPageState extends State<ProductListPage> {
                                                 fit: BoxFit.fitHeight,
                                               ),
                                               ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  if (!AppConstants.basketIDs
+                                                      .contains(
+                                                          products[i]['id'])) {
+                                                    AppConstants.basket.add({
+                                                      'product': products[i],
+                                                      'count': 1,
+                                                      'type': 1
+                                                    });
+                                                    AppConstants.basketIDs
+                                                        .add(products[i]['id']);
+                                                  }
+                                                },
                                                 child: Text(
                                                   "Возврат",
                                                   style: TextStyle(
@@ -325,7 +337,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                                         products[i]['id'])) {
                                                   AppConstants.basket.add({
                                                     'product': products[i],
-                                                    'count': 1
+                                                    'count': 1,
+                                                    'type': 0
                                                   });
                                                   AppConstants.basketIDs
                                                       .add(products[i]['id']);
