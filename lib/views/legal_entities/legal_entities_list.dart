@@ -97,7 +97,7 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
       DataColumn(label: Text('Статус')),
       DataColumn(label: Text('Наименование юридического лица')),
       DataColumn(label: Text('Прайс')),
-      DataColumn(label: Text('Тип оплаты')),
+      DataColumn(label: Text('Тип опл.')),
       DataColumn(label: Text('Долг')),
       DataColumn(label: Text('Проср.')),
     ];
@@ -121,7 +121,10 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
             cells: [
               DataCell(
                   Text(counteragents[i]['enabled'] == 1 ? '' : 'заблокирован')),
-              DataCell(Text(counteragents[i]['name'])),
+              DataCell(Text(
+                counteragents[i]['name'],
+                overflow: TextOverflow.fade,
+              )),
               DataCell(Text(counteragents[i]['price_type']['name'])),
               DataCell(Text(counteragents[i]['payment_type']['name'])),
               DataCell(Text(counteragents[i]['debt'].toString())),

@@ -2,6 +2,7 @@ import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
 
@@ -112,6 +113,8 @@ class _BasketPageState extends State<BasketPage> {
         AppConstants.basketIDs = [];
         Navigator.of(context).pop();
       });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool("isBasketCompleted", true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),

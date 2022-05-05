@@ -43,6 +43,7 @@ class _ProductListPageState extends State<ProductListPage> {
   void initState() {
     getInfo();
     getProductsFromPrefs();
+    setBasketData();
     if (widget.counteragentDiscount != 0) {
       discount = widget.counteragentDiscount;
     } else {
@@ -53,6 +54,20 @@ class _ProductListPageState extends State<ProductListPage> {
       }
     }
     super.initState();
+  }
+
+  void setBasketData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setBool("isBasketCompleted", false);
+    prefs.setString("outletName", widget.outletName);
+    prefs.setInt("outletDiscount", widget.outletDiscount);
+    prefs.setInt("outletId", widget.outletId);
+    prefs.setInt("counteragentID", widget.counteragentID);
+    prefs.setString("counteragentName", widget.counteragentName);
+    prefs.setInt("counteragentDiscount", widget.counteragentDiscount);
+    prefs.setInt("priceTypeId", widget.priceTypeId);
+    prefs.setString("debt", widget.debt);
   }
 
   getInfo() async {

@@ -10,3 +10,4 @@
 'responsePhysicalOutlets' - String => 'Physical outlets list.'
 'BasketData' - String => 'Basket list of products.'
 'responseProducts' - String => 'List of products.'
+isBasketCompleted - Bool => 'Is basket completed?'

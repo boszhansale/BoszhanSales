@@ -1,7 +1,9 @@
+import 'package:boszhan_sales/views/order/new_order_page.dart';
+import 'package:boszhan_sales/views/order/product_list_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
-import '../order/new_order_page.dart';
 
 class CatalogPage extends StatefulWidget {
   @override
@@ -83,11 +85,36 @@ class _CatalogPageState extends State<CatalogPage> {
                                     color: Colors.black),
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CatalogPage()));
+                            onPressed: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              if (prefs.getBool("isBasketCompleted") == false) {
+                                var outletName = prefs.getString("outletName")!;
+                                var outletDiscount =
+                                    prefs.getInt("outletDiscount")!;
+                                var outletId = prefs.getInt("outletId")!;
+                                var counteragentID =
+                                    prefs.getInt("counteragentID")!;
+                                var counteragentName =
+                                    prefs.getString("counteragentName")!;
+                                var counteragentDiscount =
+                                    prefs.getInt("counteragentDiscount")!;
+                                var priceTypeId = prefs.getInt("priceTypeId")!;
+                                var debt = prefs.getString("debt")!;
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProductListPage(
+                                            outletName,
+                                            outletDiscount,
+                                            outletId,
+                                            counteragentID,
+                                            counteragentName,
+                                            counteragentDiscount,
+                                            priceTypeId,
+                                            debt)));
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.yellow[700],
@@ -113,11 +140,53 @@ class _CatalogPageState extends State<CatalogPage> {
                                     color: Colors.black),
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NewOrderPage()));
+                            onPressed: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              if (prefs.getBool("isBasketCompleted") == false) {
+                                showAlertDialog(BuildContext context) {
+                                  // set up the buttons
+                                  Widget cancelButton = TextButton(
+                                    child: Text("Отмена"),
+                                    onPressed: () {},
+                                  );
+                                  Widget continueButton = TextButton(
+                                    child: Text("Да"),
+                                    onPressed: () {
+                                      prefs.remove('isBasketCompleted');
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NewOrderPage()));
+                                    },
+                                  );
+
+                                  // set up the AlertDialog
+                                  AlertDialog alert = AlertDialog(
+                                    title: Text("Внимание!"),
+                                    content: Text(
+                                        "У вас есть незаконченный заказ, обнулить заказ и создать новый?"),
+                                    actions: [
+                                      cancelButton,
+                                      continueButton,
+                                    ],
+                                  );
+
+                                  // show the dialog
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return alert;
+                                    },
+                                  );
+                                }
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NewOrderPage()));
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.yellow[700],
