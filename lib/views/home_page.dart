@@ -43,80 +43,83 @@ class _HomePageState extends State<HomePage> {
             Scaffold(
                 backgroundColor: Colors.white.withOpacity(0.85),
                 body: SingleChildScrollView(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(50),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.17,
-                                height:
-                                    MediaQuery.of(context).size.width * 0.08,
-                                child: OutlinedButton(
-                                  child: const Text(
-                                    'Прочее',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AnaliticsPage()));
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(
-                                        width: 4, color: Colors.yellow[700]!),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    // primary: Colors.grey[200],
-                                    textStyle: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.95,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(50),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.17,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                  child: OutlinedButton(
+                                    child: const Text(
+                                      'Прочее',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AnaliticsPage()));
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                          width: 4, color: Colors.yellow[700]!),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      // primary: Colors.grey[200],
+                                      textStyle: const TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Spacer(),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'До выполнения плана до конца месяца вам осталось продать: 358 624тг.',
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                    Text(
-                                      'Первомайские деликатесы: 152 356тг.',
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                    Text(
-                                      'Народные колбасы: 135 485тг.',
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  ],
+                                Spacer(),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'До выполнения плана до конца месяца вам осталось продать: 358 624тг.',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      Text(
+                                        'Первомайские деликатесы: 152 356тг.',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      Text(
+                                        'Народные колбасы: 135 485тг.',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Container(
+                          Container(
                             decoration: BoxDecoration(
                                 // color: Colors.yellow[700],
                                 borderRadius: BorderRadius.circular(130)),
@@ -124,109 +127,111 @@ class _HomePageState extends State<HomePage> {
                                 width:
                                     MediaQuery.of(context).size.height * 0.5),
                           ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 50),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Удачных продаж!',
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                    Text(
-                                      'ТП: $name',
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                    Text(
-                                      'Водитель: $driverName',
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                    Text(
-                                      'Номер водителя: $driverPhone',
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 50),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.17,
-                                height:
-                                    MediaQuery.of(context).size.width * 0.08,
-                                child: ElevatedButton(
-                                  child: const Text(
-                                    'Обновить',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black),
-                                  ),
-                                  onPressed: () {
-                                    getAllData();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.yellow[700],
-                                    textStyle: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                          Spacer(),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 50),
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Удачных продаж!',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      Text(
+                                        'ТП: $name',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      Text(
+                                        'Водитель: $driverName',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      Text(
+                                        'Номер водителя: $driverPhone',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 50),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.17,
-                                height:
-                                    MediaQuery.of(context).size.width * 0.08,
-                                child: ElevatedButton(
-                                  child: const Text(
-                                    'Каталог',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CatalogPage()));
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.yellow[700],
-                                    textStyle: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 50),
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.17,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                  child: ElevatedButton(
+                                    child: const Text(
+                                      'Обновить',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      getAllData();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.yellow[700],
+                                      textStyle: const TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ]),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 50),
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.17,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                  child: ElevatedButton(
+                                    child: const Text(
+                                      'Каталог',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CatalogPage()));
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.yellow[700],
+                                      textStyle: const TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ]),
+                  ),
                 )),
           ],
         ));
