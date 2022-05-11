@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Container(
                             decoration: BoxDecoration(
-                                color: Colors.yellow[700],
+                                // color: Colors.yellow[700],
                                 borderRadius: BorderRadius.circular(130)),
                             child: Image.asset("assets/images/logo.png",
                                 width:

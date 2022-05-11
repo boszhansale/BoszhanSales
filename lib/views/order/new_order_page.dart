@@ -52,7 +52,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                           padding: const EdgeInsets.only(top: 50),
                           child: Container(
                             decoration: BoxDecoration(
-                                color: Colors.yellow[700],
+                                // color: Colors.yellow[700],
                                 borderRadius: BorderRadius.circular(130)),
                             child: Image.asset("assets/images/logo.png",
                                 width:
