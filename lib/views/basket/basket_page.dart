@@ -79,9 +79,9 @@ class _BasketPageState extends State<BasketPage> {
               100));
     }
 
-    sumAll = sumBuy - sumReturn;
     sumBuy = sum1;
     sumReturn = sum2;
+    sumAll = sumBuy - sumReturn;
   }
 
   void createOrder() async {
@@ -371,6 +371,7 @@ class _BasketPageState extends State<BasketPage> {
               setState(() {
                 AppConstants.basketIDs.remove(products[i]['product']['id']);
                 AppConstants.basket.remove(products[i]);
+                products.remove(products[i]);
               });
             },
             child: Icon(
@@ -441,6 +442,7 @@ class _BasketPageState extends State<BasketPage> {
                   setState(() {
                     AppConstants.basketIDs.remove(returns[i]['product']['id']);
                     AppConstants.basket.remove(returns[i]);
+                    returns.remove(returns[i]);
                   });
                 },
                 child: Icon(
