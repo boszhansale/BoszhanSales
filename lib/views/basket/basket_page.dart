@@ -1,4 +1,5 @@
-import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
+import 'dart:convert';
+
 import 'package:boszhan_sales/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
@@ -120,24 +121,40 @@ class _BasketPageState extends State<BasketPage> {
       });
     }
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String mobileId = DateTime.now().millisecondsSinceEpoch.toString();
 
-    var response =
-        await SalesRepProvider().createOrder(widget.outletId, mobileId, basket);
-
-    if (response != 'Error') {
-      setState(() {
-        AppConstants.basket = [];
-        AppConstants.basketIDs = [];
-        Navigator.of(context).pop();
-      });
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool("isBasketCompleted", true);
+    if (prefs.getString('OrderHistory') == null) {
+      List<Map<String, dynamic>> savedData = [];
+      Map<String, dynamic> thisMap = {};
+      thisMap['basket'] = basket;
+      thisMap['outletId'] = widget.outletId;
+      thisMap['outletName'] = widget.outletName;
+      thisMap['mobileId'] = mobileId;
+      savedData.add(thisMap);
+      prefs.setString("OrderHistory", jsonEncode(savedData));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
-      ));
+      var data = prefs.getString("OrderHistory")!;
+      if (data != 'Error') {
+        setState(() {
+          List<dynamic> savedData = List.from(jsonDecode(data));
+          Map<String, dynamic> thisMap = {};
+          thisMap['basket'] = basket;
+          thisMap['outletId'] = widget.outletId;
+          thisMap['outletName'] = widget.outletName;
+          thisMap['mobileId'] = mobileId;
+          savedData.add(thisMap);
+          prefs.setString("OrderHistory", jsonEncode(savedData));
+        });
+      }
     }
+
+    setState(() {
+      AppConstants.basket = [];
+      AppConstants.basketIDs = [];
+      Navigator.of(context).pop();
+    });
+    prefs.setBool("isBasketCompleted", true);
   }
 
   Future<void> share() async {

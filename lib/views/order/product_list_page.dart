@@ -185,48 +185,54 @@ class _ProductListPageState extends State<ProductListPage> {
                             SizedBox(
                               height: 0,
                             ),
-                            Container(
-                                color: Colors.yellow[700],
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                height: 60,
-                                child: Row(
-                                  children: [
-                                    Spacer(),
-                                    Text(
-                                        'Контрагент: ${widget.counteragentName}',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
-                                    Text('Торговая точка: ${widget.outletName}',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
-                                    Text('Долг: ${widget.debt} тг',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BasketPage(
-                                                        widget.outletName,
-                                                        widget.outletId,
-                                                        widget.counteragentID,
-                                                        widget.counteragentName,
-                                                        discount,
-                                                        widget.priceTypeId,
-                                                        widget.debt)));
-                                      },
-                                      child: Icon(
-                                        Icons.shopping_cart_outlined,
-                                        size: 40,
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                  color: Colors.yellow[700],
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  height: 60,
+                                  child: Row(
+                                    children: [
+                                      Spacer(),
+                                      Text(
+                                          'Контрагент: ${widget.counteragentName}',
+                                          style: TextStyle(fontSize: 16)),
+                                      Spacer(),
+                                      Text(
+                                          'Торговая точка: ${widget.outletName}',
+                                          style: TextStyle(fontSize: 16)),
+                                      Spacer(),
+                                      Text('Долг: ${widget.debt} тг',
+                                          style: TextStyle(fontSize: 16)),
+                                      Spacer(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BasketPage(
+                                                          widget.outletName,
+                                                          widget.outletId,
+                                                          widget.counteragentID,
+                                                          widget
+                                                              .counteragentName,
+                                                          discount,
+                                                          widget.priceTypeId,
+                                                          widget.debt)));
+                                        },
+                                        child: Icon(
+                                          Icons.shopping_cart_outlined,
+                                          size: 40,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    )
-                                  ],
-                                )),
+                                      SizedBox(
+                                        width: 20,
+                                      )
+                                    ],
+                                  )),
+                            ),
                           ],
                         ),
                         Spacer(),
