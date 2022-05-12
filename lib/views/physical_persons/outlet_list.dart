@@ -113,7 +113,7 @@ class _OutletListPageState extends State<OutletListPage> {
                           outletList[i]['discount'],
                           outletList[i]['id'],
                           0,
-                          '-',
+                          outletList[i]['salesrep']['name'],
                           0,
                           1,
                           '0')));

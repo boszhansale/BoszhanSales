@@ -108,15 +108,22 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
       for (int i = 0; i < counteragents.length; i++)
         DataRow(
             onSelectChanged: (newValue) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LegalOutletListPage(
-                          counteragents[i]['id'],
-                          counteragents[i]['name'],
-                          counteragents[i]['discount'],
-                          counteragents[i]['price_type']['id'],
-                          counteragents[i]['debt'].toString())));
+              if (counteragents[i]['enabled'] == 1) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LegalOutletListPage(
+                            counteragents[i]['id'],
+                            counteragents[i]['name'],
+                            counteragents[i]['discount'],
+                            counteragents[i]['price_type']['id'],
+                            counteragents[i]['debt'].toString())));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content:
+                      Text("Заблокирован!", style: TextStyle(fontSize: 20)),
+                ));
+              }
             },
             cells: [
               DataCell(

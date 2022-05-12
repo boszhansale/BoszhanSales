@@ -301,5 +301,9 @@ class _HomePageState extends State<HomePage> {
         content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
       ));
     }
+
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Загружено!", style: TextStyle(fontSize: 20)),
+    ));
   }
 }

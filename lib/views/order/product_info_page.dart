@@ -216,19 +216,22 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                             ),
                             Row(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  child: Text(
-                                    "${widget.product['prices'][widget.priceTypeId - 1]['price']} тг/шт",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
+                                widget.discount != 0
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        child: Text(
+                                          "${widget.product['prices'][widget.priceTypeId - 1]['price']} тг/шт",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      )
+                                    : SizedBox(),
                                 Spacer(),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -242,6 +245,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
+                                widget.discount == 0 ? Spacer() : SizedBox(),
                               ],
                             ),
                             ElevatedButton.icon(

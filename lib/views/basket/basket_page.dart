@@ -21,6 +21,9 @@ class BasketPage extends StatefulWidget {
 }
 
 class _BasketPageState extends State<BasketPage> {
+  List<TextEditingController> productsTextFieldControllers = [];
+  List<TextEditingController> returnsTextFieldControllers = [];
+
   List<dynamic> products = [];
   List<dynamic> returns = [];
 
@@ -32,7 +35,22 @@ class _BasketPageState extends State<BasketPage> {
   void initState() {
     getBasket();
     calculateSum();
+    createTextFieldControllers();
     super.initState();
+  }
+
+  void createTextFieldControllers() {
+    for (int i = 0; i < products.length; i++) {
+      final controller = TextEditingController();
+      controller.text = products[i]['count'].toString();
+      productsTextFieldControllers.add(controller);
+    }
+
+    for (int i = 0; i < returns.length; i++) {
+      final controller = TextEditingController();
+      controller.text = returns[i]['count'].toString();
+      returnsTextFieldControllers.add(controller);
+    }
   }
 
   getBasket() async {
@@ -328,6 +346,8 @@ class _BasketPageState extends State<BasketPage> {
                     setState(() {
                       if (products[i]['count'] > 1) {
                         products[i]['count'] -= 1;
+                        productsTextFieldControllers[i].text =
+                            products[i]['count'].toString();
                       }
                       calculateSum();
                     });
@@ -336,13 +356,33 @@ class _BasketPageState extends State<BasketPage> {
                   style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                 ),
               ),
-              Text(products[i]['count'].toString()),
+              SizedBox(
+                width: 40,
+                child: TextFormField(
+                  onChanged: (text) {
+                    setState(() {
+                      try {
+                        products[i]['count'] = double.parse(text);
+                      } catch (e) {
+                        print(e);
+                      }
+                    });
+                  },
+                  textAlign: TextAlign.center,
+                  controller: productsTextFieldControllers[i],
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
                       products[i]['count'] += 1;
+                      productsTextFieldControllers[i].text =
+                          products[i]['count'].toString();
                       calculateSum();
                     });
                   },
@@ -396,6 +436,8 @@ class _BasketPageState extends State<BasketPage> {
                         setState(() {
                           if (returns[i]['count'] > 1) {
                             returns[i]['count'] -= 1;
+                            returnsTextFieldControllers[i].text =
+                                returns[i]['count'].toString();
                           }
                           calculateSum();
                         });
@@ -405,13 +447,33 @@ class _BasketPageState extends State<BasketPage> {
                           ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                     ),
                   ),
-                  Text(returns[i]['count'].toString()),
+                  SizedBox(
+                    width: 40,
+                    child: TextFormField(
+                      onChanged: (text) {
+                        setState(() {
+                          try {
+                            returns[i]['count'] = double.parse(text);
+                          } catch (e) {
+                            print(e);
+                          }
+                        });
+                      },
+                      textAlign: TextAlign.center,
+                      controller: returnsTextFieldControllers[i],
+                      decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
                           returns[i]['count'] += 1;
+                          returnsTextFieldControllers[i].text =
+                              returns[i]['count'].toString();
                           calculateSum();
                         });
                       },
