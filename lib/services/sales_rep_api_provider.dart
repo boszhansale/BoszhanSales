@@ -132,8 +132,6 @@ class SalesRepProvider {
       }),
     );
 
-    print(jsonDecode(response.body));
-
     if (response.statusCode == 200) {
       return 'Success';
     } else {

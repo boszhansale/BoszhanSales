@@ -63,17 +63,8 @@ class _BasketPageState extends State<BasketPage> {
       } else {
         returns.add(AppConstants.basket[i]);
       }
+      print(AppConstants.basket[i]);
     }
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // if (prefs.getString("BasketData") != null) {
-    //   setState(() {
-    //     products = jsonDecode(prefs.getString('BasketData')!);
-    //   });
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    //     content: Text("Пусто.", style: TextStyle(fontSize: 20)),
-    //   ));
-    // }
   }
 
   void calculateSum() {
@@ -85,7 +76,10 @@ class _BasketPageState extends State<BasketPage> {
           (products[i]['product']['prices']
                   .where((e) => e['price_type_id'] == widget.priceTypeId)
                   .toList()[0]['price'] *
-              (100 - widget.discount) /
+              (100 -
+                  (widget.discount == 0
+                      ? products[i]['product']['discount']
+                      : widget.discount)) /
               100));
     }
 
@@ -94,7 +88,10 @@ class _BasketPageState extends State<BasketPage> {
           (returns[j]['product']['prices']
                   .where((e) => e['price_type_id'] == widget.priceTypeId)
                   .toList()[0]['price'] *
-              (100 - widget.discount) /
+              (100 -
+                  (widget.discount == 0
+                      ? returns[j]['product']['discount']
+                      : widget.discount)) /
               100));
     }
 
@@ -414,7 +411,10 @@ class _BasketPageState extends State<BasketPage> {
           DataCell(Text((products[i]['product']['prices']
                       .where((e) => e['price_type_id'] == widget.priceTypeId)
                       .toList()[0]['price'] *
-                  (100 - widget.discount) /
+                  (100 -
+                      (widget.discount == 0
+                          ? products[i]['product']['discount']
+                          : widget.discount)) /
                   100)
               .toString())),
           DataCell(Text((products[i]['count'] *
@@ -422,7 +422,10 @@ class _BasketPageState extends State<BasketPage> {
                           .where(
                               (e) => e['price_type_id'] == widget.priceTypeId)
                           .toList()[0]['price'] *
-                      (100 - widget.discount) /
+                      (100 -
+                          (widget.discount == 0
+                              ? products[i]['product']['discount']
+                              : widget.discount)) /
                       100))
               .toString())),
           DataCell(GestureDetector(
@@ -507,7 +510,10 @@ class _BasketPageState extends State<BasketPage> {
                           .where(
                               (e) => e['price_type_id'] == widget.priceTypeId)
                           .toList()[0]['price'] *
-                      (100 - widget.discount) /
+                      (100 -
+                          (widget.discount == 0
+                              ? returns[i]['product']['discount']
+                              : widget.discount)) /
                       100)
                   .toString())),
               DataCell(Text((returns[i]['count'] *
@@ -515,7 +521,10 @@ class _BasketPageState extends State<BasketPage> {
                               .where((e) =>
                                   e['price_type_id'] == widget.priceTypeId)
                               .toList()[0]['price'] *
-                          (100 - widget.discount) /
+                          (100 -
+                              (widget.discount == 0
+                                  ? returns[i]['product']['discount']
+                                  : widget.discount)) /
                           100))
                   .toString())),
               DataCell(GestureDetector(

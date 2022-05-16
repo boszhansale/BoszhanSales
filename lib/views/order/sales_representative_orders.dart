@@ -25,9 +25,11 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
 
   void getOrderHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString("OrderHistory")!;
-    if (data != 'Error') {
+
+    if (prefs.getString("OrderHistory") != 'Error' &&
+        prefs.getString('OrderHistory') != null) {
       setState(() {
+        var data = prefs.getString("OrderHistory")!;
         orderHistory = List.from(jsonDecode(data));
       });
     }
@@ -109,12 +111,23 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                       children: [
                         for (int i = 0; i < orderHistory.length; i++)
                           Card(
-                              child: ListTile(
-                            title: Text("ID магазина: " +
-                                orderHistory[i]['outletId'].toString()),
-                            subtitle: Text(
-                                "Магазин: " + orderHistory[i]['outletName']),
-                          )),
+                            child: ListTile(
+                              title: Text("ID магазина: " +
+                                  orderHistory[i]['outletId'].toString()),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Магазин: " +
+                                      orderHistory[i]['outletName']),
+                                  Text("Mobile ID: " +
+                                      orderHistory[i]['mobileId']),
+                                ],
+                              ),
+                            ),
+                            color: orderHistory[i]['isSended']
+                                ? Colors.white
+                                : Colors.redAccent,
+                          ),
                       ],
                       padding: EdgeInsets.all(10),
                     )),
@@ -152,7 +165,6 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
     for (int i = 0; i < orderHistory.length; i++) {
       try {
         if (orderHistory[i]['isSended'] == false) {
-          print(1);
           var response = await SalesRepProvider().createOrder(
               orderHistory[i]['outletId'],
               orderHistory[i]['mobileId'],
@@ -169,8 +181,6 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
           } else {
             print('Error, store ID: ' + orderHistory[i]['outletId'].toString());
           }
-        } else {
-          print(0);
         }
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
