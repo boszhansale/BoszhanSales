@@ -148,17 +148,29 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
   }
 
   void sendDataToServer() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     for (int i = 0; i < orderHistory.length; i++) {
       try {
-        var response = await SalesRepProvider().createOrder(
-            orderHistory[i]['outletId'],
-            orderHistory[i]['mobileId'],
-            orderHistory[i]['basket']);
+        if (orderHistory[i]['isSended'] == false) {
+          print(1);
+          var response = await SalesRepProvider().createOrder(
+              orderHistory[i]['outletId'],
+              orderHistory[i]['mobileId'],
+              orderHistory[i]['basket']);
 
-        if (response != 'Error') {
-          print('Succes, store ID: ' + orderHistory[i]['outletId'].toString());
+          if (response != 'Error') {
+            setState(() {
+              orderHistory[i]['isSended'] = true;
+              prefs.setString("OrderHistory", jsonEncode(orderHistory));
+            });
+
+            print(
+                'Succes, store ID: ' + orderHistory[i]['outletId'].toString());
+          } else {
+            print('Error, store ID: ' + orderHistory[i]['outletId'].toString());
+          }
         } else {
-          print('Error, store ID: ' + orderHistory[i]['outletId'].toString());
+          print(0);
         }
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

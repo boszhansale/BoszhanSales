@@ -131,6 +131,7 @@ class _BasketPageState extends State<BasketPage> {
       thisMap['outletId'] = widget.outletId;
       thisMap['outletName'] = widget.outletName;
       thisMap['mobileId'] = mobileId;
+      thisMap['isSended'] = false;
       savedData.add(thisMap);
       prefs.setString("OrderHistory", jsonEncode(savedData));
     } else {
@@ -143,6 +144,7 @@ class _BasketPageState extends State<BasketPage> {
           thisMap['outletId'] = widget.outletId;
           thisMap['outletName'] = widget.outletName;
           thisMap['mobileId'] = mobileId;
+          thisMap['isSended'] = false;
           savedData.add(thisMap);
           prefs.setString("OrderHistory", jsonEncode(savedData));
         });
