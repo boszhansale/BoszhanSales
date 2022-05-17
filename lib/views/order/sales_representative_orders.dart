@@ -31,6 +31,7 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
       setState(() {
         var data = prefs.getString("OrderHistory")!;
         orderHistory = List.from(jsonDecode(data));
+        orderHistory = orderHistory.reversed.toList();
       });
     }
   }

@@ -54,7 +54,6 @@ class _ProductListPageState extends State<ProductListPage> {
         discount = 0;
       }
     }
-    print(discount);
     super.initState();
   }
 

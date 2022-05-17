@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
-import 'package:boszhan_sales/views/analitics_page.dart';
+import 'package:boszhan_sales/views/analytics_page.dart';
 import 'package:boszhan_sales/views/catalog/catalog_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,11 @@ class _HomePageState extends State<HomePage> {
   String name = "";
   String driverName = "";
   String driverPhone = "";
+  int plan = 0;
+  int completedPlan = 0;
+  int firstBrandPlan = 0;
+  int secondBrandPlan = 0;
+  var analyticsData = null;
   @override
   void initState() {
     getProfile();
@@ -68,11 +73,14 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.black),
                                     ),
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AnaliticsPage()));
+                                      if (analyticsData != null) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AnalyticsPage(
+                                                        analyticsData)));
+                                      }
                                     },
                                     style: OutlinedButton.styleFrom(
                                       side: BorderSide(
@@ -131,21 +139,21 @@ class _HomePageState extends State<HomePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'До выполнения плана до конца месяца вам осталось продать: 358 624тг.',
+                                        'До выполнения плана до конца месяца вам осталось продать: ${plan - completedPlan} тг.',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
                                       Text(
-                                        'Первомайские деликатесы: 152 356тг.',
+                                        'Первомайские деликатесы: ${firstBrandPlan} тг.',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
                                       Text(
-                                        'Народные колбасы: 135 485тг.',
+                                        'Народные колбасы: ${secondBrandPlan} тг.',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold,
@@ -292,6 +300,7 @@ class _HomePageState extends State<HomePage> {
     var responseLegalOutlets = await SalesRepProvider().getLegalOutlets();
     var responsePhysicalOutlets = await SalesRepProvider().getPhysicalOutlets();
     var responseProducts = await SalesRepProvider().getProducts();
+    var responseAnalytics = await SalesRepProvider().getAnalytics();
 
     if (responseCounteragents != 'Error') {
       prefs.setString(
@@ -335,6 +344,25 @@ class _HomePageState extends State<HomePage> {
       prefs.setString("responseProducts", jsonEncode(responseProducts));
     } else {
       prefs.setString("responseProducts", 'Error');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+
+    if (responseAnalytics != 'Error') {
+      prefs.setString("responseAnalytics", jsonEncode(responseAnalytics));
+      analyticsData = responseAnalytics;
+
+      setState(() {
+        plan = responseAnalytics['plan'];
+        completedPlan = responseAnalytics['completed'];
+        firstBrandPlan = responseAnalytics['brands'][0]['plan'] -
+            responseAnalytics['brands'][0]['completed'];
+        secondBrandPlan = responseAnalytics['brands'][1]['plan'] -
+            responseAnalytics['brands'][1]['completed'];
+      });
+    } else {
+      prefs.setString("responseAnalytics", 'Error');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
       ));

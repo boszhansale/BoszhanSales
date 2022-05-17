@@ -63,7 +63,6 @@ class _BasketPageState extends State<BasketPage> {
       } else {
         returns.add(AppConstants.basket[i]);
       }
-      print(AppConstants.basket[i]);
     }
   }
 
