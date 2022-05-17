@@ -31,6 +31,7 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListPageState extends State<ProductListPage> {
+  final searchController = TextEditingController();
   String name = '';
   List<Map<String, Object>> brands = [];
 
@@ -107,6 +108,26 @@ class _ProductListPageState extends State<ProductListPage> {
         List<dynamic> productsData = List.from(jsonDecode(data));
         for (int i = 0; i < productsData.length; i++) {
           if (productsData[i]['category_id'] == selectedCategoryID) {
+            products.add(productsData[i]);
+          }
+        }
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+  }
+
+  void searchAction() async {
+    products = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("responseProducts")!;
+    if (data != 'Error') {
+      setState(() {
+        List<dynamic> productsData = List.from(jsonDecode(data));
+        for (int i = 0; i < productsData.length; i++) {
+          if (productsData[i]['name'].contains(searchController.text)) {
             products.add(productsData[i]);
           }
         }
@@ -234,6 +255,34 @@ class _ProductListPageState extends State<ProductListPage> {
                                     ],
                                   )),
                             ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  child: TextFormField(
+                                    textAlign: TextAlign.center,
+                                    controller: searchController,
+                                    decoration: const InputDecoration(
+                                      hintText: "Поиск",
+                                      border: UnderlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    searchAction();
+                                  },
+                                  child: Icon(
+                                    Icons.search,
+                                    size: 40,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                         Spacer(),
@@ -301,8 +350,10 @@ class _ProductListPageState extends State<ProductListPage> {
                                           children: [
                                             Stack(children: [
                                               Image.network(
-                                                products[i]['images'][0]
-                                                    ['path'],
+                                                products[i]['images'].length > 0
+                                                    ? products[i]['images'][0]
+                                                        ['path']
+                                                    : "https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png",
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
