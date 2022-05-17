@@ -31,7 +31,9 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
   int indexOfImage = 0;
   @override
   void initState() {
-    mainImageURL = widget.product['images'][indexOfImage]['path'];
+    mainImageURL = widget.product['images'].length > 0
+        ? widget.product['images'][indexOfImage]['path']
+        : "https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png";
     super.initState();
   }
 
@@ -183,7 +185,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     AppConstants.basket.add({
                                       'product': widget.product,
                                       'count': 1,
-                                      'type': 0
+                                      'type': 1
                                     });
                                     AppConstants.basketIDs
                                         .add(widget.product['id']);
@@ -252,8 +254,11 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                               onPressed: () {
                                 if (!AppConstants.basketIDs
                                     .contains(widget.product['id'])) {
-                                  AppConstants.basket.add(
-                                      {'product': widget.product, 'count': 1});
+                                  AppConstants.basket.add({
+                                    'product': widget.product,
+                                    'count': 1,
+                                    'type': 0
+                                  });
                                   AppConstants.basketIDs
                                       .add(widget.product['id']);
                                 }
