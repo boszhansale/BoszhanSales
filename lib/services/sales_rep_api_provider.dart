@@ -159,4 +159,39 @@ class SalesRepProvider {
       return 'Error';
     }
   }
+
+  Future<dynamic> createOutlet(int counteragentId, String name, String phone,
+      String bin, String address) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+
+    Map<String, dynamic> bodyText = {
+      "name": name,
+      "phone": phone,
+      "bin": bin,
+      "address": address
+    };
+
+    if (counteragentId > 0) {
+      bodyText["counteragent_id"] = counteragentId;
+    }
+
+    final response = await http.post(
+      Uri.parse(API_URL + 'api/store'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': "Bearer $token"
+      },
+      body: jsonEncode(bodyText),
+    );
+
+    print(jsonDecode(response.body));
+
+    if (response.statusCode == 200) {
+      return 'Success';
+    } else {
+      return 'Error';
+    }
+  }
 }

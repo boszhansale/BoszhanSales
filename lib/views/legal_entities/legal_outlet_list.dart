@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/views/order/product_list_page.dart';
+import 'package:boszhan_sales/views/physical_persons/add_new_outlet.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,6 +73,30 @@ class _LegalOutletListPageState extends State<LegalOutletListPage> {
                               fontSize: 34),
                         ),
                         Spacer(),
+                        SizedBox(
+                          width: 150,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddNewOutlet(widget.id)));
+                            },
+                            label: Text(
+                              "Добавить",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            icon: Icon(
+                              Icons.add,
+                              color: Colors.black,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.redAccent,
+                              minimumSize: const Size.fromHeight(50), // NEW
+                            ),
+                          ),
+                        ),
+                        Spacer()
                       ],
                     ),
                     Divider(

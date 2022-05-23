@@ -288,8 +288,12 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       name = prefs.getString('full_name')!;
-      driverName = prefs.getString('driver_name')!;
-      driverPhone = prefs.getString('driver_phone')!;
+      if (prefs.getString('driver_name') != null) {
+        driverName = prefs.getString('driver_name')!;
+      }
+      if (prefs.getString('driver_phone') != null) {
+        driverPhone = prefs.getString('driver_phone')!;
+      }
     });
   }
 
@@ -300,7 +304,7 @@ class _HomePageState extends State<HomePage> {
     var responseLegalOutlets = await SalesRepProvider().getLegalOutlets();
     var responsePhysicalOutlets = await SalesRepProvider().getPhysicalOutlets();
     var responseProducts = await SalesRepProvider().getProducts();
-    var responseAnalytics = await SalesRepProvider().getAnalytics();
+    // var responseAnalytics = await SalesRepProvider().getAnalytics();
 
     if (responseCounteragents != 'Error') {
       prefs.setString(
@@ -308,7 +312,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       prefs.setString("responseCounteragents", 'Error');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+        content: Text("Something went wrong. (Counteragents)", style: TextStyle(fontSize: 20)),
       ));
     }
 
@@ -317,7 +321,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       prefs.setString("responseBrends", 'Error');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+        content: Text("Something went wrong. (Brends)", style: TextStyle(fontSize: 20)),
       ));
     }
 
@@ -326,7 +330,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       prefs.setString("responseLegalOutlets", 'Error');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+        content: Text("Something went wrong. (LegalOutlets)", style: TextStyle(fontSize: 20)),
       ));
     }
 
@@ -336,7 +340,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       prefs.setString("responsePhysicalOutlets", 'Error');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+        content: Text("Something went wrong. (PhysicalOutlets)", style: TextStyle(fontSize: 20)),
       ));
     }
 
@@ -345,28 +349,28 @@ class _HomePageState extends State<HomePage> {
     } else {
       prefs.setString("responseProducts", 'Error');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+        content: Text("Something went wrong. (Products)", style: TextStyle(fontSize: 20)),
       ));
     }
 
-    if (responseAnalytics != 'Error') {
-      prefs.setString("responseAnalytics", jsonEncode(responseAnalytics));
-      analyticsData = responseAnalytics;
-
-      setState(() {
-        plan = responseAnalytics['plan'];
-        completedPlan = responseAnalytics['completed'];
-        firstBrandPlan = responseAnalytics['brands'][0]['plan'] -
-            responseAnalytics['brands'][0]['completed'];
-        secondBrandPlan = responseAnalytics['brands'][1]['plan'] -
-            responseAnalytics['brands'][1]['completed'];
-      });
-    } else {
-      prefs.setString("responseAnalytics", 'Error');
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
-      ));
-    }
+    // if (responseAnalytics != 'Error') {
+    //   prefs.setString("responseAnalytics", jsonEncode(responseAnalytics));
+    //   analyticsData = responseAnalytics;
+    //
+    //   setState(() {
+    //     plan = responseAnalytics['plan'];
+    //     completedPlan = responseAnalytics['completed'];
+    //     firstBrandPlan = responseAnalytics['brands'][0]['plan'] -
+    //         responseAnalytics['brands'][0]['completed'];
+    //     secondBrandPlan = responseAnalytics['brands'][1]['plan'] -
+    //         responseAnalytics['brands'][1]['completed'];
+    //   });
+    // } else {
+    //   prefs.setString("responseAnalytics", 'Error');
+    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text("Something went wrong. (Analytics)", style: TextStyle(fontSize: 20)),
+    //   ));
+    // }
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Загружено!", style: TextStyle(fontSize: 20)),
