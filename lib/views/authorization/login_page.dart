@@ -154,9 +154,11 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString("token", response['access_token']);
       prefs.setInt("user_id", response['user']['id']);
       prefs.setString("full_name", response['user']['name']);
-      // prefs.setString("user_phone", response['user']['phone']);
-      // prefs.setString("driver_name", response['user']['driver']['name']);
-      // prefs.setString("driver_phone", response['user']['driver']['phone']);
+      prefs.setString("user_phone", response['user']['phone']);
+      prefs.setString("driver_name", response['user']['driver']['name']);
+      if (response['user']['driver']['phone'] != null) {
+        prefs.setString("driver_phone", response['user']['driver']['phone']);
+      }
       prefs.setBool("isLogedIn", true);
 
       Navigator.push(
