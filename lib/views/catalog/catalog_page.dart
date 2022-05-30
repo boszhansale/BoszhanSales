@@ -11,12 +11,12 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
-  bool isBasketCompleted = false;
+  bool isBasketCompleted = true;
 
   @override
   void initState() {
-    super.initState();
     getPrefs();
+    super.initState();
   }
 
   void getPrefs() async {
@@ -81,7 +81,7 @@ class _CatalogPageState extends State<CatalogPage> {
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      isBasketCompleted == true
+                      isBasketCompleted == false
                           ? Padding(
                               padding: const EdgeInsets.all(10),
                               child: SizedBox(

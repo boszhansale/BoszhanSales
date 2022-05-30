@@ -12,11 +12,35 @@ class LegalEntitiesList extends StatefulWidget {
 }
 
 class _LegalEntitiesListState extends State<LegalEntitiesList> {
+  final searchController = TextEditingController();
   List<dynamic> counteragents = [];
+
   @override
   void initState() {
     getCounteragents();
     super.initState();
+  }
+
+  void searchAction() async {
+    counteragents = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("responseCounteragents")!;
+    if (data != 'Error') {
+      List<dynamic> responseList = jsonDecode(data);
+      for (int i = 0; i < responseList.length; i++) {
+        if (responseList[i]['name']
+            .toLowerCase()
+            .contains(searchController.text.toLowerCase())) {
+          setState(() {
+            counteragents.add(responseList[i]);
+          });
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
   }
 
   @override
@@ -68,6 +92,35 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
                     ),
                     Divider(
                       color: Colors.yellow[700],
+                    ),
+                    Row(
+                      children: [
+                        Spacer(),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: TextFormField(
+                            textAlign: TextAlign.center,
+                            controller: searchController,
+                            decoration: const InputDecoration(
+                              hintText: "Поиск",
+                              border: UnderlineInputBorder(),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            searchAction();
+                          },
+                          child: Icon(
+                            Icons.search,
+                            size: 40,
+                          ),
+                        ),
+                        Spacer()
+                      ],
                     ),
                     _createDataTable(),
                   ],

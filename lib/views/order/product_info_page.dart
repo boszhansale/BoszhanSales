@@ -14,6 +14,7 @@ class ProductInfoPage extends StatefulWidget {
       this.product,
       this.discount,
       this.priceTypeId);
+
   final String outletName;
   final int outletId;
   final int counteragentID;
@@ -22,13 +23,17 @@ class ProductInfoPage extends StatefulWidget {
   final Map<String, dynamic> product;
   final int discount;
   final priceTypeId;
+
   @override
   _ProductInfoPageState createState() => _ProductInfoPageState();
 }
 
 class _ProductInfoPageState extends State<ProductInfoPage> {
+  TransformationController controller = TransformationController();
+  String velocity = "VELOCITY";
   String mainImageURL = '';
   int indexOfImage = 0;
+
   @override
   void initState() {
     mainImageURL = widget.product['images'].length > 0
@@ -286,15 +291,27 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                   ),
                   Stack(
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.65,
-                        height: MediaQuery.of(context).size.height * 0.68,
-                        child: Image.network(
-                          mainImageURL,
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          height: MediaQuery.of(context).size.width * 0.19,
-                          fit: BoxFit.fitHeight,
+                      InteractiveViewer(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          height: MediaQuery.of(context).size.height * 0.68,
+                          child: Image.network(
+                            mainImageURL,
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            height: MediaQuery.of(context).size.width * 0.19,
+                            fit: BoxFit.fitHeight,
+                          ),
                         ),
+                        transformationController: controller,
+                        boundaryMargin: EdgeInsets.all(5.0),
+                        onInteractionEnd: (ScaleEndDetails endDetails) {
+                          // print(endDetails);
+                          // print(endDetails.velocity);
+                          controller.value = Matrix4.identity();
+                          setState(() {
+                            velocity = endDetails.velocity.toString();
+                          });
+                        },
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.65,
