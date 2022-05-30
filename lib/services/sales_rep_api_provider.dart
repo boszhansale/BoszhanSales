@@ -186,12 +186,12 @@ class SalesRepProvider {
       body: jsonEncode(bodyText),
     );
 
-    print(jsonDecode(response.body));
-
     if (response.statusCode == 200) {
-      return 'Success';
+      Map<String, dynamic> result = jsonDecode(response.body);
+      Map<String, dynamic> result_res = {"status": "Success", "data": result};
+      return result_res;
     } else {
-      return 'Error';
+      return {"status": "Error"};
     }
   }
 }

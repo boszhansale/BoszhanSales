@@ -11,9 +11,21 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
+  bool isBasketCompleted = false;
+
   @override
   void initState() {
     super.initState();
+    getPrefs();
+  }
+
+  void getPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      if (prefs.getBool("isBasketCompleted") != null) {
+        isBasketCompleted = prefs.getBool("isBasketCompleted")!;
+      }
+    });
   }
 
   @override
@@ -69,58 +81,67 @@ class _CatalogPageState extends State<CatalogPage> {
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: ElevatedButton(
-                            child: const Text(
-                              'Продолжить заказ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black),
-                            ),
-                            onPressed: () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              if (prefs.getBool("isBasketCompleted") == false) {
-                                var outletName = prefs.getString("outletName")!;
-                                var outletDiscount =
-                                    prefs.getInt("outletDiscount")!;
-                                var outletId = prefs.getInt("outletId")!;
-                                var counteragentID =
-                                    prefs.getInt("counteragentID")!;
-                                var counteragentName =
-                                    prefs.getString("counteragentName")!;
-                                var counteragentDiscount =
-                                    prefs.getInt("counteragentDiscount")!;
-                                var priceTypeId = prefs.getInt("priceTypeId")!;
-                                var debt = prefs.getString("debt")!;
+                      isBasketCompleted == true
+                          ? Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                child: ElevatedButton(
+                                  child: const Text(
+                                    'Продолжить заказ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.black),
+                                  ),
+                                  onPressed: () async {
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    if (prefs.getBool("isBasketCompleted") ==
+                                        false) {
+                                      var outletName =
+                                          prefs.getString("outletName")!;
+                                      var outletDiscount =
+                                          prefs.getInt("outletDiscount")!;
+                                      var outletId = prefs.getInt("outletId")!;
+                                      var counteragentID =
+                                          prefs.getInt("counteragentID")!;
+                                      var counteragentName =
+                                          prefs.getString("counteragentName")!;
+                                      var counteragentDiscount =
+                                          prefs.getInt("counteragentDiscount")!;
+                                      var priceTypeId =
+                                          prefs.getInt("priceTypeId")!;
+                                      var debt = prefs.getString("debt")!;
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProductListPage(
-                                            outletName,
-                                            outletDiscount,
-                                            outletId,
-                                            counteragentID,
-                                            counteragentName,
-                                            counteragentDiscount,
-                                            priceTypeId,
-                                            debt)));
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.yellow[700],
-                              textStyle: const TextStyle(
-                                  color: Colors.white, fontSize: 20),
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProductListPage(
+                                                      outletName,
+                                                      outletDiscount,
+                                                      outletId,
+                                                      counteragentID,
+                                                      counteragentName,
+                                                      counteragentDiscount,
+                                                      priceTypeId,
+                                                      debt)));
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.yellow[700],
+                                    textStyle: const TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SizedBox(
+                              height: 40,
                             ),
-                          ),
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: SizedBox(

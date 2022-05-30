@@ -10,6 +10,7 @@ import '../home_page.dart';
 class LegalOutletListPage extends StatefulWidget {
   LegalOutletListPage(this.id, this.counteragentName, this.counteragentDiscount,
       this.priceTypeId, this.debt);
+
   final int id;
   final String debt;
   final String counteragentName;
@@ -22,6 +23,7 @@ class LegalOutletListPage extends StatefulWidget {
 
 class _LegalOutletListPageState extends State<LegalOutletListPage> {
   List<dynamic> outletList = [];
+
   @override
   void initState() {
     getOutlets();
@@ -80,7 +82,11 @@ class _LegalOutletListPageState extends State<LegalOutletListPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AddNewOutlet(widget.id)));
+                                      builder: (context) => AddNewOutlet(
+                                          widget.id,
+                                          widget.counteragentDiscount,
+                                          widget.priceTypeId,
+                                          widget.debt)));
                             },
                             label: Text(
                               "Добавить",

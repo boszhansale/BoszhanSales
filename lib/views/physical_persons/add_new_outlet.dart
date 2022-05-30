@@ -1,13 +1,20 @@
+import 'dart:convert';
+
 import 'package:boszhan_sales/components/app_bar.dart';
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
+import 'package:boszhan_sales/views/order/product_list_page.dart';
 import 'package:flutter/material.dart';
 
 import '../home_page.dart';
 
 class AddNewOutlet extends StatefulWidget {
-  const AddNewOutlet(this.counteragentId);
+  const AddNewOutlet(this.counteragentId, this.counteragentDiscount,
+      this.priceTypeId, this.debt);
 
   final int counteragentId;
+  final int counteragentDiscount;
+  final int priceTypeId;
+  final String debt;
 
   @override
   _AddNewOutletState createState() => _AddNewOutletState();
@@ -21,7 +28,6 @@ class _AddNewOutletState extends State<AddNewOutlet> {
 
   @override
   void initState() {
-    print(widget.counteragentId);
     super.initState();
   }
 
@@ -234,22 +240,33 @@ class _AddNewOutletState extends State<AddNewOutlet> {
         phoneController.text.length > 1 &&
         binController.text.length > 1 &&
         addressController.text.length > 1) {
-      var response = SalesRepProvider().createOutlet(
-          widget.counteragentId,
-          nameController.text,
-          phoneController.text,
-          binController.text,
-          addressController.text);
-
-      if (response != "Error") {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content:
-              Text("Something went wrong.", style: TextStyle(fontSize: 20)),
-        ));
-      }
+      Map<String, dynamic> response = {};
+      SalesRepProvider()
+          .createOutlet(widget.counteragentId, nameController.text,
+              phoneController.text, binController.text, addressController.text)
+          .then((value) => response = value)
+          .whenComplete(() {
+        print(response);
+        if (response['status'] == "Success") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProductListPage(
+                      response['data']['name'],
+                      response['data']['discount'],
+                      response['data']['id'],
+                      widget.counteragentId,
+                      response['data']['salesrep']['name'],
+                      widget.counteragentDiscount,
+                      widget.priceTypeId,
+                      widget.debt)));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content:
+                Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+          ));
+        }
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Заполните все поля.", style: TextStyle(fontSize: 20)),

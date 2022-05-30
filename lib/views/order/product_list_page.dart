@@ -18,6 +18,7 @@ class ProductListPage extends StatefulWidget {
       this.counteragentDiscount,
       this.priceTypeId,
       this.debt);
+
   final String outletName;
   final int outletDiscount;
   final int outletId;
@@ -26,6 +27,7 @@ class ProductListPage extends StatefulWidget {
   final int counteragentDiscount;
   final int priceTypeId;
   final String debt;
+
   @override
   _ProductListPageState createState() => _ProductListPageState();
 }
@@ -368,13 +370,16 @@ class _ProductListPageState extends State<ProductListPage> {
                                                   if (!AppConstants.basketIDs
                                                       .contains(
                                                           products[i]['id'])) {
-                                                    AppConstants.basket.add({
-                                                      'product': products[i],
-                                                      'count': 1,
-                                                      'type': 1
+                                                    setState(() {
+                                                      AppConstants.basket.add({
+                                                        'product': products[i],
+                                                        'count': 1,
+                                                        'type': 1
+                                                      });
+                                                      AppConstants.basketIDs
+                                                          .add(products[i]
+                                                              ['id']);
                                                     });
-                                                    AppConstants.basketIDs
-                                                        .add(products[i]['id']);
                                                   }
                                                 },
                                                 child: Text(
@@ -383,7 +388,13 @@ class _ProductListPageState extends State<ProductListPage> {
                                                       color: Colors.black),
                                                 ),
                                                 style: ElevatedButton.styleFrom(
-                                                    primary: Colors.red),
+                                                    primary: AppConstants
+                                                            .basketIDs
+                                                            .contains(
+                                                                products[i]
+                                                                    ['id'])
+                                                        ? Colors.grey
+                                                        : Colors.red),
                                               )
                                             ]),
                                             Padding(
@@ -407,13 +418,15 @@ class _ProductListPageState extends State<ProductListPage> {
                                                 if (!AppConstants.basketIDs
                                                     .contains(
                                                         products[i]['id'])) {
-                                                  AppConstants.basket.add({
-                                                    'product': products[i],
-                                                    'count': 1,
-                                                    'type': 0
+                                                  setState(() {
+                                                    AppConstants.basket.add({
+                                                      'product': products[i],
+                                                      'count': 1,
+                                                      'type': 0
+                                                    });
+                                                    AppConstants.basketIDs
+                                                        .add(products[i]['id']);
                                                   });
-                                                  AppConstants.basketIDs
-                                                      .add(products[i]['id']);
                                                 }
                                               },
                                               label: Text(
@@ -426,7 +439,11 @@ class _ProductListPageState extends State<ProductListPage> {
                                                 color: Colors.black,
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                primary: Colors.green[700],
+                                                primary: AppConstants.basketIDs
+                                                        .contains(
+                                                            products[i]['id'])
+                                                    ? Colors.grey
+                                                    : Colors.green[700],
                                                 minimumSize:
                                                     const Size.fromHeight(
                                                         50), // NEW

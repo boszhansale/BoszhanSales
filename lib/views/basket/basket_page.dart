@@ -10,6 +10,7 @@ import '../home_page.dart';
 class BasketPage extends StatefulWidget {
   BasketPage(this.outletName, this.outletId, this.counteragentID,
       this.counteragentName, this.discount, this.priceTypeId, this.debt);
+
   final String outletName;
   final int outletId;
   final int counteragentID;
@@ -17,6 +18,7 @@ class BasketPage extends StatefulWidget {
   final int discount;
   final int priceTypeId;
   final String debt;
+
   @override
   _BasketPageState createState() => _BasketPageState();
 }
@@ -150,7 +152,9 @@ class _BasketPageState extends State<BasketPage> {
     setState(() {
       AppConstants.basket = [];
       AppConstants.basketIDs = [];
-      Navigator.of(context).pop();
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomePage()),
+          (Route<dynamic> route) => false);
     });
     prefs.setBool("isBasketCompleted", true);
   }

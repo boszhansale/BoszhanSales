@@ -14,6 +14,7 @@ class OutletListPage extends StatefulWidget {
 
 class _OutletListPageState extends State<OutletListPage> {
   List<dynamic> outletList = [];
+
   @override
   void initState() {
     getOutlets();
@@ -72,7 +73,8 @@ class _OutletListPageState extends State<OutletListPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AddNewOutlet(-1)));
+                                      builder: (context) =>
+                                          AddNewOutlet(0, 0, 1, "0")));
                             },
                             label: Text(
                               "Добавить",
