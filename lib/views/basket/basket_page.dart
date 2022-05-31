@@ -107,7 +107,9 @@ class _BasketPageState extends State<BasketPage> {
       basket.add({
         'product_id': products[i]['product']['id'],
         'count': products[i]['count'],
-        'type': products[i]['type']
+        'type': products[i]['type'],
+        'name': products[i]['product']['name'],
+        'price': products[i]['product']['prices'][0]['price'],
       });
     }
 
@@ -115,7 +117,9 @@ class _BasketPageState extends State<BasketPage> {
       basket.add({
         'product_id': returns[i]['product']['id'],
         'count': returns[i]['count'],
-        'type': returns[i]['type']
+        'type': returns[i]['type'],
+        'name': returns[i]['product']['name'],
+        'price': returns[i]['product']['prices'][0]['price'],
       });
     }
 

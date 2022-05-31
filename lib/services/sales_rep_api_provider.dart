@@ -194,4 +194,25 @@ class SalesRepProvider {
       return {"status": "Error"};
     }
   }
+
+  Future<dynamic> getHistoryOrders(int storeId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+
+    final response = await http.get(
+      Uri.parse(API_URL + 'api/order?store_id=$storeId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Bearer $token"
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      return result;
+    } else {
+      final result = 'Error';
+      return result;
+    }
+  }
 }

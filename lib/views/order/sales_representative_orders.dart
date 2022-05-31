@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
+import 'package:boszhan_sales/views/history_orders/history_local_products_list.dart';
+import 'package:boszhan_sales/views/history_orders/order_history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,6 +10,7 @@ import '../home_page.dart';
 
 class SalesRepresentativeOrders extends StatefulWidget {
   SalesRepresentativeOrders(this.salesRepName);
+
   final String salesRepName;
 
   @override
@@ -17,6 +20,7 @@ class SalesRepresentativeOrders extends StatefulWidget {
 
 class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
   List<dynamic> orderHistory = [];
+
   @override
   void initState() {
     getOrderHistory();
@@ -101,7 +105,7 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Text(
-                    "История заказов",
+                    "Локальные заказы",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
@@ -111,47 +115,88 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                     child: ListView(
                       children: [
                         for (int i = 0; i < orderHistory.length; i++)
-                          Card(
-                            child: ListTile(
-                              title: Text("ID магазина: " +
-                                  orderHistory[i]['outletId'].toString()),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Магазин: " +
-                                      orderHistory[i]['outletName']),
-                                  Text("Mobile ID: " +
-                                      orderHistory[i]['mobileId']),
-                                ],
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          HistoryLocalProductsList(
+                                              orderHistory[i])));
+                            },
+                            child: Card(
+                              child: ListTile(
+                                title: Text("ID магазина: " +
+                                    orderHistory[i]['outletId'].toString()),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Магазин: " +
+                                        orderHistory[i]['outletName']),
+                                    Text("Mobile ID: " +
+                                        orderHistory[i]['mobileId']),
+                                  ],
+                                ),
                               ),
+                              color: orderHistory[i]['isSended']
+                                  ? Colors.white
+                                  : Colors.redAccent,
                             ),
-                            color: orderHistory[i]['isSended']
-                                ? Colors.white
-                                : Colors.redAccent,
                           ),
                       ],
                       padding: EdgeInsets.all(10),
                     )),
-                SizedBox(
-                  height: 40,
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      sendDataToServer();
-                    },
-                    label: Text(
-                      "Отправить на сервер",
-                      style: TextStyle(color: Colors.black),
+                Row(
+                  children: [
+                    Spacer(),
+                    SizedBox(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          sendDataToServer();
+                        },
+                        label: Text(
+                          "Отправить на сервер",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        icon: Icon(
+                          Icons.shopping_cart_outlined,
+                          color: Colors.black,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green[700],
+                          // NEW
+                        ),
+                      ),
                     ),
-                    icon: Icon(
-                      Icons.shopping_cart_outlined,
-                      color: Colors.black,
+                    Spacer(),
+                    SizedBox(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrderHistoryPage()));
+                        },
+                        label: Text(
+                          "История заказов",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        icon: Icon(
+                          Icons.list_alt,
+                          color: Colors.black,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.yellow[700],
+                          // NEW
+                        ),
+                      ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green[700],
-                      // NEW
-                    ),
-                  ),
+                    Spacer(),
+                  ],
                 ),
               ])
                   // child:
