@@ -18,6 +18,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
 
   int groupPlan = 0;
   int groupCompleted = 0;
+  int groupPosition = 0;
 
   final List<ChartData> chartData = [];
 
@@ -49,19 +50,37 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     if (widget.analyticsData['brands'].length > 0) {
       chartData.add(ChartData(
           'Boszhan',
-          double.parse(widget.analyticsData['brands'][0]['plan'].toString()),
-          Colors.yellow));
-      chartData.add(ChartData(
-          'PD',
-          double.parse(widget.analyticsData['brands'][1]['plan'].toString()),
+          double.parse(
+              widget.analyticsData['brands'][0]['completed'].toString()),
           Colors.green));
     }
-
+    if (widget.analyticsData['brands'].length > 1) {
+      chartData.add(ChartData(
+          'Brig',
+          double.parse(
+              widget.analyticsData['brands'][1]['completed'].toString()),
+          Colors.yellow));
+    }
+    if (widget.analyticsData['brands'].length > 2) {
+      chartData.add(ChartData(
+          'Narodnie',
+          double.parse(
+              widget.analyticsData['brands'][2]['completed'].toString()),
+          Colors.orange));
+    }
+    if (widget.analyticsData['brands'].length > 3) {
+      chartData.add(ChartData(
+          'PD',
+          double.parse(
+              widget.analyticsData['brands'][3]['completed'].toString()),
+          Colors.grey));
+    }
 
     plan = widget.analyticsData['plan'];
     completedPlan = widget.analyticsData['completed'];
     groupPlan = widget.analyticsData['group_plan'];
     groupCompleted = widget.analyticsData['group_completed'];
+    groupPosition = widget.analyticsData['group_position'];
     super.initState();
   }
 
@@ -79,14 +98,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
           children: [
             Image.asset(
               "assets/images/bbq_bg.jpg",
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
             Scaffold(
@@ -105,10 +118,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                             },
                             child: SizedBox(
                               child: Image.asset("assets/images/logo.png"),
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * 0.2,
+                              width: MediaQuery.of(context).size.width * 0.2,
                             )),
                         Spacer(),
                         Text(
@@ -128,10 +138,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.5,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           child: Column(
                             children: [
                               // Text(
@@ -162,10 +169,9 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                       Column(
                                         children: [
                                           SizedBox(
-                                            width: MediaQuery
-                                                .of(context)
-                                                .size
-                                                .width *
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.3,
                                             child: SfCircularChart(
                                                 series: <CircularSeries>[
@@ -174,20 +180,20 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                                       dataSource: chartDataPlan,
                                                       pointColorMapper:
                                                           (ChartData data, _) =>
-                                                      data.color,
+                                                              data.color,
                                                       xValueMapper:
                                                           (ChartData data, _) =>
-                                                      data.x,
+                                                              data.x,
                                                       yValueMapper:
                                                           (ChartData data, _) =>
-                                                      data.y)
+                                                              data.y)
                                                 ]),
                                           ),
                                         ],
                                       ),
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
                                             children: [
@@ -224,10 +230,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                 ],
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.5,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 5),
@@ -240,10 +243,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.5,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 5),
@@ -259,10 +259,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                           ),
                         ),
                         SizedBox(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.5,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           child: Column(
                             children: [
                               Row(
@@ -271,11 +268,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                     children: [
                                       SizedBox(
                                         width:
-                                        MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width *
-                                            0.3,
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
                                         child: SfCircularChart(
                                             series: <CircularSeries>[
                                               // Render pie chart
@@ -283,57 +277,105 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                                   dataSource: chartData,
                                                   pointColorMapper:
                                                       (ChartData data, _) =>
-                                                  data.color,
+                                                          data.color,
                                                   xValueMapper:
                                                       (ChartData data, _) =>
-                                                  data.x,
+                                                          data.x,
                                                   yValueMapper:
                                                       (ChartData data, _) =>
-                                                  data.y)
+                                                          data.y)
                                             ]),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 10,
-                                            height: 10,
-                                            color: Colors.green,
-                                          ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Text('Boszhan'),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 10,
-                                            height: 10,
-                                            color: Colors.yellow,
-                                          ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          SizedBox(
-                                              width: 150,
-                                              child: Text(
-                                                  'Первомайские деликатесы')),
-                                        ],
-                                      ),
+                                      widget.analyticsData['brands'].length > 0
+                                          ? Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  color: Colors.green,
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text(widget
+                                                        .analyticsData['brands']
+                                                    [0]['brand']['name']),
+                                              ],
+                                            )
+                                          : Container(),
+                                      widget.analyticsData['brands'].length > 1
+                                          ? Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  color: Colors.yellow,
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                SizedBox(
+                                                    width: 150,
+                                                    child: Text(
+                                                        widget.analyticsData[
+                                                                'brands'][1]
+                                                            ['brand']['name'])),
+                                              ],
+                                            )
+                                          : Container(),
+                                      widget.analyticsData['brands'].length > 2
+                                          ? Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  color: Colors.orange,
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                SizedBox(
+                                                    width: 150,
+                                                    child: Text(
+                                                        widget.analyticsData[
+                                                                'brands'][2]
+                                                            ['brand']['name'])),
+                                              ],
+                                            )
+                                          : Container(),
+                                      widget.analyticsData['brands'].length > 3
+                                          ? Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  color: Colors.grey,
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                SizedBox(
+                                                    width: 150,
+                                                    child: Text(
+                                                        widget.analyticsData[
+                                                                'brands'][3]
+                                                            ['brand']['name'])),
+                                              ],
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ],
                               ),
                               for (int i = 0;
-                              i < widget.analyticsData['brands'].length;
-                              i++)
+                                  i < widget.analyticsData['brands'].length;
+                                  i++)
                                 Row(
                                   children: [
                                     Padding(
@@ -341,7 +383,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                           horizontal: 20, vertical: 5),
                                       child: Text(
                                         widget.analyticsData['brands'][i]
-                                        ['brand']['name'],
+                                            ['brand']['name'],
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
@@ -352,9 +394,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 5),
                                       child: Text(
-                                        '${widget
-                                            .analyticsData['brands'][i]['plan']} тг/ ${widget
-                                            .analyticsData['brands'][i]['completed']} тг',
+                                        '${widget.analyticsData['brands'][i]['plan']} тг/ ${widget.analyticsData['brands'][i]['completed']} тг',
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
@@ -371,23 +411,16 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                     Row(
                       children: [
                         SizedBox(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.5,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           child: Column(
                             children: [
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.5,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 5),
                                   child: Text(
-                                    'По команде супервайзера ${widget
-                                        .analyticsData['group_name']}',
+                                    'По команде супервайзера ${widget.analyticsData['group_name']}',
                                     style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold),
@@ -395,10 +428,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.5,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 5),
@@ -411,10 +441,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.5,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 5),
@@ -426,21 +453,32 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 5),
+                                  child: Text(
+                                    'По команде вы на ${groupPosition} месте',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                         SizedBox(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.5,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           child: Column(
                             children: [
+                              SizedBox(height: 30),
                               for (int i = 0;
-                              i <
-                                  widget
-                                      .analyticsData['group_brands'].length;
-                              i++)
+                                  i <
+                                      widget
+                                          .analyticsData['group_brands'].length;
+                                  i++)
                                 Row(
                                   children: [
                                     Padding(
@@ -448,7 +486,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                           horizontal: 20, vertical: 5),
                                       child: Text(
                                         widget.analyticsData['group_brands'][i]
-                                        ['brand']['name'],
+                                            ['brand']['name'],
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
@@ -459,9 +497,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 5),
                                       child: Text(
-                                        '${widget
-                                            .analyticsData['group_brands'][i]['plan']} тг/ ${widget
-                                            .analyticsData['group_brands'][i]['completed']} тг',
+                                        '${widget.analyticsData['group_brands'][i]['plan']} тг/ ${widget.analyticsData['group_brands'][i]['completed']} тг',
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
