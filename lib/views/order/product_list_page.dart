@@ -249,7 +249,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                                               .counteragentName,
                                                           discount,
                                                           widget.priceTypeId,
-                                                          widget.debt)));
+                                                          widget.debt))).then(
+                                              (_) => setState(() {}));
                                         },
                                         child: Icon(
                                           Icons.shopping_cart_outlined,
@@ -332,21 +333,22 @@ class _ProductListPageState extends State<ProductListPage> {
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductInfoPage(
-                                                    widget.outletName,
-                                                    widget.outletId,
-                                                    widget.counteragentID,
-                                                    widget.counteragentName,
-                                                    widget.debt,
-                                                    products[i],
-                                                    discount != 0
-                                                        ? discount
-                                                        : products[i]
-                                                            ['discount'],
-                                                    widget.priceTypeId)));
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductInfoPage(
+                                                        widget.outletName,
+                                                        widget.outletId,
+                                                        widget.counteragentID,
+                                                        widget.counteragentName,
+                                                        widget.debt,
+                                                        products[i],
+                                                        discount != 0
+                                                            ? discount
+                                                            : products[i]
+                                                                ['discount'],
+                                                        widget.priceTypeId)))
+                                        .then((_) => setState(() {}));
                                   },
                                   child: Card(
                                     child: Padding(
