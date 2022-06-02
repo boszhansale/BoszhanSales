@@ -18,8 +18,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    emailController.text = 'sad@mail.ru';
-    passwordController.text = '123456';
+    // emailController.text = 'sad@mail.ru';
+    // passwordController.text = '123456';
     checkLogIn();
     super.initState();
   }
@@ -38,14 +38,8 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Image.asset(
           "assets/images/bbq_bg.jpg",
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
         Scaffold(
@@ -57,106 +51,96 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/logo.png",
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.5),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 80, vertical: 10),
-                        child: TextFormField(
-                          controller: emailController,
-                          style: TextStyle(color: Colors.black, fontSize: 20),
-                          decoration: InputDecoration(
-                              fillColor: Colors.yellow[700],
-                              border: OutlineInputBorder(
-                                  borderSide:
+                  Image.asset("assets/images/logo.png",
+                      width: MediaQuery.of(context).size.height * 0.5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 80, vertical: 10),
+                    child: TextFormField(
+                      controller: emailController,
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                      decoration: InputDecoration(
+                          fillColor: Colors.yellow[700],
+                          border: OutlineInputBorder(
+                              borderSide:
                                   BorderSide(color: Colors.yellow[700]!)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
                                   BorderSide(color: Colors.yellow[700]!)),
-                              hintText: 'Введите логин',
-                              helperText: 'Your login to enter the app.',
-                              labelText: 'Логин',
-                              labelStyle:
+                          hintText: 'Введите логин',
+                          helperText: 'Your login to enter the app.',
+                          labelText: 'Логин',
+                          labelStyle:
                               TextStyle(color: Colors.black87, fontSize: 20),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
                                   BorderSide(color: Colors.yellow[700]!)),
-                              prefixIcon: Icon(
-                                Icons.person,
-                                color: Colors.black87,
-                              ),
-                              hintStyle:
-                              TextStyle(color: Colors.grey, fontSize: 20),
-                              prefixText: ' ',
-                              suffixStyle:
-                              TextStyle(color: Colors.black, fontSize: 20)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 80, vertical: 10),
-                        child: TextFormField(
-                          controller: passwordController,
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 20),
-                          decoration: InputDecoration(
-                              hintStyle:
-                              TextStyle(color: Colors.grey, fontSize: 20),
-                              fillColor: Colors.yellow[700],
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Colors.yellow[700]!)),
-                              hintText: 'Пароль',
-                              helperText: 'Your password to enter the app.',
-                              labelText: 'Пароль',
-                              labelStyle:
-                              TextStyle(color: Colors.black87, fontSize: 20),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Colors.yellow[700]!)),
-                              prefixIcon: Icon(
-                                Icons.vpn_key,
-                                color: Colors.black87,
-                              ),
-                              prefixText: '',
-                              suffixStyle:
-                              TextStyle(color: Colors.black, fontSize: 20)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(30),
-                        child: SizedBox(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.3,
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.07,
-                          child: ElevatedButton.icon(
-                            icon: const Icon(Icons.login, color: Colors.black),
-                            label: const Text(
-                              'ВОЙТИ',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            onPressed: () {
-                              login();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.yellow[700]!,
-                              textStyle: const TextStyle(
-                                  color: Colors.black, fontSize: 20),
-                            ),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Colors.black87,
                           ),
+                          hintStyle:
+                              TextStyle(color: Colors.grey, fontSize: 20),
+                          prefixText: ' ',
+                          suffixStyle:
+                              TextStyle(color: Colors.black, fontSize: 20)),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 80, vertical: 10),
+                    child: TextFormField(
+                      controller: passwordController,
+                      style: const TextStyle(color: Colors.black, fontSize: 20),
+                      decoration: InputDecoration(
+                          hintStyle:
+                              TextStyle(color: Colors.grey, fontSize: 20),
+                          fillColor: Colors.yellow[700],
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.yellow[700]!)),
+                          hintText: 'Пароль',
+                          helperText: 'Your password to enter the app.',
+                          labelText: 'Пароль',
+                          labelStyle:
+                              TextStyle(color: Colors.black87, fontSize: 20),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.yellow[700]!)),
+                          prefixIcon: Icon(
+                            Icons.vpn_key,
+                            color: Colors.black87,
+                          ),
+                          prefixText: '',
+                          suffixStyle:
+                              TextStyle(color: Colors.black, fontSize: 20)),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.width * 0.07,
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.login, color: Colors.black),
+                        label: const Text(
+                          'ВОЙТИ',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
+                          login();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.yellow[700]!,
+                          textStyle: const TextStyle(
+                              color: Colors.black, fontSize: 20),
                         ),
                       ),
-                    ]))),
+                    ),
+                  ),
+                ]))),
       ],
     );
   }

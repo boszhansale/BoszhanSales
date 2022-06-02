@@ -347,7 +347,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                                             ? discount
                                                             : products[i]
                                                                 ['discount'],
-                                                        widget.priceTypeId)))
+                                                        widget.priceTypeId,
+                                                        products)))
                                         .then((_) => setState(() {}));
                                   },
                                   child: Card(
@@ -478,51 +479,83 @@ class _ProductListPageState extends State<ProductListPage> {
 
   List<Widget> createListOfCategories() {
     List<Widget> listOfWidgets = [];
+
     for (int i = 0; i < brands.length; i++) {
-      listOfWidgets.add(Text(
-        brands[i]["title"].toString(),
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ));
-      listOfWidgets.add(Divider(
-        color: Colors.yellow[700],
+      // listOfWidgets.add(Text(
+      //   brands[i]["title"].toString(),
+      //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      // ));
+      // listOfWidgets.add(Divider(
+      //   color: Colors.yellow[700],
+      // ));
+
+      listOfWidgets.add(Column(
+        children: <Widget>[
+          ExpansionTile(
+            title: Text(
+              brands[i]["title"].toString(),
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            children: <Widget>[
+              for (int j = 0; j < categories.length; j++)
+                brands[i]["id"] == categories[j]["brand_id"]
+                    ? existingCategoriesId.contains(categories[j]["id"])
+                        ? ListTile(
+                            onTap: () {
+                              selectedCategoryID = categories[j]["id"];
+                              getProductsFromPrefs();
+                            },
+                            title: Text(categories[j]["name"].toString()),
+                          )
+                        : Container()
+                    : Container(),
+            ],
+          ),
+        ],
       ));
 
-      for (int j = 0; j < categories.length; j++) {
-        if (brands[i]["id"] == categories[j]["brand_id"]) {
-          if (existingCategoriesId.contains(categories[j]["id"])) {
-            listOfWidgets.add(Padding(
-              padding: const EdgeInsets.fromLTRB(20, 2, 5, 2),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
-                child: ElevatedButton(
-                  onPressed: () {
-                    selectedCategoryID = categories[j]["id"];
-                    getProductsFromPrefs();
-                  },
-                  style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      child: Text(
-                        categories[j]["name"].toString(),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ));
-          }
-        }
-      }
-      listOfWidgets.add(Divider(
-        color: Colors.black,
-      ));
+      // for (int j = 0; j < categories.length; j++) {
+      //   if (brands[i]["id"] == categories[j]["brand_id"]) {
+      //     if (existingCategoriesId.contains(categories[j]["id"])) {
+      //       listOfWidgets.add(Padding(
+      //         padding: const EdgeInsets.fromLTRB(20, 2, 5, 2),
+      //         child: SizedBox(
+      //           width: MediaQuery
+      //               .of(context)
+      //               .size
+      //               .width * 0.3,
+      //           child: ElevatedButton(
+      //             onPressed: () {
+      //               selectedCategoryID = categories[j]["id"];
+      //               getProductsFromPrefs();
+      //             },
+      //             style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+      //             child: Padding(
+      //               padding: const EdgeInsets.all(10),
+      //               child: SizedBox(
+      //                 width: MediaQuery
+      //                     .of(context)
+      //                     .size
+      //                     .width * 0.3,
+      //                 child: Text(
+      //                   categories[j]["name"].toString(),
+      //                   textAlign: TextAlign.left,
+      //                   style: TextStyle(
+      //                       color: Colors.black,
+      //                       fontSize: 20,
+      //                       fontWeight: FontWeight.normal),
+      //                 ),
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       ));
+      //     }
+      //   }
+      // }
+      // listOfWidgets.add(Divider(
+      //   color: Colors.black,
+      // ));
     }
 
     return listOfWidgets;
