@@ -168,7 +168,8 @@ class _LoginPageState extends State<LoginPage> {
           context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+        content: Text("Неправильный логин или пароль.",
+            style: TextStyle(fontSize: 20)),
       ));
     }
   }

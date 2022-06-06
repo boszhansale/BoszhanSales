@@ -143,37 +143,40 @@ class _AddNewOutletState extends State<AddNewOutlet> {
                                 TextStyle(color: Colors.black, fontSize: 20)),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                      child: TextFormField(
-                        controller: binController,
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 20),
-                        decoration: InputDecoration(
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 20),
-                            fillColor: Colors.yellow[700],
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.yellow[700]!)),
-                            hintText: 'БИН',
-                            labelText: 'БИН',
-                            labelStyle:
-                                TextStyle(color: Colors.black87, fontSize: 20),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.yellow[700]!)),
-                            prefixIcon: Icon(
-                              Icons.info,
-                              color: Colors.black87,
+                    widget.counteragentId != 0
+                        ? Padding(
+                            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                            child: TextFormField(
+                              controller: binController,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 20),
+                              decoration: InputDecoration(
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 20),
+                                  fillColor: Colors.yellow[700],
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.yellow[700]!)),
+                                  hintText: 'БИН',
+                                  labelText: 'БИН',
+                                  labelStyle: TextStyle(
+                                      color: Colors.black87, fontSize: 20),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.yellow[700]!)),
+                                  prefixIcon: Icon(
+                                    Icons.info,
+                                    color: Colors.black87,
+                                  ),
+                                  prefixText: '',
+                                  suffixStyle: TextStyle(
+                                      color: Colors.black, fontSize: 20)),
                             ),
-                            prefixText: '',
-                            suffixStyle:
-                                TextStyle(color: Colors.black, fontSize: 20)),
-                      ),
-                    ),
+                          )
+                        : SizedBox(),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                       child: TextFormField(
@@ -238,7 +241,6 @@ class _AddNewOutletState extends State<AddNewOutlet> {
   void createOutletAction() async {
     if (nameController.text.length > 1 &&
         phoneController.text.length > 1 &&
-        binController.text.length > 1 &&
         addressController.text.length > 1) {
       Map<String, dynamic> response = {};
       SalesRepProvider()

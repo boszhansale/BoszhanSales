@@ -10,8 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../home_page.dart';
 
 class ProductListPage extends StatefulWidget {
-  ProductListPage(
-      this.outletName,
+  ProductListPage(this.outletName,
       this.outletDiscount,
       this.outletId,
       this.counteragentID,
@@ -35,6 +34,7 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
   final searchController = TextEditingController();
+  final countDialogTextFieldController = TextEditingController();
   String name = '';
   List<Map<String, Object>> brands = [];
 
@@ -43,6 +43,7 @@ class _ProductListPageState extends State<ProductListPage> {
   List<int> existingCategoriesId = [];
   int selectedCategoryID = 1;
   int discount = 0;
+  String countValueText = '1';
 
   @override
   void initState() {
@@ -160,8 +161,14 @@ class _ProductListPageState extends State<ProductListPage> {
           children: [
             Image.asset(
               "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               fit: BoxFit.cover,
             ),
             Scaffold(
@@ -180,7 +187,10 @@ class _ProductListPageState extends State<ProductListPage> {
                             },
                             child: SizedBox(
                               child: Image.asset("assets/images/logo.png"),
-                              width: MediaQuery.of(context).size.width * 0.2,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.2,
                             )),
                         Spacer(),
                         Column(
@@ -189,7 +199,10 @@ class _ProductListPageState extends State<ProductListPage> {
                               height: 20,
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.75,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.75,
                               child: Row(
                                 children: [
                                   // Text(
@@ -219,17 +232,22 @@ class _ProductListPageState extends State<ProductListPage> {
                               child: Container(
                                   color: Colors.yellow[700],
                                   width:
-                                      MediaQuery.of(context).size.width * 0.8,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.8,
                                   height: 60,
                                   child: Row(
                                     children: [
                                       Spacer(),
                                       Text(
-                                          'Контрагент: ${widget.counteragentName}',
+                                          'Контрагент: ${widget
+                                              .counteragentName}',
                                           style: TextStyle(fontSize: 16)),
                                       Spacer(),
                                       Text(
-                                          'Торговая точка: ${widget.outletName}',
+                                          'Торговая точка: ${widget
+                                              .outletName}',
                                           style: TextStyle(fontSize: 16)),
                                       Spacer(),
                                       Text('Долг: ${widget.debt} тг',
@@ -250,7 +268,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                                           discount,
                                                           widget.priceTypeId,
                                                           widget.debt))).then(
-                                              (_) => setState(() {}));
+                                                  (_) => setState(() {}));
                                         },
                                         child: Icon(
                                           Icons.shopping_cart_outlined,
@@ -267,7 +285,10 @@ class _ProductListPageState extends State<ProductListPage> {
                               children: [
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.7,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.7,
                                   child: TextFormField(
                                     textAlign: TextAlign.center,
                                     controller: searchController,
@@ -303,11 +324,17 @@ class _ProductListPageState extends State<ProductListPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.3,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.3,
                           child: Padding(
                             padding: const EdgeInsets.all(20),
                             child: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.64,
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.64,
                               child: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,11 +348,17 @@ class _ProductListPageState extends State<ProductListPage> {
                           width: 20,
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.66,
-                          height: MediaQuery.of(context).size.height * 0.68,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.66,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.68,
                           child: GridView(
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                            SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                             ),
                             children: [
@@ -333,22 +366,22 @@ class _ProductListPageState extends State<ProductListPage> {
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProductInfoPage(
-                                                        widget.outletName,
-                                                        widget.outletId,
-                                                        widget.counteragentID,
-                                                        widget.counteragentName,
-                                                        widget.debt,
-                                                        products[i],
-                                                        discount != 0
-                                                            ? discount
-                                                            : products[i]
-                                                                ['discount'],
-                                                        widget.priceTypeId,
-                                                        products)))
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductInfoPage(
+                                                    widget.outletName,
+                                                    widget.outletId,
+                                                    widget.counteragentID,
+                                                    widget.counteragentName,
+                                                    widget.debt,
+                                                    products[i],
+                                                    discount != 0
+                                                        ? discount
+                                                        : products[i]
+                                                    ['discount'],
+                                                    widget.priceTypeId,
+                                                    products)))
                                         .then((_) => setState(() {}));
                                   },
                                   child: Card(
@@ -362,48 +395,131 @@ class _ProductListPageState extends State<ProductListPage> {
                                               Image.network(
                                                 products[i]['images'].length > 0
                                                     ? products[i]['images'][0]
-                                                        ['path']
+                                                ['path']
                                                     : "https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png",
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
+                                                width: MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width *
                                                     0.3,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
+                                                height: MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width *
                                                     0.19,
                                                 fit: BoxFit.fitHeight,
                                               ),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  if (!AppConstants.basketIDs
-                                                      .contains(
-                                                          products[i]['id'])) {
-                                                    setState(() {
-                                                      AppConstants.basket.add({
-                                                        'product': products[i],
-                                                        'count': 1,
-                                                        'type': 1
-                                                      });
-                                                      AppConstants.basketIDs
-                                                          .add(products[i]
+                                              Row(
+                                                children: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      if (!AppConstants
+                                                          .basketIDs
+                                                          .contains(products[i]
+                                                      ['id'])) {
+                                                        setState(() {
+                                                          AppConstants.basket
+                                                              .add({
+                                                            'product':
+                                                            products[i],
+                                                            'count': 1,
+                                                            'type': 1
+                                                          });
+                                                          AppConstants.basketIDs
+                                                              .add(products[i]
+                                                          ['id']);
+                                                        });
+                                                      } else {
+                                                        setState(() {
+                                                          var ind = AppConstants
+                                                              .basketIDs
+                                                              .indexOf(
+                                                              products[i]
                                                               ['id']);
-                                                    });
-                                                  }
-                                                },
-                                                child: Text(
-                                                  "Возврат",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: AppConstants
+                                                          AppConstants.basketIDs
+                                                              .remove(
+                                                              products[i]
+                                                              ['id']);
+                                                          AppConstants.basket
+                                                              .removeAt(ind);
+                                                        });
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      "Возврат",
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                        primary: AppConstants
                                                             .basketIDs
                                                             .contains(
-                                                                products[i]
-                                                                    ['id'])
-                                                        ? Colors.grey
-                                                        : Colors.red),
+                                                            products[i]
+                                                            ['id'])
+                                                            ? Colors.grey
+                                                            : Colors.red),
+                                                  ),
+                                                  products[i]['hit'] == 1
+                                                      ? SizedBox(
+                                                    height: 40,
+                                                    width: 50,
+                                                    child: Image.asset(
+                                                        'assets/images/sticker_hit.png'),
+                                                  )
+                                                      : SizedBox(),
+                                                  products[i]['new'] == 1
+                                                      ? SizedBox(
+                                                    height: 40,
+                                                    width: 50,
+                                                    child: Image.asset(
+                                                        'assets/images/sticker_new.png'),
+                                                  )
+                                                      : SizedBox(),
+                                                  products[i]['action'] == 1
+                                                      ? SizedBox(
+                                                    height: 40,
+                                                    width: 50,
+                                                    child: Image.asset(
+                                                        'assets/images/sticker_sale.png'),
+                                                  )
+                                                      : SizedBox(),
+                                                  products[i]['discount_5'] == 1
+                                                      ? SizedBox(
+                                                    height: 40,
+                                                    width: 50,
+                                                    child: Image.asset(
+                                                        'assets/images/sticker_5.png'),
+                                                  )
+                                                      : SizedBox(),
+                                                  products[i]['discount_10'] ==
+                                                      1
+                                                      ? SizedBox(
+                                                    height: 40,
+                                                    width: 50,
+                                                    child: Image.asset(
+                                                        'assets/images/sticker_10.png'),
+                                                  )
+                                                      : SizedBox(),
+                                                  products[i]['discount_15'] ==
+                                                      1
+                                                      ? SizedBox(
+                                                    height: 40,
+                                                    width: 50,
+                                                    child: Image.asset(
+                                                        'assets/images/sticker_15.png'),
+                                                  )
+                                                      : SizedBox(),
+                                                  products[i]['discount_20'] ==
+                                                      1
+                                                      ? SizedBox(
+                                                    height: 40,
+                                                    width: 50,
+                                                    child: Image.asset(
+                                                        'assets/images/sticker_20.png'),
+                                                  )
+                                                      : SizedBox(),
+                                                ],
                                               )
                                             ]),
                                             Padding(
@@ -415,7 +531,20 @@ class _ProductListPageState extends State<ProductListPage> {
                                               ),
                                             ),
                                             Text(
-                                              "${discount != 0 ? products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - discount) / 100 : products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - products[i]['discount']) / 100} тг/шт",
+                                              "${discount != 0
+                                                  ? products[i]['prices']
+                                                  .where((e) =>
+                                              e['price_type_id'] ==
+                                                  widget.priceTypeId)
+                                                  .toList()[0]['price'] *
+                                                  (100 - discount) / 100
+                                                  : products[i]['prices']
+                                                  .where((e) =>
+                                              e['price_type_id'] ==
+                                                  widget.priceTypeId)
+                                                  .toList()[0]['price'] * (100 -
+                                                  products[i]['discount']) /
+                                                  100} тг/шт",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -424,17 +553,86 @@ class _ProductListPageState extends State<ProductListPage> {
                                             ),
                                             ElevatedButton.icon(
                                               onPressed: () {
-                                                if (!AppConstants.basketIDs
+                                                if (!AppConstants
+                                                    .basketIDs
                                                     .contains(
-                                                        products[i]['id'])) {
+                                                    products[i]
+                                                    [
+                                                    'id'])) {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                              'Введите количество:'),
+                                                          content: TextField(
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                countValueText =
+                                                                    value;
+                                                              });
+                                                            },
+                                                            controller:
+                                                            countDialogTextFieldController,
+                                                            decoration:
+                                                            InputDecoration(
+                                                                hintText:
+                                                                "Число"),
+                                                          ),
+                                                          actions: <Widget>[
+                                                            FlatButton(
+                                                              color: Colors
+                                                                  .green,
+                                                              textColor:
+                                                              Colors.white,
+                                                              child: Text('OK'),
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  AppConstants
+                                                                      .basket
+                                                                      .add({
+                                                                    'product':
+                                                                    products[
+                                                                    i],
+                                                                    'count': double
+                                                                        .parse(
+                                                                        countValueText ==
+                                                                            ''
+                                                                            ? '1'
+                                                                            : countValueText),
+                                                                    'type': 0
+                                                                  });
+                                                                  AppConstants
+                                                                      .basketIDs
+                                                                      .add(
+                                                                      products[i]
+                                                                      [
+                                                                      'id']);
+                                                                });
+
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      });
+                                                } else {
                                                   setState(() {
-                                                    AppConstants.basket.add({
-                                                      'product': products[i],
-                                                      'count': 1,
-                                                      'type': 0
-                                                    });
-                                                    AppConstants.basketIDs
-                                                        .add(products[i]['id']);
+                                                    var ind = AppConstants
+                                                        .basketIDs
+                                                        .indexOf(products[i]
+                                                    [
+                                                    'id']);
+                                                    AppConstants
+                                                        .basketIDs
+                                                        .remove(products[i]
+                                                    [
+                                                    'id']);
+                                                    AppConstants
+                                                        .basket
+                                                        .removeAt(
+                                                        ind);
                                                   });
                                                 }
                                               },
@@ -449,13 +647,13 @@ class _ProductListPageState extends State<ProductListPage> {
                                               ),
                                               style: ElevatedButton.styleFrom(
                                                 primary: AppConstants.basketIDs
-                                                        .contains(
-                                                            products[i]['id'])
+                                                    .contains(
+                                                    products[i]['id'])
                                                     ? Colors.grey
                                                     : Colors.green[700],
                                                 minimumSize:
-                                                    const Size.fromHeight(
-                                                        50), // NEW
+                                                const Size.fromHeight(
+                                                    50), // NEW
                                               ),
                                             )
                                           ],
@@ -500,14 +698,14 @@ class _ProductListPageState extends State<ProductListPage> {
               for (int j = 0; j < categories.length; j++)
                 brands[i]["id"] == categories[j]["brand_id"]
                     ? existingCategoriesId.contains(categories[j]["id"])
-                        ? ListTile(
-                            onTap: () {
-                              selectedCategoryID = categories[j]["id"];
-                              getProductsFromPrefs();
-                            },
-                            title: Text(categories[j]["name"].toString()),
-                          )
-                        : Container()
+                    ? ListTile(
+                  onTap: () {
+                    selectedCategoryID = categories[j]["id"];
+                    getProductsFromPrefs();
+                  },
+                  title: Text(categories[j]["name"].toString()),
+                )
+                    : Container()
                     : Container(),
             ],
           ),
