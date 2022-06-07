@@ -18,7 +18,6 @@ class HistoryOrdersList extends StatefulWidget {
 class _HistoryOrdersListState extends State<HistoryOrdersList> {
   List<dynamic> orders = [];
 
-
   @override
   void initState() {
     getData();
@@ -48,107 +47,89 @@ class _HistoryOrdersListState extends State<HistoryOrdersList> {
         child: Stack(children: [
           Image.asset(
             "assets/images/bbq_bg.jpg",
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
           ),
           Scaffold(
               backgroundColor: Colors.white.withOpacity(0.85),
               body: SingleChildScrollView(
                   child: Column(children: [
-                    Row(
+                Row(
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        },
+                        child: SizedBox(
+                          child: Image.asset("assets/images/logo.png"),
+                          width: MediaQuery.of(context).size.width * 0.2,
+                        )),
+                    Spacer(),
+                    Column(
                       children: [
-                        GestureDetector(
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                            color: Colors.yellow[700],
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 60,
+                            child: Row(
+                              children: [
+                                Spacer(),
+                                Text('Торговая точка: ${widget.storeName}',
+                                    style: TextStyle(fontSize: 16)),
+                                Spacer(),
+                              ],
+                            )),
+                      ],
+                    ),
+                    Spacer(),
+                  ],
+                ),
+                Divider(
+                  color: Colors.yellow[700],
+                ),
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: ListView(
+                      children: [
+                        for (int i = 0; i < orders.length; i++)
+                          GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomePage()));
+                                      builder: (context) =>
+                                          HistoryProductsList(orders[i])));
                             },
-                            child: SizedBox(
-                              child: Image.asset("assets/images/logo.png"),
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * 0.2,
-                            )),
-                        Spacer(),
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Container(
-                                color: Colors.yellow[700],
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.8,
-                                height: 60,
-                                child: Row(
+                            child: Card(
+                              child: ListTile(
+                                title: Text(
+                                    "ID заказа: " + orders[i]['id'].toString()),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Spacer(),
-                                    Text('Торговая точка: ${widget.storeName}',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
+                                    Text("ID магазин: " +
+                                        orders[i]['store_id'].toString()),
+                                    Text("Название: " +
+                                        orders[i]['store']['name']),
+                                    Text("Сумма покупки: " +
+                                        orders[i]['purchase_price'].toString() +
+                                        " тг"),
                                   ],
-                                )),
-                          ],
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.yellow[700],
-                    ),
-                    SizedBox(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.6,
-                        child: ListView(
-                          children: [
-                            for (int i = 0; i < orders.length; i++)
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              HistoryProductsList(orders[i])));
-                                },
-                                child: Card(
-                                  child: ListTile(
-                                    title: Text(
-                                        "ID заказа: " +
-                                            orders[i]['id'].toString()),
-                                    subtitle: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Text("ID магазин: " +
-                                            orders[i]['store_id'].toString()),
-                                        Text("Название: " +
-                                            orders[i]['store']['name']),
-                                        Text("Сумма покупки: " +
-                                            orders[i]['purchase_price']
-                                                .toString() +
-                                            " тг"),
-                                      ],
-                                    ),
-                                  ),
                                 ),
                               ),
-                          ],
-                          padding: EdgeInsets.all(10),
-                        )),
-                  ])))
+                            ),
+                          ),
+                      ],
+                      padding: EdgeInsets.all(10),
+                    )),
+              ])))
         ]));
   }
 }

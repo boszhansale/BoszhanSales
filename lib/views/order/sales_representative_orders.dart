@@ -40,6 +40,16 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
     }
   }
 
+  void deleteLocalOrder(int ind) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      orderHistory.removeAt(ind);
+      orderHistory = orderHistory.reversed.toList();
+      prefs.setString('OrderHistory', jsonEncode(orderHistory));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -136,6 +146,52 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                                     Text("Mobile ID: " +
                                         orderHistory[i]['mobileId']),
                                   ],
+                                ),
+                                trailing: GestureDetector(
+                                  onTap: () {
+                                    showAlertDialog(BuildContext context) {
+                                      // set up the buttons
+                                      Widget cancelButton = TextButton(
+                                        child: Text("Отмена"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      );
+                                      Widget continueButton = TextButton(
+                                        child: Text("Да"),
+                                        onPressed: () {
+                                          deleteLocalOrder(i);
+                                          Navigator.pop(context);
+                                        },
+                                      );
+
+                                      // set up the AlertDialog
+                                      AlertDialog alert = AlertDialog(
+                                        title: Text("Внимание"),
+                                        content: Text(
+                                            "Вы точно хотите удалить заказ?"),
+                                        actions: [
+                                          cancelButton,
+                                          continueButton,
+                                        ],
+                                      );
+
+                                      // show the dialog
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return alert;
+                                        },
+                                      );
+                                    }
+
+                                    showAlertDialog(context);
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
+                                    size: 30,
+                                  ),
                                 ),
                               ),
                               color: orderHistory[i]['isSended']
