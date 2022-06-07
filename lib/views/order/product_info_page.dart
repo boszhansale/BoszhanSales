@@ -33,6 +33,7 @@ class ProductInfoPage extends StatefulWidget {
 class _ProductInfoPageState extends State<ProductInfoPage> {
   TransformationController controller = TransformationController();
   final countDialogTextFieldController = TextEditingController();
+  FocusNode _focusNode = FocusNode();
   String velocity = "VELOCITY";
   String mainImageURL = '';
   int indexOfImage = 0;
@@ -135,16 +136,18 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => BasketPage(
-                                                widget.outletName,
-                                                widget.outletId,
-                                                widget.counteragentID,
-                                                widget.counteragentName,
-                                                widget.discount,
-                                                widget.priceTypeId,
-                                                widget.debt)));
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BasketPage(
+                                                        widget.outletName,
+                                                        widget.outletId,
+                                                        widget.counteragentID,
+                                                        widget.counteragentName,
+                                                        widget.discount,
+                                                        widget.priceTypeId,
+                                                        widget.debt)))
+                                        .whenComplete(() => setState(() {}));
                                   },
                                   child: Icon(
                                     Icons.shopping_cart_outlined,
@@ -252,24 +255,24 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   horizontal: 20, vertical: 5),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  if (!AppConstants.basketIDs
+                                  if (!AppConstants.basketIDs_return
                                       .contains(thisProduct['id'])) {
                                     setState(() {
-                                      AppConstants.basket.add({
+                                      AppConstants.basket_return.add({
                                         'product': thisProduct,
                                         'count': 1,
                                         'type': 1
                                       });
-                                      AppConstants.basketIDs
+                                      AppConstants.basketIDs_return
                                           .add(thisProduct['id']);
                                     });
                                   } else {
                                     setState(() {
-                                      var ind = AppConstants.basketIDs
+                                      var ind = AppConstants.basketIDs_return
                                           .indexOf(thisProduct['id']);
-                                      AppConstants.basketIDs
+                                      AppConstants.basketIDs_return
                                           .remove(thisProduct['id']);
-                                      AppConstants.basket.removeAt(ind);
+                                      AppConstants.basket_return.removeAt(ind);
                                     });
                                   }
                                 },
@@ -281,7 +284,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                    primary: AppConstants.basketIDs
+                                    primary: AppConstants.basketIDs_return
                                             .contains(thisProduct['id'])
                                         ? Colors.grey
                                         : Colors.red),
@@ -345,6 +348,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                         return AlertDialog(
                                           title: Text('Введите количество:'),
                                           content: TextField(
+                                            focusNode: _focusNode,
+                                            autofocus: true,
                                             onChanged: (value) {
                                               setState(() {
                                                 countValueText = value;

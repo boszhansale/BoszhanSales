@@ -57,15 +57,15 @@ class _BasketPageState extends State<BasketPage> {
   }
 
   getBasket() async {
-    products = [];
-    returns = [];
-    for (int i = 0; i < AppConstants.basket.length; i++) {
-      if (AppConstants.basket[i]['type'] == 0) {
-        products.add(AppConstants.basket[i]);
-      } else {
-        returns.add(AppConstants.basket[i]);
-      }
-    }
+    products = AppConstants.basket;
+    returns = AppConstants.basket_return;
+    // for (int i = 0; i < AppConstants.basket.length; i++) {
+    //   if (AppConstants.basket[i]['type'] == 0) {
+    //     products.add(AppConstants.basket[i]);
+    //   } else {
+    //     returns.add(AppConstants.basket[i]);
+    //   }
+    // }
   }
 
   void calculateSum() {
@@ -156,6 +156,8 @@ class _BasketPageState extends State<BasketPage> {
     setState(() {
       AppConstants.basket = [];
       AppConstants.basketIDs = [];
+      AppConstants.basket_return = [];
+      AppConstants.basketIDs_return = [];
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomePage()),
           (Route<dynamic> route) => false);
@@ -440,7 +442,7 @@ class _BasketPageState extends State<BasketPage> {
               setState(() {
                 AppConstants.basketIDs.remove(products[i]['product']['id']);
                 AppConstants.basket.remove(products[i]);
-                products.remove(products[i]);
+                // products.remove(products[i]);
               });
             },
             child: Icon(
@@ -537,9 +539,10 @@ class _BasketPageState extends State<BasketPage> {
               DataCell(GestureDetector(
                 onTap: () {
                   setState(() {
-                    AppConstants.basketIDs.remove(returns[i]['product']['id']);
-                    AppConstants.basket.remove(returns[i]);
-                    returns.remove(returns[i]);
+                    AppConstants.basketIDs_return
+                        .remove(returns[i]['product']['id']);
+                    AppConstants.basket_return.remove(returns[i]);
+                    // returns.remove(returns[i]);
                   });
                 },
                 child: Icon(
