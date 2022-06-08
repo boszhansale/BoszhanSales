@@ -145,6 +145,14 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                                         orderHistory[i]['outletName']),
                                     Text("Mobile ID: " +
                                         orderHistory[i]['mobileId']),
+                                    Text("Сумма покупки: " +
+                                        orderHistory[i]['purchase_buy']
+                                            .toString() +
+                                        " тг"),
+                                    Text("Сумма возврата: " +
+                                        orderHistory[i]['purchase_return']
+                                            .toString() +
+                                        " тг"),
                                   ],
                                 ),
                                 trailing: GestureDetector(

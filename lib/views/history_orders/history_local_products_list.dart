@@ -69,6 +69,16 @@ class _HistoryLocalProductsListState extends State<HistoryLocalProductsList> {
                               children: [
                                 Spacer(),
                                 Text('Список продуктов',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                Spacer(),
+                                Text(
+                                    'Сумма покупки: ${widget.order['purchase_buy'].toString()} тг',
+                                    style: TextStyle(fontSize: 16)),
+                                Spacer(),
+                                Text(
+                                    'Сумма возврата: ${widget.order['purchase_return'].toString()} тг',
                                     style: TextStyle(fontSize: 16)),
                                 Spacer(),
                               ],

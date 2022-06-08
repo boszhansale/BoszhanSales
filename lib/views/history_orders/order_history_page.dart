@@ -178,7 +178,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                   child: Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.18,
+                                              0.2,
                                       width: MediaQuery.of(context).size.width *
                                           0.25,
                                       child: Column(
@@ -227,7 +227,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                   child: Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.18,
+                                              0.2,
                                       width: MediaQuery.of(context).size.width *
                                           0.25,
                                       child: Column(
