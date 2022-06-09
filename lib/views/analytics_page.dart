@@ -380,7 +380,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 5),
+                                          horizontal: 10, vertical: 5),
                                       child: Text(
                                         widget.analyticsData['brands'][i]
                                             ['brand']['name'],
@@ -394,7 +394,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 5),
                                       child: Text(
-                                        '${widget.analyticsData['brands'][i]['plan']} тг/ ${widget.analyticsData['brands'][i]['completed']} тг',
+                                        '${widget.analyticsData['brands'][i]['plan']}тг/${widget.analyticsData['brands'][i]['completed']}тг',
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
@@ -483,7 +483,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 5),
+                                          horizontal: 10, vertical: 5),
                                       child: Text(
                                         widget.analyticsData['group_brands'][i]
                                             ['brand']['name'],
@@ -495,9 +495,9 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                     Spacer(),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 5),
+                                          horizontal: 10, vertical: 5),
                                       child: Text(
-                                        '${widget.analyticsData['group_brands'][i]['plan']} тг/ ${widget.analyticsData['group_brands'][i]['completed']} тг',
+                                        '${widget.analyticsData['group_brands'][i]['plan']}тг/ ${widget.analyticsData['group_brands'][i]['completed']}тг',
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
