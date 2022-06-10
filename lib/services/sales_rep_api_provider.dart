@@ -181,15 +181,34 @@ class SalesRepProvider {
     }
   }
 
-  Future<dynamic> createOutlet(int counteragentId, String name, String phone,
-      String bin, String address) async {
+  Future<dynamic> deleteOrder(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+
+    final response = await http.delete(
+      Uri.parse(API_URL + 'api/order/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': "Bearer $token"
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return 'Success';
+    } else {
+      return 'Error';
+    }
+  }
+
+  Future<dynamic> createOutlet(
+      int counteragentId, String name, String phone, String address) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
     Map<String, dynamic> bodyText = {
       "name": name,
       "phone": phone,
-      "bin": bin,
       "address": address
     };
 

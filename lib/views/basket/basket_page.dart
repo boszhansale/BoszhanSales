@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../services/sales_rep_api_provider.dart';
 import '../home_page.dart';
 
 class BasketPage extends StatefulWidget {
@@ -34,12 +35,61 @@ class _BasketPageState extends State<BasketPage> {
   double sumReturn = 0;
   double sumAll = 0;
 
+  List<dynamic> orderHistory = [];
+
   @override
   void initState() {
     getBasket();
     calculateSum();
     createTextFieldControllers();
     super.initState();
+  }
+
+  void getOrderHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (prefs.getString("OrderHistory") != 'Error' &&
+        prefs.getString('OrderHistory') != null) {
+      setState(() {
+        var data = prefs.getString("OrderHistory")!;
+        orderHistory = List.from(jsonDecode(data));
+        orderHistory = orderHistory.reversed.toList();
+      });
+    }
+  }
+
+  void sendDataToServer() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    for (int i = 0; i < orderHistory.length; i++) {
+      try {
+        if (orderHistory[i]['isSended'] == false) {
+          var response = await SalesRepProvider().createOrder(
+              orderHistory[i]['outletId'],
+              orderHistory[i]['mobileId'],
+              orderHistory[i]['basket']);
+
+          if (response != 'Error') {
+            setState(() {
+              orderHistory[i]['isSended'] = true;
+              prefs.setString("OrderHistory", jsonEncode(orderHistory));
+            });
+
+            print(
+                'Succes, store ID: ' + orderHistory[i]['outletId'].toString());
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (Route<dynamic> route) => false);
+          } else {
+            print('Error, store ID: ' + orderHistory[i]['outletId'].toString());
+          }
+        }
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content:
+              Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+        ));
+      }
+    }
   }
 
   void createTextFieldControllers() {
@@ -157,14 +207,14 @@ class _BasketPageState extends State<BasketPage> {
       }
     }
 
+    getOrderHistory();
+    sendDataToServer();
+
     setState(() {
       AppConstants.basket = [];
       AppConstants.basketIDs = [];
       AppConstants.basket_return = [];
       AppConstants.basketIDs_return = [];
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => HomePage()),
-          (Route<dynamic> route) => false);
     });
     prefs.setBool("isBasketCompleted", true);
   }

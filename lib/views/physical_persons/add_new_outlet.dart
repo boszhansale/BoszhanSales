@@ -143,40 +143,40 @@ class _AddNewOutletState extends State<AddNewOutlet> {
                                 TextStyle(color: Colors.black, fontSize: 20)),
                       ),
                     ),
-                    widget.counteragentId != 0
-                        ? Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                            child: TextFormField(
-                              controller: binController,
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 20),
-                              decoration: InputDecoration(
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 20),
-                                  fillColor: Colors.yellow[700],
-                                  border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.yellow[700]!)),
-                                  hintText: 'БИН',
-                                  labelText: 'БИН',
-                                  labelStyle: TextStyle(
-                                      color: Colors.black87, fontSize: 20),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.yellow[700]!)),
-                                  prefixIcon: Icon(
-                                    Icons.info,
-                                    color: Colors.black87,
-                                  ),
-                                  prefixText: '',
-                                  suffixStyle: TextStyle(
-                                      color: Colors.black, fontSize: 20)),
-                            ),
-                          )
-                        : SizedBox(),
+                    // widget.counteragentId != 0
+                    //     ? Padding(
+                    //         padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                    //         child: TextFormField(
+                    //           controller: binController,
+                    //           style: const TextStyle(
+                    //               color: Colors.black, fontSize: 20),
+                    //           decoration: InputDecoration(
+                    //               hintStyle: TextStyle(
+                    //                   color: Colors.grey, fontSize: 20),
+                    //               fillColor: Colors.yellow[700],
+                    //               border: OutlineInputBorder(
+                    //                   borderSide:
+                    //                       BorderSide(color: Colors.white)),
+                    //               enabledBorder: OutlineInputBorder(
+                    //                   borderSide: BorderSide(
+                    //                       color: Colors.yellow[700]!)),
+                    //               hintText: 'БИН',
+                    //               labelText: 'БИН',
+                    //               labelStyle: TextStyle(
+                    //                   color: Colors.black87, fontSize: 20),
+                    //               focusedBorder: OutlineInputBorder(
+                    //                   borderSide: BorderSide(
+                    //                       color: Colors.yellow[700]!)),
+                    //               prefixIcon: Icon(
+                    //                 Icons.info,
+                    //                 color: Colors.black87,
+                    //               ),
+                    //               prefixText: '',
+                    //               suffixStyle: TextStyle(
+                    //                   color: Colors.black, fontSize: 20)),
+                    //         ),
+                    //       )
+                    //     : SizedBox(),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                       child: TextFormField(
@@ -245,7 +245,7 @@ class _AddNewOutletState extends State<AddNewOutlet> {
       Map<String, dynamic> response = {};
       SalesRepProvider()
           .createOutlet(widget.counteragentId, nameController.text,
-              phoneController.text, binController.text, addressController.text)
+              phoneController.text, addressController.text)
           .then((value) => response = value)
           .whenComplete(() {
         print(response);

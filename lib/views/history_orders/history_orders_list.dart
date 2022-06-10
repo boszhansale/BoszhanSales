@@ -123,6 +123,52 @@ class _HistoryOrdersListState extends State<HistoryOrdersList> {
                                         " тг"),
                                   ],
                                 ),
+                                trailing: GestureDetector(
+                                  onTap: () {
+                                    showAlertDialog(BuildContext context) {
+                                      // set up the buttons
+                                      Widget cancelButton = TextButton(
+                                        child: Text("Отмена"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      );
+                                      Widget continueButton = TextButton(
+                                        child: Text("Да"),
+                                        onPressed: () {
+                                          deleteOrder(i);
+                                          Navigator.pop(context);
+                                        },
+                                      );
+
+                                      // set up the AlertDialog
+                                      AlertDialog alert = AlertDialog(
+                                        title: Text("Внимание"),
+                                        content: Text(
+                                            "Вы точно хотите удалить заказ?"),
+                                        actions: [
+                                          cancelButton,
+                                          continueButton,
+                                        ],
+                                      );
+
+                                      // show the dialog
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return alert;
+                                        },
+                                      );
+                                    }
+
+                                    showAlertDialog(context);
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
+                                    size: 30,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -131,5 +177,12 @@ class _HistoryOrdersListState extends State<HistoryOrdersList> {
                     )),
               ])))
         ]));
+  }
+
+  void deleteOrder(int ind) async {
+    var response = await SalesRepProvider().deleteOrder(orders[ind]['id']);
+    if (response != 'Error') {
+      getData();
+    }
   }
 }
