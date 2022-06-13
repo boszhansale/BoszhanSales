@@ -153,6 +153,10 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                                         orderHistory[i]['purchase_return']
                                             .toString() +
                                         " тг"),
+                                    Text("Статус: " +
+                                        (orderHistory[i]['isSended']
+                                            ? " Отправлено"
+                                            : " Не отправлено")),
                                   ],
                                 ),
                                 trailing: GestureDetector(
