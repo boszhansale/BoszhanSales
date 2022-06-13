@@ -35,6 +35,8 @@ class _BasketPageState extends State<BasketPage> {
   double sumReturn = 0;
   double sumAll = 0;
 
+  bool isActive = true;
+
   List<dynamic> orderHistory = [];
 
   @override
@@ -82,8 +84,14 @@ class _BasketPageState extends State<BasketPage> {
           } else {
             print('Error, store ID: ' + orderHistory[i]['outletId'].toString());
           }
+          setState(() {
+            isActive = true;
+          });
         }
       } catch (error) {
+        setState(() {
+          isActive = true;
+        });
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content:
               Text("Something went wrong.", style: TextStyle(fontSize: 20)),
@@ -152,6 +160,9 @@ class _BasketPageState extends State<BasketPage> {
   }
 
   void createOrder() async {
+    setState(() {
+      isActive = false;
+    });
     List<dynamic> basket = [];
     for (int i = 0; i < products.length; i++) {
       basket.add({
@@ -362,7 +373,7 @@ class _BasketPageState extends State<BasketPage> {
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            createOrder();
+                            isActive ? createOrder() : null;
                           },
                           label: Text(
                             "Подтвердить заказ",
@@ -496,6 +507,7 @@ class _BasketPageState extends State<BasketPage> {
               setState(() {
                 AppConstants.basketIDs.remove(products[i]['product']['id']);
                 AppConstants.basket.remove(products[i]);
+                calculateSum();
                 // products.remove(products[i]);
               });
             },

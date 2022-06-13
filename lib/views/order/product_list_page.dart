@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:boszhan_sales/utils/const.dart';
 import 'package:boszhan_sales/views/basket/basket_page.dart';
 import 'package:boszhan_sales/views/order/product_info_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -425,11 +426,14 @@ class _ProductListPageState extends State<ProductListPage> {
                                         child: Column(
                                           children: [
                                             Stack(children: [
-                                              Image.network(
-                                                products[i]['images'].length > 0
+                                              CachedNetworkImage(
+                                                imageUrl: products[i]['images']
+                                                    .length >
+                                                    0
                                                     ? products[i]['images'][0]
                                                 ['path']
                                                     : "https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png",
+
                                                 width: MediaQuery
                                                     .of(context)
                                                     .size
@@ -456,16 +460,19 @@ class _ProductListPageState extends State<ProductListPage> {
                                                               return AlertDialog(
                                                                 title: Text(
                                                                     'Введите количество:'),
-                                                                content: TextField(
-                                                                  autofocus: true,
+                                                                content:
+                                                                TextField(
+                                                                  autofocus:
+                                                                  true,
                                                                   focusNode:
                                                                   _focusNode,
-                                                                  onChanged: (
-                                                                      value) {
-                                                                    setState(() {
-                                                                      countValueText =
-                                                                          value;
-                                                                    });
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    setState(
+                                                                            () {
+                                                                          countValueText =
+                                                                              value;
+                                                                        });
                                                                   },
                                                                   controller:
                                                                   countDialogTextFieldController,
@@ -477,36 +484,37 @@ class _ProductListPageState extends State<ProductListPage> {
                                                                 actions: <
                                                                     Widget>[
                                                                   FlatButton(
-                                                                    color:
-                                                                    Colors
+                                                                    color: Colors
                                                                         .green,
                                                                     textColor:
                                                                     Colors
                                                                         .white,
                                                                     child: Text(
                                                                         'OK'),
-                                                                    onPressed: () {
-                                                                      setState(() {
-                                                                        AppConstants
-                                                                            .basket_return
-                                                                            .add(
-                                                                            {
-                                                                              'product':
-                                                                              products[i],
-                                                                              'count': double
-                                                                                  .parse(
-                                                                                  countValueText ==
-                                                                                      ''
-                                                                                      ? '1'
-                                                                                      : countValueText),
-                                                                              'type': 1
-                                                                            });
-                                                                        AppConstants
-                                                                            .basketIDs_return
-                                                                            .add(
-                                                                            products[i]
-                                                                            ['id']);
-                                                                      });
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                              () {
+                                                                            AppConstants
+                                                                                .basket_return
+                                                                                .add(
+                                                                                {
+                                                                                  'product':
+                                                                                  products[i],
+                                                                                  'count': double
+                                                                                      .parse(
+                                                                                      countValueText ==
+                                                                                          ''
+                                                                                          ? '1'
+                                                                                          : countValueText),
+                                                                                  'type':
+                                                                                  1
+                                                                                });
+                                                                            AppConstants
+                                                                                .basketIDs_return
+                                                                                .add(
+                                                                                products[i]['id']);
+                                                                          });
 
                                                                       Navigator
                                                                           .pop(
