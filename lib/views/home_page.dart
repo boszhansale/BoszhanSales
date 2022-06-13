@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:boszhan_sales/services/auth_api_provider.dart';
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/views/analytics_page.dart';
 import 'package:boszhan_sales/views/catalog/catalog_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../utils/const.dart';
 import 'order/sales_representative_orders.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,9 +27,12 @@ class _HomePageState extends State<HomePage> {
   int secondBrandPlan = 0;
   var analyticsData = null;
 
+  bool newVersion = false;
+
   @override
   void initState() {
     getProfile();
+    checkVersion();
     super.initState();
   }
 
@@ -166,13 +172,74 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                // color: Colors.yellow[700],
-                                borderRadius: BorderRadius.circular(130)),
-                            child: Image.asset("assets/images/logo.png",
-                                width:
-                                    MediaQuery.of(context).size.height * 0.5),
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(right: 50),
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.17,
+                                    height: MediaQuery.of(context).size.width *
+                                        0.08,
+                                  )),
+                              Spacer(),
+                              Container(
+                                decoration: BoxDecoration(
+                                    // color: Colors.yellow[700],
+                                    borderRadius: BorderRadius.circular(130)),
+                                child: Image.asset("assets/images/logo.png",
+                                    width: MediaQuery.of(context).size.height *
+                                        0.5),
+                              ),
+                              Spacer(),
+                              newVersion
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(right: 50),
+                                      child: Column(
+                                        children: [
+                                          Text("Доступна новая версия!"),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.17,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.08,
+                                            child: ElevatedButton(
+                                              child: const Text(
+                                                'Скачать',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                    color: Colors.black),
+                                              ),
+                                              onPressed: () {
+                                                downloadNewVersion();
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Colors.yellow[700],
+                                                textStyle: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.17,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.08,
+                                    ),
+                            ],
                           ),
                           Spacer(),
                           Row(
@@ -386,5 +453,27 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Загружено!", style: TextStyle(fontSize: 20)),
     ));
+  }
+
+  void downloadNewVersion() async {
+    launch(AppConstants.baseUrl + 'api/mobile-app/download?type=1');
+  }
+
+  void checkVersion() async {
+    var result = await AuthProvider().checkApplicationVersion();
+
+    if (result != 'Error') {
+      if (result['version'] != '0.5') {
+        setState(() {
+          newVersion = true;
+        });
+      } else {
+        setState(() {
+          newVersion = false;
+        });
+      }
+    } else {
+      print('Error');
+    }
   }
 }
