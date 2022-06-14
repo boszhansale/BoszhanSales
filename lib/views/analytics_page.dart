@@ -382,8 +382,16 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 5),
                                       child: Text(
-                                        widget.analyticsData['brands'][i]
-                                            ['brand']['name'],
+                                        widget
+                                                    .analyticsData['brands'][i]
+                                                        ['brand']['name']
+                                                    .length >
+                                                18
+                                            ? widget.analyticsData['brands'][i]
+                                                    ['brand']['name']
+                                                .substring(0, 18)
+                                            : widget.analyticsData['brands'][i]
+                                                ['brand']['name'],
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
@@ -485,8 +493,19 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 5),
                                       child: Text(
-                                        widget.analyticsData['group_brands'][i]
-                                            ['brand']['name'],
+                                        widget
+                                                    .analyticsData[
+                                                        'group_brands'][i]
+                                                        ['brand']['name']
+                                                    .length >
+                                                18
+                                            ? widget
+                                                .analyticsData['group_brands']
+                                                    [i]['brand']['name']
+                                                .substring(0, 18)
+                                            : widget.analyticsData[
+                                                    'group_brands'][i]['brand']
+                                                ['name'],
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
