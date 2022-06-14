@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/utils/const.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -80,7 +81,7 @@ class _BasketPageState extends State<BasketPage> {
                 'Succes, store ID: ' + orderHistory[i]['outletId'].toString());
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => HomePage()),
-                (Route<dynamic> route) => false);
+                    (Route<dynamic> route) => false);
           } else {
             print('Error, store ID: ' + orderHistory[i]['outletId'].toString());
           }
@@ -94,7 +95,7 @@ class _BasketPageState extends State<BasketPage> {
         });
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content:
-              Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+          Text("Something went wrong.", style: TextStyle(fontSize: 20)),
         ));
       }
     }
@@ -133,8 +134,8 @@ class _BasketPageState extends State<BasketPage> {
     for (int i = 0; i < products.length; i++) {
       sum1 += (products[i]['count'] *
           (products[i]['product']['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
+              .where((e) => e['price_type_id'] == widget.priceTypeId)
+              .toList()[0]['price'] *
               (100 -
                   (widget.discount == 0
                       ? products[i]['product']['discount']
@@ -145,8 +146,8 @@ class _BasketPageState extends State<BasketPage> {
     for (int j = 0; j < returns.length; j++) {
       sum2 += (returns[j]['count'] *
           (returns[j]['product']['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
+              .where((e) => e['price_type_id'] == widget.priceTypeId)
+              .toList()[0]['price'] *
               (100 -
                   (widget.discount == 0
                       ? returns[j]['product']['discount']
@@ -185,7 +186,10 @@ class _BasketPageState extends State<BasketPage> {
     }
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String mobileId = DateTime.now().millisecondsSinceEpoch.toString();
+    String mobileId = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
 
     if (prefs.getString('OrderHistory') == null) {
       List<Map<String, dynamic>> savedData = [];
@@ -218,9 +222,6 @@ class _BasketPageState extends State<BasketPage> {
       }
     }
 
-    getOrderHistory();
-    sendDataToServer();
-
     setState(() {
       AppConstants.basket = [];
       AppConstants.basketIDs = [];
@@ -228,6 +229,20 @@ class _BasketPageState extends State<BasketPage> {
       AppConstants.basketIDs_return = [];
     });
     prefs.setBool("isBasketCompleted", true);
+
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      getOrderHistory();
+      sendDataToServer();
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      getOrderHistory();
+      sendDataToServer();
+    }
+    else {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomePage()),
+              (Route<dynamic> route) => false);
+    }
   }
 
   Future<void> share() async {
@@ -266,133 +281,159 @@ class _BasketPageState extends State<BasketPage> {
           children: [
             Image.asset(
               "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               fit: BoxFit.cover,
             ),
             Scaffold(
                 backgroundColor: Colors.white.withOpacity(0.85),
                 body: SingleChildScrollView(
                     child: Column(children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()));
-                          },
-                          child: SizedBox(
-                            child: Image.asset("assets/images/logo.png"),
-                            width: MediaQuery.of(context).size.width * 0.2,
-                          )),
-                      Spacer(),
-                      Column(
+                      Row(
                         children: [
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                              color: Colors.yellow[700],
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              height: 60,
-                              child: Row(
-                                children: [
-                                  Spacer(),
-                                  Text('Контрагент: ${widget.counteragentName}',
-                                      style: TextStyle(fontSize: 16)),
-                                  Spacer(),
-                                  Text('Торговая точка: ${widget.outletName}',
-                                      style: TextStyle(fontSize: 16)),
-                                  Spacer(),
-                                  Text('Долг: ${widget.debt} тг',
-                                      style: TextStyle(fontSize: 16)),
-                                  Spacer(),
-                                ],
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()));
+                              },
+                              child: SizedBox(
+                                child: Image.asset("assets/images/logo.png"),
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 0.2,
                               )),
+                          Spacer(),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                  color: Colors.yellow[700],
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.8,
+                                  height: 60,
+                                  child: Row(
+                                    children: [
+                                      Spacer(),
+                                      Text('Контрагент: ${widget
+                                          .counteragentName}',
+                                          style: TextStyle(fontSize: 16)),
+                                      Spacer(),
+                                      Text('Торговая точка: ${widget
+                                          .outletName}',
+                                          style: TextStyle(fontSize: 16)),
+                                      Spacer(),
+                                      Text('Долг: ${widget.debt} тг',
+                                          style: TextStyle(fontSize: 16)),
+                                      Spacer(),
+                                    ],
+                                  )),
+                            ],
+                          ),
+                          Spacer(),
                         ],
                       ),
-                      Spacer(),
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.yellow[700],
-                  ),
-                  _createDataTable(),
-                  Container(
-                      color: Colors.yellow[700],
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          Text('Сумма покупок: $sumBuy тг',
-                              style: TextStyle(fontSize: 16)),
-                          Spacer(),
-                          Text('Сумма возврата: $sumReturn тг',
-                              style: TextStyle(fontSize: 16)),
-                          Spacer(),
-                          Text('Итого к оплате: $sumAll тг',
-                              style: TextStyle(fontSize: 16)),
-                          Spacer(),
-                        ],
-                      )),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 60,
-                    child: Row(children: [
-                      Spacer(),
-                      SizedBox(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            share();
-                          },
-                          label: Text(
-                            "Отправить заказ клиенту",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          icon: Icon(
-                            Icons.share,
-                            color: Colors.black,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            // NEW
-                          ),
-                        ),
+                      Divider(
+                        color: Colors.yellow[700],
                       ),
-                      Spacer(),
+                      _createDataTable(),
+                      Container(
+                          color: Colors.yellow[700],
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          height: 60,
+                          child: Row(
+                            children: [
+                              Spacer(),
+                              Text('Сумма покупок: $sumBuy тг',
+                                  style: TextStyle(fontSize: 16)),
+                              Spacer(),
+                              Text('Сумма возврата: $sumReturn тг',
+                                  style: TextStyle(fontSize: 16)),
+                              Spacer(),
+                              Text('Итого к оплате: $sumAll тг',
+                                  style: TextStyle(fontSize: 16)),
+                              Spacer(),
+                            ],
+                          )),
                       SizedBox(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            isActive ? createOrder() : null;
-                          },
-                          label: Text(
-                            "Подтвердить заказ",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          icon: Icon(
-                            Icons.shopping_cart_outlined,
-                            color: Colors.black,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.green[700],
-                            // NEW
-                          ),
-                        ),
+                        height: 15,
                       ),
-                      Spacer(),
-                    ]),
-                  )
-                ]))),
+                      Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        height: 60,
+                        child: Row(children: [
+                          Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.3,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                share();
+                              },
+                              label: Text(
+                                "Отправить заказ клиенту",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              icon: Icon(
+                                Icons.share,
+                                color: Colors.black,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                                // NEW
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.3,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                isActive ? createOrder() : null;
+                              },
+                              label: Text(
+                                "Подтвердить заказ",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              icon: Icon(
+                                Icons.shopping_cart_outlined,
+                                color: Colors.black,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.green[700],
+                                // NEW
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                        ]),
+                      )
+                    ]))),
           ],
         ));
   }
@@ -402,7 +443,10 @@ class _BasketPageState extends State<BasketPage> {
         data: Theme.of(context).copyWith(dividerColor: Colors.yellow[700]),
         child: SizedBox(
           // height: MediaQuery.of(context).size.height * 0.55,
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: DataTable(
             showCheckboxColumn: false,
             columns: _createColumns(),
@@ -483,24 +527,24 @@ class _BasketPageState extends State<BasketPage> {
             ],
           )),
           DataCell(Text((products[i]['product']['prices']
-                      .where((e) => e['price_type_id'] == widget.priceTypeId)
-                      .toList()[0]['price'] *
+              .where((e) => e['price_type_id'] == widget.priceTypeId)
+              .toList()[0]['price'] *
+              (100 -
+                  (widget.discount == 0
+                      ? products[i]['product']['discount']
+                      : widget.discount)) /
+              100)
+              .toString())),
+          DataCell(Text((products[i]['count'] *
+              (products[i]['product']['prices']
+                  .where(
+                      (e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
                   (100 -
                       (widget.discount == 0
                           ? products[i]['product']['discount']
                           : widget.discount)) /
-                  100)
-              .toString())),
-          DataCell(Text((products[i]['count'] *
-                  (products[i]['product']['prices']
-                          .where(
-                              (e) => e['price_type_id'] == widget.priceTypeId)
-                          .toList()[0]['price'] *
-                      (100 -
-                          (widget.discount == 0
-                              ? products[i]['product']['discount']
-                              : widget.discount)) /
-                      100))
+                  100))
               .toString())),
           DataCell(GestureDetector(
             onTap: () {
@@ -520,7 +564,7 @@ class _BasketPageState extends State<BasketPage> {
       for (int i = 0; i < returns.length; i++)
         DataRow(
             color: MaterialStateColor.resolveWith(
-                (states) => Colors.redAccent.withOpacity(0.3)),
+                    (states) => Colors.redAccent.withOpacity(0.3)),
             onSelectChanged: (newValue) {},
             cells: [
               DataCell(Text(returns[i]['product']['name'])),
@@ -541,7 +585,7 @@ class _BasketPageState extends State<BasketPage> {
                       },
                       child: Icon(Icons.remove),
                       style:
-                          ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+                      ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                     ),
                   ),
                   SizedBox(
@@ -576,31 +620,31 @@ class _BasketPageState extends State<BasketPage> {
                       },
                       child: Icon(Icons.add),
                       style:
-                          ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+                      ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                     ),
                   ),
                 ],
               )),
               DataCell(Text((returns[i]['product']['prices']
-                          .where(
-                              (e) => e['price_type_id'] == widget.priceTypeId)
-                          .toList()[0]['price'] *
+                  .where(
+                      (e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+                  (100 -
+                      (widget.discount == 0
+                          ? returns[i]['product']['discount']
+                          : widget.discount)) /
+                  100)
+                  .toString())),
+              DataCell(Text((returns[i]['count'] *
+                  (returns[i]['product']['prices']
+                      .where((e) =>
+                  e['price_type_id'] == widget.priceTypeId)
+                      .toList()[0]['price'] *
                       (100 -
                           (widget.discount == 0
                               ? returns[i]['product']['discount']
                               : widget.discount)) /
-                      100)
-                  .toString())),
-              DataCell(Text((returns[i]['count'] *
-                      (returns[i]['product']['prices']
-                              .where((e) =>
-                                  e['price_type_id'] == widget.priceTypeId)
-                              .toList()[0]['price'] *
-                          (100 -
-                              (widget.discount == 0
-                                  ? returns[i]['product']['discount']
-                                  : widget.discount)) /
-                          100))
+                      100))
                   .toString())),
               DataCell(GestureDetector(
                 onTap: () {

@@ -4,6 +4,7 @@ import 'package:boszhan_sales/services/auth_api_provider.dart';
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/views/analytics_page.dart';
 import 'package:boszhan_sales/views/catalog/catalog_page.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,9 +32,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    getProfile();
-    checkVersion();
+    initFunction();
     super.initState();
+  }
+
+  void initFunction() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      getProfile();
+      checkVersion();
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      getProfile();
+      checkVersion();
+    }
   }
 
   @override
@@ -145,26 +156,111 @@ class _HomePageState extends State<HomePage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'До выполнения плана до конца месяца вам осталось продать: ${plan - completedPlan} тг.',
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 240,
+                                            child: Text(
+                                              'До выполнения плана до конца месяца вам осталось продать: ',
+                                              style: TextStyle(
+                                                  fontStyle: FontStyle.italic,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                          plan - completedPlan < 0
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 18),
+                                                  child: Text(
+                                                    '${completedPlan - plan} тг.',
+                                                    style: TextStyle(
+                                                        fontStyle:
+                                                            FontStyle.italic,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16,
+                                                        color: Colors.green),
+                                                  ),
+                                                )
+                                              : Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 18),
+                                                  child: Text(
+                                                    '${plan - completedPlan} тг.',
+                                                    style: TextStyle(
+                                                        fontStyle:
+                                                            FontStyle.italic,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16),
+                                                  ),
+                                                )
+                                        ],
                                       ),
-                                      Text(
-                                        'Первомайские деликатесы: ${firstBrandPlan} тг.',
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Первомайские деликатесы: ',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
+                                          firstBrandPlan < 0
+                                              ? Text(
+                                                  '${firstBrandPlan * -1} тг.',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.green,
+                                                      fontSize: 16),
+                                                )
+                                              : Text(
+                                                  '${firstBrandPlan} тг.',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16),
+                                                ),
+                                        ],
                                       ),
-                                      Text(
-                                        'Народные колбасы: ${secondBrandPlan} тг.',
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Народные колбасы: ',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
+                                          secondBrandPlan < 0
+                                              ? Text(
+                                                  '${secondBrandPlan * -1} тг.',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.green,
+                                                      fontSize: 16),
+                                                )
+                                              : Text(
+                                                  '${secondBrandPlan} тг.',
+                                                  style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16),
+                                                ),
+                                        ],
                                       ),
                                     ],
                                   ),
