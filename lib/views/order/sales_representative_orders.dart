@@ -6,6 +6,7 @@ import 'package:boszhan_sales/views/history_orders/order_history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../history_orders/history_products_list.dart';
 import '../home_page.dart';
 
 class SalesRepresentativeOrders extends StatefulWidget {
@@ -20,11 +21,23 @@ class SalesRepresentativeOrders extends StatefulWidget {
 
 class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
   List<dynamic> orderHistory = [];
+  List<dynamic> orderHistoryFromServer = [];
+
+  bool localActive = true;
 
   @override
   void initState() {
     getOrderHistory();
     super.initState();
+  }
+
+  void getOrderHistoryFromServer() async {
+    var result = await SalesRepProvider().getHistoryOrdersFromServer();
+    if (result != 'Error') {
+      setState(() {
+        orderHistoryFromServer = result;
+      });
+    }
   }
 
   void getOrderHistory() async {
@@ -48,6 +61,14 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
       orderHistory = orderHistory.reversed.toList();
       prefs.setString('OrderHistory', jsonEncode(orderHistory));
     });
+  }
+
+  void deleteOrder(int ind) async {
+    var response =
+        await SalesRepProvider().deleteOrder(orderHistoryFromServer[ind]['id']);
+    if (response != 'Error') {
+      getOrderHistoryFromServer();
+    }
   }
 
   @override
@@ -112,105 +133,244 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                 Divider(
                   color: Colors.yellow[700],
                 ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    "Локальные заказы",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
+                Row(
+                  children: [
+                    Spacer(),
+                    SizedBox(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          getOrderHistory();
+                          setState(() {
+                            localActive = true;
+                          });
+                        },
+                        label: Text(
+                          "Локальные заказы",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        icon: Icon(
+                          Icons.list_alt,
+                          color: Colors.black,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: localActive ? Colors.red : Colors.grey,
+                          // NEW
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    SizedBox(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          getOrderHistoryFromServer();
+                          setState(() {
+                            localActive = false;
+                          });
+                        },
+                        label: Text(
+                          "Заказы с сервера",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        icon: Icon(
+                          Icons.list_alt,
+                          color: Colors.black,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: !localActive ? Colors.red : Colors.grey,
+                          // NEW
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
                 ),
                 SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.58,
                     child: ListView(
                       children: [
-                        for (int i = 0; i < orderHistory.length; i++)
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          HistoryLocalProductsList(
-                                              orderHistory[i])));
-                            },
-                            child: Card(
-                              child: ListTile(
-                                title: Text("ID магазина: " +
-                                    orderHistory[i]['outletId'].toString()),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Магазин: " +
-                                        orderHistory[i]['outletName']),
-                                    Text("Mobile ID: " +
-                                        orderHistory[i]['mobileId']),
-                                    Text("Сумма покупки: " +
-                                        orderHistory[i]['purchase_buy']
-                                            .toString() +
-                                        " тг"),
-                                    Text("Сумма возврата: " +
-                                        orderHistory[i]['purchase_return']
-                                            .toString() +
-                                        " тг"),
-                                    Text("Статус: " +
-                                        (orderHistory[i]['isSended']
-                                            ? " Отправлено"
-                                            : " Не отправлено")),
-                                  ],
-                                ),
-                                trailing: GestureDetector(
+                        for (int i = 0;
+                            i <
+                                (localActive
+                                    ? orderHistory.length
+                                    : orderHistoryFromServer.length);
+                            i++)
+                          localActive
+                              ? GestureDetector(
                                   onTap: () {
-                                    showAlertDialog(BuildContext context) {
-                                      // set up the buttons
-                                      Widget cancelButton = TextButton(
-                                        child: Text("Отмена"),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      );
-                                      Widget continueButton = TextButton(
-                                        child: Text("Да"),
-                                        onPressed: () {
-                                          deleteLocalOrder(i);
-                                          Navigator.pop(context);
-                                        },
-                                      );
-
-                                      // set up the AlertDialog
-                                      AlertDialog alert = AlertDialog(
-                                        title: Text("Внимание"),
-                                        content: Text(
-                                            "Вы точно хотите удалить заказ?"),
-                                        actions: [
-                                          cancelButton,
-                                          continueButton,
-                                        ],
-                                      );
-
-                                      // show the dialog
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return alert;
-                                        },
-                                      );
-                                    }
-
-                                    showAlertDialog(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HistoryLocalProductsList(
+                                                    orderHistory[i])));
                                   },
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.black,
-                                    size: 30,
+                                  child: Card(
+                                    child: ListTile(
+                                      title: Text("ID магазина: " +
+                                          orderHistory[i]['outletId']
+                                              .toString()),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Магазин: " +
+                                              orderHistory[i]['outletName']),
+                                          Text("Mobile ID: " +
+                                              orderHistory[i]['mobileId']),
+                                          Text("Сумма покупки: " +
+                                              orderHistory[i]['purchase_buy']
+                                                  .toString() +
+                                              " тг"),
+                                          Text("Сумма возврата: " +
+                                              orderHistory[i]['purchase_return']
+                                                  .toString() +
+                                              " тг"),
+                                          Text("Статус: " +
+                                              (orderHistory[i]['isSended']
+                                                  ? " Отправлено"
+                                                  : " Не отправлено")),
+                                        ],
+                                      ),
+                                      trailing: GestureDetector(
+                                        onTap: () {
+                                          showAlertDialog(
+                                              BuildContext context) {
+                                            // set up the buttons
+                                            Widget cancelButton = TextButton(
+                                              child: Text("Отмена"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                            Widget continueButton = TextButton(
+                                              child: Text("Да"),
+                                              onPressed: () {
+                                                deleteLocalOrder(i);
+                                                Navigator.pop(context);
+                                              },
+                                            );
+
+                                            // set up the AlertDialog
+                                            AlertDialog alert = AlertDialog(
+                                              title: Text("Внимание"),
+                                              content: Text(
+                                                  "Вы точно хотите удалить заказ?"),
+                                              actions: [
+                                                cancelButton,
+                                                continueButton,
+                                              ],
+                                            );
+
+                                            // show the dialog
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return alert;
+                                              },
+                                            );
+                                          }
+
+                                          showAlertDialog(context);
+                                        },
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: Colors.black,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ),
+                                    color: orderHistory[i]['isSended']
+                                        ? Colors.white
+                                        : Colors.redAccent,
+                                  ),
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HistoryProductsList(
+                                                    orderHistoryFromServer[
+                                                        i])));
+                                  },
+                                  child: Card(
+                                    child: ListTile(
+                                      title: Text("ID заказа: " +
+                                          orderHistoryFromServer[i]['id']
+                                              .toString()),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("ID магазин: " +
+                                              orderHistoryFromServer[i]
+                                                      ['store_id']
+                                                  .toString()),
+                                          Text("Название: " +
+                                              orderHistoryFromServer[i]['store']
+                                                  ['name']),
+                                          Text("Сумма покупки: " +
+                                              orderHistoryFromServer[i]
+                                                      ['purchase_price']
+                                                  .toString() +
+                                              " тг"),
+                                        ],
+                                      ),
+                                      trailing: GestureDetector(
+                                        onTap: () {
+                                          showAlertDialog(
+                                              BuildContext context) {
+                                            // set up the buttons
+                                            Widget cancelButton = TextButton(
+                                              child: Text("Отмена"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                            Widget continueButton = TextButton(
+                                              child: Text("Да"),
+                                              onPressed: () {
+                                                deleteOrder(i);
+                                                Navigator.pop(context);
+                                              },
+                                            );
+
+                                            // set up the AlertDialog
+                                            AlertDialog alert = AlertDialog(
+                                              title: Text("Внимание"),
+                                              content: Text(
+                                                  "Вы точно хотите удалить заказ?"),
+                                              actions: [
+                                                cancelButton,
+                                                continueButton,
+                                              ],
+                                            );
+
+                                            // show the dialog
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return alert;
+                                              },
+                                            );
+                                          }
+
+                                          showAlertDialog(context);
+                                        },
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: Colors.black,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              color: orderHistory[i]['isSended']
-                                  ? Colors.white
-                                  : Colors.redAccent,
-                            ),
-                          ),
                       ],
                       padding: EdgeInsets.all(10),
                     )),

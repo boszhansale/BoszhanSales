@@ -45,7 +45,7 @@ class _ProductListPageState extends State<ProductListPage> {
   List<dynamic> categories = [];
   List<dynamic> products = [];
   List<int> existingCategoriesId = [];
-  int selectedCategoryID = 1;
+  int selectedCategoryID = 23;
   int discount = 0;
   String countValueText = '1';
 
@@ -572,13 +572,13 @@ class _ProductListPageState extends State<ProductListPage> {
                                             Padding(
                                               padding: const EdgeInsets.all(5),
                                               child: SizedBox(
-                                                height: 40,
+                                                height: 47,
                                                 child: Text(
                                                   products[i]['name'],
                                                   style:
                                                       TextStyle(fontSize: 14),
-                                                  overflow:
-                                                      TextOverflow.visible,
+                                                  // overflow:
+                                                  //     TextOverflow.visible,
                                                 ),
                                               ),
                                             ),
@@ -588,7 +588,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(
-                                              height: 5,
+                                              height: 2,
                                             ),
                                             ElevatedButton.icon(
                                               onPressed: () {
