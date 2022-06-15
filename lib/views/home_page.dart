@@ -559,7 +559,7 @@ class _HomePageState extends State<HomePage> {
     var result = await AuthProvider().checkApplicationVersion();
 
     if (result != 'Error') {
-      if (result['version'] != '0.6') {
+      if (result['version'] != '0.7') {
         setState(() {
           newVersion = true;
         });
