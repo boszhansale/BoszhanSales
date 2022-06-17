@@ -26,6 +26,8 @@ class _AddNewOutletState extends State<AddNewOutlet> {
   TextEditingController binController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
+  bool isSending = false;
+
   @override
   void initState() {
     super.initState();
@@ -239,40 +241,45 @@ class _AddNewOutletState extends State<AddNewOutlet> {
   }
 
   void createOutletAction() async {
-    if (nameController.text.length > 1 &&
-        phoneController.text.length > 1 &&
-        addressController.text.length > 1) {
-      Map<String, dynamic> response = {};
-      SalesRepProvider()
-          .createOutlet(widget.counteragentId, nameController.text,
-              phoneController.text, addressController.text)
-          .then((value) => response = value)
-          .whenComplete(() {
-        print(response);
-        if (response['status'] == "Success") {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProductListPage(
-                      response['data']['name'],
-                      response['data']['discount'],
-                      response['data']['id'],
-                      widget.counteragentId,
-                      response['data']['salesrep']['name'],
-                      widget.counteragentDiscount,
-                      widget.priceTypeId,
-                      widget.debt)));
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content:
-                Text("Something went wrong.", style: TextStyle(fontSize: 20)),
-          ));
-        }
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Заполните все поля.", style: TextStyle(fontSize: 20)),
-      ));
+    if (!isSending) {
+      if (nameController.text.length > 1 &&
+          phoneController.text.length > 1 &&
+          addressController.text.length > 1) {
+        isSending = true;
+        Map<String, dynamic> response = {};
+        SalesRepProvider()
+            .createOutlet(widget.counteragentId, nameController.text,
+                phoneController.text, addressController.text)
+            .then((value) => response = value)
+            .whenComplete(() {
+          print(response);
+          if (response['status'] == "Success") {
+            isSending = false;
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProductListPage(
+                        response['data']['name'],
+                        response['data']['discount'],
+                        response['data']['id'],
+                        widget.counteragentId,
+                        response['data']['salesrep']['name'],
+                        widget.counteragentDiscount,
+                        widget.priceTypeId,
+                        widget.debt)));
+          } else {
+            isSending = false;
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content:
+                  Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+            ));
+          }
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Заполните все поля.", style: TextStyle(fontSize: 20)),
+        ));
+      }
     }
   }
 }

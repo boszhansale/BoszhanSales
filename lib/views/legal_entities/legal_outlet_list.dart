@@ -39,8 +39,9 @@ class _LegalOutletListPageState extends State<LegalOutletListPage> {
       List<dynamic> responseList = jsonDecode(data);
       for (int i = 0; i < responseList.length; i++) {
         if (responseList[i]['name']
-            .toLowerCase()
-            .contains(searchController.text.toLowerCase())) {
+                .toLowerCase()
+                .contains(searchController.text.toLowerCase()) &&
+            responseList[i]['counteragent_id'] == widget.id) {
           setState(() {
             outletList.add(responseList[i]);
           });

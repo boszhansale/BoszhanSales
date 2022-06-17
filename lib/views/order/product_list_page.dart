@@ -602,6 +602,9 @@ class _ProductListPageState extends State<ProductListPage> {
                                                           title: Text(
                                                               'Введите количество:'),
                                                           content: TextField(
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
                                                             autofocus: true,
                                                             focusNode:
                                                                 _focusNode,

@@ -399,6 +399,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                         return AlertDialog(
                                           title: Text('Введите количество:'),
                                           content: TextField(
+                                            keyboardType: TextInputType.number,
                                             focusNode: _focusNode,
                                             autofocus: true,
                                             onChanged: (value) {
