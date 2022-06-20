@@ -2,8 +2,10 @@ import 'package:boszhan_sales/components/app_bar.dart';
 import 'package:boszhan_sales/services/auth_api_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../home_page.dart';
+
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,6 +22,30 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // emailController.text = 'sad@mail.ru';
     // passwordController.text = '123456';
+
+    bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
+      print('[motionchange long] - ${location.coords.longitude}');
+      print('[motionchange lat] - ${location.coords.latitude}');
+      AuthProvider()
+          .sendLocation(location.coords.latitude, location.coords.longitude);
+    });
+
+    bg.BackgroundGeolocation.ready(bg.Config(
+            desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
+            distanceFilter: 100.0,
+            stopOnTerminate: false,
+            startOnBoot: true,
+            debug: false,
+            logLevel: bg.Config.LOG_LEVEL_VERBOSE))
+        .then((bg.State state) {
+      if (!state.enabled) {
+        ////
+        // 3.  Start the plugin.
+        //
+        bg.BackgroundGeolocation.start();
+      }
+    });
+
     checkLogIn();
     super.initState();
   }

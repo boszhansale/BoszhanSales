@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'views/authorization/login_page.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
 }
 
