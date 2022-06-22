@@ -68,15 +68,24 @@ class _HomePageState extends State<HomePage> {
           children: [
             Image.asset(
               "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               fit: BoxFit.cover,
             ),
             Scaffold(
                 backgroundColor: Colors.white.withOpacity(0.85),
                 body: SingleChildScrollView(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.95,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.95,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -86,9 +95,15 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.17,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.17,
                                   height:
-                                      MediaQuery.of(context).size.width * 0.08,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.08,
                                   child: OutlinedButton(
                                     child: const Text(
                                       'Прочее',
@@ -112,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                                           width: 4, color: Colors.yellow[700]!),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(50)),
+                                          BorderRadius.circular(50)),
                                       // primary: Colors.grey[200],
                                       textStyle: const TextStyle(
                                           color: Colors.white, fontSize: 20),
@@ -124,9 +139,15 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.2,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.2,
                                   height:
-                                      MediaQuery.of(context).size.width * 0.08,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.08,
                                   child: OutlinedButton(
                                     child: const Text(
                                       'Мои заказы',
@@ -148,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                                           width: 4, color: Colors.yellow[700]!),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(50)),
+                                          BorderRadius.circular(50)),
                                       // primary: Colors.grey[200],
                                       textStyle: const TextStyle(
                                           color: Colors.white, fontSize: 20),
@@ -158,10 +179,13 @@ class _HomePageState extends State<HomePage> {
                                 Spacer(),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.4,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.4,
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -177,34 +201,34 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                           plan - completedPlan < 0
                                               ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 18),
-                                                  child: Text(
-                                                    '${completedPlan - plan} тг.',
-                                                    style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 14,
-                                                        color: Colors.green),
-                                                  ),
-                                                )
+                                            padding:
+                                            const EdgeInsets.only(
+                                                top: 18),
+                                            child: Text(
+                                              '${completedPlan - plan} тг.',
+                                              style: TextStyle(
+                                                  fontStyle:
+                                                  FontStyle.italic,
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                  fontSize: 14,
+                                                  color: Colors.green),
+                                            ),
+                                          )
                                               : Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 18),
-                                                  child: Text(
-                                                    '${plan - completedPlan} тг.',
-                                                    style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 14),
-                                                  ),
-                                                )
+                                            padding:
+                                            const EdgeInsets.only(
+                                                top: 18),
+                                            child: Text(
+                                              '${plan - completedPlan} тг.',
+                                              style: TextStyle(
+                                                  fontStyle:
+                                                  FontStyle.italic,
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                  fontSize: 14),
+                                            ),
+                                          )
                                         ],
                                       ),
                                       Row(
@@ -216,26 +240,26 @@ class _HomePageState extends State<HomePage> {
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14),
                                           ),
-                                          firstBrandPlan < 0
+                                          thirdBrandPlan < 0
                                               ? Text(
-                                                  '${firstBrandPlan * -1} тг.',
-                                                  style: TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.green,
-                                                      fontSize: 14),
-                                                )
+                                            '${thirdBrandPlan * -1} тг.',
+                                            style: TextStyle(
+                                                fontStyle:
+                                                FontStyle.italic,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color: Colors.green,
+                                                fontSize: 14),
+                                          )
                                               : Text(
-                                                  '${firstBrandPlan} тг.',
-                                                  style: TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 14),
-                                                ),
+                                            '${thirdBrandPlan} тг.',
+                                            style: TextStyle(
+                                                fontStyle:
+                                                FontStyle.italic,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 14),
+                                          ),
                                         ],
                                       ),
                                       Row(
@@ -249,24 +273,24 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                           secondBrandPlan < 0
                                               ? Text(
-                                                  '${secondBrandPlan * -1} тг.',
-                                                  style: TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.green,
-                                                      fontSize: 14),
-                                                )
+                                            '${secondBrandPlan * -1} тг.',
+                                            style: TextStyle(
+                                                fontStyle:
+                                                FontStyle.italic,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color: Colors.green,
+                                                fontSize: 14),
+                                          )
                                               : Text(
-                                                  '${secondBrandPlan} тг.',
-                                                  style: TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 14),
-                                                ),
+                                            '${secondBrandPlan} тг.',
+                                            style: TextStyle(
+                                                fontStyle:
+                                                FontStyle.italic,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 14),
+                                          ),
                                         ],
                                       ),
                                       Row(
@@ -278,26 +302,26 @@ class _HomePageState extends State<HomePage> {
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14),
                                           ),
-                                          thirdBrandPlan < 0
+                                          firstBrandPlan < 0
                                               ? Text(
-                                                  '${thirdBrandPlan * -1} тг.',
-                                                  style: TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.green,
-                                                      fontSize: 14),
-                                                )
+                                            '${firstBrandPlan * -1} тг.',
+                                            style: TextStyle(
+                                                fontStyle:
+                                                FontStyle.italic,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color: Colors.green,
+                                                fontSize: 14),
+                                          )
                                               : Text(
-                                                  '${thirdBrandPlan} тг.',
-                                                  style: TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 14),
-                                                ),
+                                            '${firstBrandPlan} тг.',
+                                            style: TextStyle(
+                                                fontStyle:
+                                                FontStyle.italic,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 14),
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -311,68 +335,85 @@ class _HomePageState extends State<HomePage> {
                               Padding(
                                   padding: const EdgeInsets.only(right: 50),
                                   child: SizedBox(
-                                    width: MediaQuery.of(context).size.width *
+                                    width: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width *
                                         0.17,
-                                    height: MediaQuery.of(context).size.width *
+                                    height: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width *
                                         0.08,
                                   )),
                               Spacer(),
                               Container(
                                 decoration: BoxDecoration(
-                                    // color: Colors.yellow[700],
+                                  // color: Colors.yellow[700],
                                     borderRadius: BorderRadius.circular(130)),
                                 child: Image.asset("assets/images/logo.png",
-                                    width: MediaQuery.of(context).size.height *
+                                    width: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height *
                                         0.5),
                               ),
                               Spacer(),
                               newVersion
                                   ? Padding(
-                                      padding: const EdgeInsets.only(right: 50),
-                                      child: Column(
-                                        children: [
-                                          Text("Доступна новая версия!"),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.17,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.08,
-                                            child: ElevatedButton(
-                                              child: const Text(
-                                                'Скачать',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                    color: Colors.black),
-                                              ),
-                                              onPressed: () {
-                                                downloadNewVersion();
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                primary: Colors.yellow[700],
-                                                textStyle: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.17,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.08,
+                                padding: const EdgeInsets.only(right: 50),
+                                child: Column(
+                                  children: [
+                                    Text("Доступна новая версия!"),
+                                    SizedBox(
+                                      height: 20,
                                     ),
+                                    SizedBox(
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          0.17,
+                                      height: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          0.08,
+                                      child: ElevatedButton(
+                                        child: const Text(
+                                          'Скачать',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.black),
+                                        ),
+                                        onPressed: () {
+                                          downloadNewVersion();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.yellow[700],
+                                          textStyle: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                                  : SizedBox(
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width *
+                                    0.17,
+                                height:
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width *
+                                    0.08,
+                              ),
                             ],
                           ),
                           Spacer(),
@@ -382,10 +423,13 @@ class _HomePageState extends State<HomePage> {
                                 padding: const EdgeInsets.only(left: 50),
                                 child: SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.4,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.4,
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Удачных продаж!',
@@ -424,9 +468,15 @@ class _HomePageState extends State<HomePage> {
                                 padding: const EdgeInsets.only(right: 50),
                                 child: SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.17,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.17,
                                   height:
-                                      MediaQuery.of(context).size.width * 0.08,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.08,
                                   child: ElevatedButton(
                                     child: const Text(
                                       'Обновить',
@@ -450,9 +500,15 @@ class _HomePageState extends State<HomePage> {
                                 padding: const EdgeInsets.only(right: 50),
                                 child: SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.17,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.17,
                                   height:
-                                      MediaQuery.of(context).size.width * 0.08,
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.08,
                                   child: ElevatedButton(
                                     child: const Text(
                                       'Каталог',
@@ -571,11 +627,11 @@ class _HomePageState extends State<HomePage> {
           firstBrandPlan = responseAnalytics['brands'][0]['plan'] -
               responseAnalytics['brands'][0]['completed'];
         }
-        if (responseAnalytics['brands'].length > 2) {
+        if (responseAnalytics['brands'].length > 1) {
           secondBrandPlan = responseAnalytics['brands'][1]['plan'] -
               responseAnalytics['brands'][1]['completed'];
         }
-        if (responseAnalytics['brands'].length > 3) {
+        if (responseAnalytics['brands'].length > 2) {
           thirdBrandPlan = responseAnalytics['brands'][2]['plan'] -
               responseAnalytics['brands'][2]['completed'];
         }
@@ -601,7 +657,7 @@ class _HomePageState extends State<HomePage> {
     var result = await AuthProvider().checkApplicationVersion();
 
     if (result != 'Error') {
-      if (result['version'] != '0.9') {
+      if (result['version'] != '1.1') {
         setState(() {
           newVersion = true;
         });

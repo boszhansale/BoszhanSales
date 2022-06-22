@@ -12,7 +12,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/store?counteragent=0'),
+      Uri.parse(API_URL + 'api/salesrep/store?counteragent=0'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
@@ -34,7 +34,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/store?counteragent=1'),
+      Uri.parse(API_URL + 'api/salesrep/store?counteragent=1'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
@@ -55,7 +55,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/counteragent'),
+      Uri.parse(API_URL + 'api/salesrep/counteragent'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
@@ -118,7 +118,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/plan'),
+      Uri.parse(API_URL + 'api/salesrep/plan'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
@@ -139,7 +139,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/order-info'),
+      Uri.parse(API_URL + 'api/salesrep/order/info'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
@@ -161,7 +161,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.post(
-      Uri.parse(API_URL + 'api/order'),
+      Uri.parse(API_URL + 'api/salesrep/order'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -186,7 +186,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.delete(
-      Uri.parse(API_URL + 'api/order/$id'),
+      Uri.parse(API_URL + 'api/salesrep/order/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -217,7 +217,7 @@ class SalesRepProvider {
     }
 
     final response = await http.post(
-      Uri.parse(API_URL + 'api/store'),
+      Uri.parse(API_URL + 'api/salesrep/store'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -240,7 +240,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/order?store_id=$storeId'),
+      Uri.parse(API_URL + 'api/salesrep/order?store_id=$storeId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
@@ -261,7 +261,7 @@ class SalesRepProvider {
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL + 'api/order'),
+      Uri.parse(API_URL + 'api/salesrep/order'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"

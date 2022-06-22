@@ -414,11 +414,16 @@ class _ProductListPageState extends State<ProductListPage> {
                                                         showDialog(
                                                             context: context,
                                                             builder: (context) {
+                                                              countDialogTextFieldController
+                                                                  .text = '';
                                                               return AlertDialog(
                                                                 title: Text(
                                                                     'Введите количество:'),
                                                                 content:
                                                                     TextField(
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .number,
                                                                   autofocus:
                                                                       true,
                                                                   focusNode:
@@ -598,6 +603,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                                   showDialog(
                                                       context: context,
                                                       builder: (context) {
+                                                        countDialogTextFieldController
+                                                            .text = '';
                                                         return AlertDialog(
                                                           title: Text(
                                                               'Введите количество:'),

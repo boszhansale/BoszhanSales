@@ -653,6 +653,7 @@ class _BasketPageState extends State<BasketPage> {
                         .remove(returns[i]['product']['id']);
                     AppConstants.basket_return.remove(returns[i]);
                     // returns.remove(returns[i]);
+                    calculateSum();
                   });
                 },
                 child: Icon(
