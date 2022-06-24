@@ -15,10 +15,12 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   @override
   int physCount = 0;
   double physSum = 0;
+  int physCountReturn = 0;
   double physSumReturn = 0;
 
   int legCount = 0;
   double legSum = 0;
+  int legCountReturn = 0;
   double legSumReturn = 0;
 
   void initState() {
@@ -32,10 +34,14 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       setState(() {
         physCount = response['individual_orders'];
         physSum = double.parse(response['individual_purchase'].toString());
+        physCountReturn =
+            int.parse(response['individual_return_count'].toString());
         physSumReturn = double.parse(response['individual_return'].toString());
 
         legCount = response['legal_entity_orders'];
         legSum = double.parse(response['legal_entity_purchase'].toString());
+        legCountReturn =
+            int.parse(response['legal_entity_count_return'].toString());
         legSumReturn = double.parse(response['legal_entity_return'].toString());
       });
     }
@@ -215,6 +221,14 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 5, vertical: 2),
                                             child: Text(
+                                              'Количество возвратов: $legCountReturn',
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 2),
+                                            child: Text(
                                               'Сумма возврата: $legSumReturn',
                                               style: TextStyle(fontSize: 15),
                                             ),
@@ -257,6 +271,14 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                 horizontal: 5, vertical: 2),
                                             child: Text(
                                               'Сумма заявок: $physSum',
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 2),
+                                            child: Text(
+                                              'Количество возвратов: $physCountReturn',
                                               style: TextStyle(fontSize: 15),
                                             ),
                                           ),

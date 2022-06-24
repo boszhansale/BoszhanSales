@@ -451,7 +451,8 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
             var response = await SalesRepProvider().createOrder(
                 orderHistory[i]['outletId'],
                 orderHistory[i]['mobileId'],
-                orderHistory[i]['basket']);
+                orderHistory[i]['basket'],
+                orderHistory[i]['delivery_date']);
 
             if (response != 'Error') {
               setState(() {

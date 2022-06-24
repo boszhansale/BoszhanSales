@@ -155,8 +155,8 @@ class SalesRepProvider {
     }
   }
 
-  Future<dynamic> createOrder(
-      int storeId, String mobileId, List<dynamic> basket) async {
+  Future<dynamic> createOrder(int storeId, String mobileId,
+      List<dynamic> basket, String deliveryDate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
@@ -170,7 +170,8 @@ class SalesRepProvider {
       body: jsonEncode(<String, dynamic>{
         "store_id": storeId,
         "mobile_id": mobileId,
-        "baskets": basket
+        "baskets": basket,
+        deliveryDate != '' ? "delivery_date" : deliveryDate: null
       }),
     );
 
