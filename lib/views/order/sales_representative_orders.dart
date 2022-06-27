@@ -49,6 +49,8 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
       setState(() {
         var data = prefs.getString("OrderHistory")!;
         orderHistory = List.from(jsonDecode(data));
+        orderHistory.sort((a, b) => a["mobileId"].compareTo(b["mobileId"]));
+        orderHistory = orderHistory.reversed.toList();
       });
     }
   }

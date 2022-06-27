@@ -406,7 +406,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    0.19,
+                                                    0.17,
                                                 fit: BoxFit.fitHeight,
                                               ),
                                               Row(
@@ -504,6 +504,16 @@ class _ProductListPageState extends State<ProductListPage> {
                                                               .add(products[i]
                                                                   ['id']);
                                                         });
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                const SnackBar(
+                                                          content: Text(
+                                                              "Возврат добавлен в корзину.",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      20)),
+                                                        ));
                                                       } else {
                                                         setState(() {
                                                           var ind = AppConstants
@@ -789,6 +799,15 @@ class _ProductListPageState extends State<ProductListPage> {
                                                             .add(products[i]
                                                                 ['id']);
                                                       });
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                              const SnackBar(
+                                                        content: Text(
+                                                            "Добавлено в корзину.",
+                                                            style: TextStyle(
+                                                                fontSize: 20)),
+                                                      ));
                                                     } else {
                                                       setState(() {
                                                         var ind = AppConstants

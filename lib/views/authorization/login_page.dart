@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:boszhan_sales/components/app_bar.dart';
 import 'package:boszhan_sales/services/auth_api_provider.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../home_page.dart';
@@ -23,11 +26,80 @@ class _LoginPageState extends State<LoginPage> {
     // emailController.text = 'sad@mail.ru';
     // passwordController.text = '123456';
 
-    bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
+    bg.BackgroundGeolocation.onMotionChange((bg.Location location) async {
       print('[motionchange long] - ${location.coords.longitude}');
       print('[motionchange lat] - ${location.coords.latitude}');
-      AuthProvider()
-          .sendLocation(location.coords.latitude, location.coords.longitude);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.mobile) {
+        AuthProvider()
+            .sendLocation(location.coords.latitude, location.coords.longitude);
+        if (prefs.getString("CoordsData") != null) {
+          var list = jsonDecode(prefs.getString("CoordsData")!);
+          for (int i = 0; i < list.length; i++) {
+            if (list[i]["isSended"] == false) {
+              var response = AuthProvider().sendLocation(
+                  location.coords.latitude, location.coords.longitude);
+              if (response != "Error") {
+                list[i]["isSended"] = true;
+              }
+            }
+          }
+          prefs.setString("CoordsData", jsonEncode(list));
+        }
+      } else if (connectivityResult == ConnectivityResult.wifi) {
+        AuthProvider()
+            .sendLocation(location.coords.latitude, location.coords.longitude);
+        if (prefs.getString("CoordsData") != null) {
+          var list = jsonDecode(prefs.getString("CoordsData")!);
+          for (int i = 0; i < list.length; i++) {
+            if (list[i]["isSended"] == false) {
+              var response = AuthProvider().sendLocation(
+                  location.coords.latitude, location.coords.longitude);
+              if (response != "Error") {
+                list[i]["isSended"] = true;
+              }
+            }
+          }
+          prefs.setString("CoordsData", jsonEncode(list));
+        }
+      } else {
+        if (prefs.getString("CoordsData") != null) {
+          var list = jsonDecode(prefs.getString("CoordsData")!);
+          if (list.length > 50) {
+            list.removeAt(0);
+            list.add({
+              "lat": location.coords.latitude,
+              "long": location.coords.longitude,
+              "isSended": false
+            });
+          } else {
+            list.add({
+              "lat": location.coords.latitude,
+              "long": location.coords.longitude,
+              "isSended": false
+            });
+          }
+          prefs.setString("CoordsData", jsonEncode(list));
+        } else {
+          var list = [];
+          if (list.length > 50) {
+            list.removeAt(0);
+            list.add({
+              "lat": location.coords.latitude,
+              "long": location.coords.longitude,
+              "isSended": false
+            });
+          } else {
+            list.add({
+              "lat": location.coords.latitude,
+              "long": location.coords.longitude,
+              "isSended": false
+            });
+          }
+          prefs.setString("CoordsData", jsonEncode(list));
+        }
+      }
     });
 
     bg.BackgroundGeolocation.ready(bg.Config(

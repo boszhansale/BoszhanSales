@@ -336,6 +336,12 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                       AppConstants.basketIDs_return
                                           .add(thisProduct['id']);
                                     });
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text(
+                                          "Возврат добавлен в корзину.",
+                                          style: TextStyle(fontSize: 20)),
+                                    ));
                                   } else {
                                     setState(() {
                                       var ind = AppConstants.basketIDs_return
@@ -369,7 +375,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   thisProduct['name'],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -543,6 +549,11 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     AppConstants.basketIDs
                                         .add(thisProduct['id']);
                                   });
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text("Добавлено в корзину.",
+                                        style: TextStyle(fontSize: 20)),
+                                  ));
                                 } else {
                                   setState(() {
                                     var ind = AppConstants.basketIDs
