@@ -208,7 +208,8 @@ class _LegalOutletListPageState extends State<LegalOutletListPage> {
                           widget.counteragentName,
                           widget.counteragentDiscount,
                           widget.priceTypeId,
-                          widget.debt)));
+                          widget.debt,
+                          outletList[i])));
             },
             cells: [
               DataCell(Text(outletList[i]['name'])),

@@ -160,6 +160,16 @@ class SalesRepProvider {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
+    var bodyVar = <String, dynamic>{
+      "store_id": storeId,
+      "mobile_id": mobileId,
+      "baskets": basket,
+    };
+
+    if (deliveryDate != '') {
+      bodyVar["delivery_date"] = deliveryDate;
+    }
+
     final response = await http.post(
       Uri.parse(API_URL + 'api/salesrep/order'),
       headers: <String, String>{
@@ -167,12 +177,7 @@ class SalesRepProvider {
         'Accept': 'application/json',
         'Authorization': "Bearer $token"
       },
-      body: jsonEncode(<String, dynamic>{
-        "store_id": storeId,
-        "mobile_id": mobileId,
-        "baskets": basket,
-        deliveryDate != '' ? "delivery_date" : deliveryDate: null
-      }),
+      body: jsonEncode(bodyVar),
     );
 
     if (response.statusCode == 200) {
@@ -231,6 +236,31 @@ class SalesRepProvider {
       Map<String, dynamic> result = jsonDecode(response.body);
       Map<String, dynamic> result_res = {"status": "Success", "data": result};
       return result_res;
+    } else {
+      return {"status": "Error"};
+    }
+  }
+
+  Future<dynamic> updateOutlet(int id, double lat, double long) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+
+    final response = await http.post(
+      Uri.parse(API_URL + 'api/salesrep/store/update/$id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': "Bearer $token"
+      },
+      body: jsonEncode(<String, dynamic>{
+        "lat": lat,
+        "lng": long,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      return result;
     } else {
       return {"status": "Error"};
     }

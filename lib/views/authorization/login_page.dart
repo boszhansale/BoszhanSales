@@ -38,8 +38,8 @@ class _LoginPageState extends State<LoginPage> {
           var list = jsonDecode(prefs.getString("CoordsData")!);
           for (int i = 0; i < list.length; i++) {
             if (list[i]["isSended"] == false) {
-              var response = AuthProvider().sendLocation(
-                  location.coords.latitude, location.coords.longitude);
+              var response =
+                  AuthProvider().sendLocation(list[i]['lat'], list[i]['long']);
               if (response != "Error") {
                 list[i]["isSended"] = true;
               }
@@ -54,8 +54,8 @@ class _LoginPageState extends State<LoginPage> {
           var list = jsonDecode(prefs.getString("CoordsData")!);
           for (int i = 0; i < list.length; i++) {
             if (list[i]["isSended"] == false) {
-              var response = AuthProvider().sendLocation(
-                  location.coords.latitude, location.coords.longitude);
+              var response =
+                  AuthProvider().sendLocation(list[i]['lat'], list[i]['long']);
               if (response != "Error") {
                 list[i]["isSended"] = true;
               }

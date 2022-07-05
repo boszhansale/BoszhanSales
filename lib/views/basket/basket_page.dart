@@ -8,12 +8,20 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:geolocator/geolocator.dart';
 import '../../services/sales_rep_api_provider.dart';
 import '../home_page.dart';
 
 class BasketPage extends StatefulWidget {
-  BasketPage(this.outletName, this.outletId, this.counteragentID,
-      this.counteragentName, this.discount, this.priceTypeId, this.debt);
+  BasketPage(
+      this.outletName,
+      this.outletId,
+      this.counteragentID,
+      this.counteragentName,
+      this.discount,
+      this.priceTypeId,
+      this.debt,
+      this.outlet);
 
   final String outletName;
   final int outletId;
@@ -22,6 +30,7 @@ class BasketPage extends StatefulWidget {
   final int discount;
   final int priceTypeId;
   final String debt;
+  final Map<String, dynamic> outlet;
 
   @override
   _BasketPageState createState() => _BasketPageState();
@@ -123,6 +132,17 @@ class _BasketPageState extends State<BasketPage> {
               Text("Something went wrong.", style: TextStyle(fontSize: 20)),
         ));
       }
+    }
+  }
+
+  void checkAndSendLocation() async {
+    if (widget.outlet['lat'] == null) {
+      print("Null");
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      var response = await SalesRepProvider()
+          .updateOutlet(widget.outletId, position.latitude, position.longitude);
+      print(response);
     }
   }
 
@@ -268,9 +288,11 @@ class _BasketPageState extends State<BasketPage> {
     if (connectivityResult == ConnectivityResult.mobile) {
       getOrderHistory();
       sendDataToServer();
+      checkAndSendLocation();
     } else if (connectivityResult == ConnectivityResult.wifi) {
       getOrderHistory();
       sendDataToServer();
+      checkAndSendLocation();
     } else {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomePage()),

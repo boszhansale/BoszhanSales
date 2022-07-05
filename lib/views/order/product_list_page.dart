@@ -20,7 +20,8 @@ class ProductListPage extends StatefulWidget {
       this.counteragentName,
       this.counteragentDiscount,
       this.priceTypeId,
-      this.debt);
+      this.debt,
+      this.outlet);
 
   final String outletName;
   final int outletDiscount;
@@ -30,6 +31,7 @@ class ProductListPage extends StatefulWidget {
   final int counteragentDiscount;
   final int priceTypeId;
   final String debt;
+  final Map<String, dynamic> outlet;
 
   @override
   _ProductListPageState createState() => _ProductListPageState();
@@ -80,6 +82,7 @@ class _ProductListPageState extends State<ProductListPage> {
     prefs.setInt("counteragentDiscount", widget.counteragentDiscount);
     prefs.setInt("priceTypeId", widget.priceTypeId);
     prefs.setString("debt", widget.debt);
+    prefs.setString("savedOutlet", jsonEncode(widget.outlet));
   }
 
   getInfo() async {
@@ -282,7 +285,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                                               .counteragentName,
                                                           discount,
                                                           widget.priceTypeId,
-                                                          widget.debt))).then(
+                                                          widget.debt,
+                                                          widget.outlet))).then(
                                               (_) => setState(() {}));
                                         },
                                         child: Icon(
@@ -381,7 +385,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                                             : products[i]
                                                                 ['discount'],
                                                         widget.priceTypeId,
-                                                        products)))
+                                                        products,
+                                                        widget.outlet)))
                                         .then((_) => setState(() {}));
                                   },
                                   child: Card(

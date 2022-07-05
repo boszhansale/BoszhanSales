@@ -15,7 +15,8 @@ class ProductInfoPage extends StatefulWidget {
       this.product,
       this.discount,
       this.priceTypeId,
-      this.listProducts);
+      this.listProducts,
+      this.outlet);
 
   final String outletName;
   final int outletId;
@@ -26,6 +27,7 @@ class ProductInfoPage extends StatefulWidget {
   final int discount;
   final priceTypeId;
   final List<dynamic> listProducts;
+  final Map<String, dynamic> outlet;
 
   @override
   _ProductInfoPageState createState() => _ProductInfoPageState();
@@ -165,7 +167,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                                         widget.counteragentName,
                                                         widget.discount,
                                                         widget.priceTypeId,
-                                                        widget.debt)))
+                                                        widget.debt,
+                                                        widget.outlet)))
                                         .whenComplete(() => setState(() {}));
                                   },
                                   child: Icon(

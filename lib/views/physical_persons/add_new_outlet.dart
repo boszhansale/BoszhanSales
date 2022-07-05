@@ -266,7 +266,8 @@ class _AddNewOutletState extends State<AddNewOutlet> {
                         response['data']['salesrep']['name'],
                         widget.counteragentDiscount,
                         widget.priceTypeId,
-                        widget.debt)));
+                        widget.debt,
+                        response['data'])));
           } else {
             isSending = false;
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

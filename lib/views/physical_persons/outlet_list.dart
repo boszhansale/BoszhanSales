@@ -195,7 +195,8 @@ class _OutletListPageState extends State<OutletListPage> {
                           outletList[i]['salesrep']['name'],
                           0,
                           1,
-                          '0')));
+                          '0',
+                          outletList[i])));
             },
             cells: [
               DataCell(Text(outletList[i]['name'])),

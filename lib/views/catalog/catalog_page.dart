@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:boszhan_sales/views/order/new_order_page.dart';
 import 'package:boszhan_sales/views/order/product_list_page.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +117,8 @@ class _CatalogPageState extends State<CatalogPage> {
                                       var priceTypeId =
                                           prefs.getInt("priceTypeId")!;
                                       var debt = prefs.getString("debt")!;
+                                      var savedOutlet = jsonDecode(
+                                          prefs.getString("savedOutlet")!);
 
                                       Navigator.push(
                                           context,
@@ -128,7 +132,8 @@ class _CatalogPageState extends State<CatalogPage> {
                                                       counteragentName,
                                                       counteragentDiscount,
                                                       priceTypeId,
-                                                      debt)));
+                                                      debt,
+                                                      savedOutlet)));
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
