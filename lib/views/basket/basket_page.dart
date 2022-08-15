@@ -1,14 +1,13 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:boszhan_sales/utils/const.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:geolocator/geolocator.dart';
 import '../../services/sales_rep_api_provider.dart';
 import '../home_page.dart';
 
@@ -227,6 +226,8 @@ class _BasketPageState extends State<BasketPage> {
         'type': returns[i]['type'],
         'name': returns[i]['product']['name'],
         'price': returns[i]['product']['prices'][0]['price'],
+        'reason_refund_id': returns[i]['causeId'],
+        'comment': returns[i]['causeComment']
       });
     }
 
@@ -456,7 +457,15 @@ class _BasketPageState extends State<BasketPage> {
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            isActive ? createOrder() : null;
+                            if (sumAll > 0) {
+                              isActive ? createOrder() : null;
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Итоговая сумма некорректна.",
+                                    style: TextStyle(fontSize: 20)),
+                              ));
+                            }
                           },
                           label: Text(
                             "Подтвердить заказ",

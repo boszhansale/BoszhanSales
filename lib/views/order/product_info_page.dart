@@ -47,6 +47,9 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
   int indexOfProduct = 0;
   String countValueText = '1';
 
+  Object? _value = 1;
+  TextEditingController commentController = TextEditingController();
+
   @override
   void initState() {
     mainImageURL = widget.product['images'].length > 0
@@ -279,72 +282,164 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                 onPressed: () {
                                   if (!AppConstants.basketIDs_return
                                       .contains(thisProduct['id'])) {
-                                    // showDialog(
-                                    //     context: context,
-                                    //     builder: (context) {
-                                    //       countDialogTextFieldController.text =
-                                    //           '';
-                                    //       return AlertDialog(
-                                    //         title: Text('Введите количество:'),
-                                    //         content: TextField(
-                                    //           keyboardType:
-                                    //               TextInputType.number,
-                                    //           focusNode: _focusNode,
-                                    //           autofocus: true,
-                                    //           onChanged: (value) {
-                                    //             setState(() {
-                                    //               countValueText = value;
-                                    //             });
-                                    //           },
-                                    //           controller:
-                                    //               countDialogTextFieldController,
-                                    //           decoration: InputDecoration(
-                                    //               hintText: "Число"),
-                                    //         ),
-                                    //         actions: <Widget>[
-                                    //           FlatButton(
-                                    //             color: Colors.green,
-                                    //             textColor: Colors.white,
-                                    //             child: Text('OK'),
-                                    //             onPressed: () {
-                                    //               setState(() {
-                                    //                 AppConstants.basket_return
-                                    //                     .add({
-                                    //                   'product': thisProduct,
-                                    //                   'count': double.parse(
-                                    //                       countValueText == ''
-                                    //                           ? '1'
-                                    //                           : countValueText),
-                                    //                   'type': 1
-                                    //                 });
-                                    //                 AppConstants
-                                    //                     .basketIDs_return
-                                    //                     .add(thisProduct['id']);
-                                    //               });
-                                    //
-                                    //               Navigator.pop(context);
-                                    //             },
-                                    //           ),
-                                    //         ],
-                                    //       );
-                                    //     });
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                'Выберите причину возврата'),
+                                            content: SizedBox(
+                                              height: 270,
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                      height: 60,
+                                                      child:
+                                                          DropdownButtonFormField(
+                                                              value: _value,
+                                                              items: const [
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "По сроку годности"),
+                                                                  value: 1,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "По сроку годности более 10 дней"),
+                                                                  value: 2,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "Белая жидкость"),
+                                                                  value: 3,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "Блок продаж по решению ДР"),
+                                                                  value: 4,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "Возврат конечного потребителя/скрытый брак"),
+                                                                  value: 5,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "Низкие продажи"),
+                                                                  value: 6,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "Переход на договор (с ФЗ на ЮЛ)"),
+                                                                  value: 7,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "Поломка оборудования покупателя/закрытие магазина Покупателя"),
+                                                                  value: 8,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "Развакуум"),
+                                                                  value: 9,
+                                                                ),
+                                                                DropdownMenuItem(
+                                                                  child: Text(
+                                                                      "Прочее"),
+                                                                  value: 10,
+                                                                )
+                                                              ],
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  _value =
+                                                                      value;
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                });
+                                                              },
+                                                              hint: const Text(
+                                                                  "Select item"))),
+                                                  TextFormField(
+                                                    controller:
+                                                        commentController,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            hintText:
+                                                                "Причина"),
+                                                    keyboardType:
+                                                        TextInputType.phone,
+                                                    maxLength: 100,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                color: Colors.red,
+                                                textColor: Colors.white,
+                                                child: const Text('Отмена'),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                              ),
+                                              FlatButton(
+                                                color: Colors.green,
+                                                textColor: Colors.white,
+                                                child: const Text('Сохранить'),
+                                                onPressed: () async {
+                                                  if (_value != 10 ||
+                                                      commentController.text !=
+                                                          '') {
+                                                    setState(() {
+                                                      AppConstants.basket_return
+                                                          .add({
+                                                        'product': thisProduct,
+                                                        'count': double.parse(
+                                                            countTextFieldController
+                                                                .text),
+                                                        'type': 1,
+                                                        'causeId': _value,
+                                                        'causeComment':
+                                                            commentController
+                                                                .text,
+                                                      });
+                                                      AppConstants
+                                                          .basketIDs_return
+                                                          .add(thisProduct[
+                                                              'id']);
+                                                    });
 
-                                    setState(() {
-                                      AppConstants.basket_return.add({
-                                        'product': thisProduct,
-                                        'count': double.parse(
-                                            countTextFieldController.text),
-                                        'type': 1
-                                      });
-                                      AppConstants.basketIDs_return
-                                          .add(thisProduct['id']);
-                                    });
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                      content: Text(
-                                          "Возврат добавлен в корзину.",
-                                          style: TextStyle(fontSize: 20)),
-                                    ));
+                                                    commentController.text = '';
+                                                    Navigator.pop(context);
+
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                      content: Text(
+                                                          "Возврат добавлен в корзину.",
+                                                          style: TextStyle(
+                                                              fontSize: 20)),
+                                                    ));
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                      content: Text(
+                                                          "Напишите причину.",
+                                                          style: TextStyle(
+                                                              fontSize: 20)),
+                                                    ));
+                                                  }
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   } else {
                                     setState(() {
                                       var ind = AppConstants.basketIDs_return
