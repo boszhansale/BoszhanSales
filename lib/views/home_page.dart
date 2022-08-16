@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   var analyticsData = null;
 
   bool newVersion = false;
+  String appVersion = "";
 
   @override
   void initState() {
@@ -461,11 +462,22 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.black),
                                     ),
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CatalogPage()));
+                                      if (appVersion != "" &&
+                                          appVersion ==
+                                              AppConstants.appVersion) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CatalogPage()));
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Обновитесь до последней версии!",
+                                              style: TextStyle(fontSize: 20)),
+                                        ));
+                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Colors.yellow[700],
@@ -601,13 +613,15 @@ class _HomePageState extends State<HomePage> {
     var result = await AuthProvider().checkApplicationVersion();
 
     if (result != 'Error') {
-      if (result['version'] != '1.6') {
+      if (result['version'] != AppConstants.appVersion) {
         setState(() {
           newVersion = true;
+          appVersion = result['version'];
         });
       } else {
         setState(() {
           newVersion = false;
+          appVersion = result['version'];
         });
       }
     } else {

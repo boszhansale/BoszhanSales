@@ -280,11 +280,13 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   horizontal: 20, vertical: 5),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  if (!AppConstants.basketIDs_return
-                                      .contains(thisProduct['id'])) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
+                                  // if (!AppConstants.basketIDs_return
+                                  //     .contains(thisProduct['id'])) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return StatefulBuilder(
+                                            builder: (context, setState) {
                                           return AlertDialog(
                                             title: const Text(
                                                 'Выберите причину возврата'),
@@ -354,23 +356,24 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                                                 setState(() {
                                                                   _value =
                                                                       value;
-                                                                  Navigator.pop(
-                                                                      context);
                                                                 });
                                                               },
                                                               hint: const Text(
                                                                   "Select item"))),
-                                                  TextFormField(
-                                                    controller:
-                                                        commentController,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            hintText:
-                                                                "Причина"),
-                                                    keyboardType:
-                                                        TextInputType.phone,
-                                                    maxLength: 100,
-                                                  ),
+                                                  _value == 10
+                                                      ? TextFormField(
+                                                          controller:
+                                                              commentController,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  hintText:
+                                                                      "Причина"),
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .phone,
+                                                          maxLength: 100,
+                                                        )
+                                                      : Container(),
                                                 ],
                                               ),
                                             ),
@@ -440,15 +443,16 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                             ],
                                           );
                                         });
-                                  } else {
-                                    setState(() {
-                                      var ind = AppConstants.basketIDs_return
-                                          .indexOf(thisProduct['id']);
-                                      AppConstants.basketIDs_return
-                                          .remove(thisProduct['id']);
-                                      AppConstants.basket_return.removeAt(ind);
-                                    });
-                                  }
+                                      });
+                                  // } else {
+                                  //   setState(() {
+                                  //     var ind = AppConstants.basketIDs_return
+                                  //         .indexOf(thisProduct['id']);
+                                  //     AppConstants.basketIDs_return
+                                  //         .remove(thisProduct['id']);
+                                  //     AppConstants.basket_return.removeAt(ind);
+                                  //   });
+                                  // }
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
@@ -460,7 +464,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                 style: ElevatedButton.styleFrom(
                                     primary: AppConstants.basketIDs_return
                                             .contains(thisProduct['id'])
-                                        ? Colors.grey
+                                        ? Colors.pink
                                         : Colors.red),
                               ),
                             ),
@@ -484,16 +488,26 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 20, vertical: 10),
-                                        child: Text(
-                                          "${thisProduct['prices'][widget.priceTypeId - 1]['price']} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                        child: thisProduct[
+                                                    'counteragent_prices'] !=
+                                                null
+                                            ? thisProduct['counteragent_prices']
+                                                .any((element) {
+                                                if (element.values.contains(
+                                                    widget.counteragentID))
+                                                  return Text(
+                                                      "${element['price']} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}");
+                                              })
+                                            : Text(
+                                                "${thisProduct['prices'][widget.priceTypeId - 1]['price']} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                       )
                                     : SizedBox(),
                                 Spacer(),

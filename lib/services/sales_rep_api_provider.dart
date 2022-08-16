@@ -164,6 +164,7 @@ class SalesRepProvider {
       "store_id": storeId,
       "mobile_id": mobileId,
       "baskets": basket,
+      "salesrep_mobile_app_version": AppConstants.appVersion
     };
 
     if (deliveryDate != '') {

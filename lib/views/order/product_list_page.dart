@@ -419,13 +419,16 @@ class _ProductListPageState extends State<ProductListPage> {
                                                 children: [
                                                   ElevatedButton(
                                                     onPressed: () {
-                                                      if (!AppConstants
-                                                          .basketIDs_return
-                                                          .contains(products[i]
-                                                              ['id'])) {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (context) {
+                                                      // if (!AppConstants
+                                                      //     .basketIDs_return
+                                                      //     .contains(products[i]
+                                                      //         ['id'])) {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return StatefulBuilder(
+                                                                builder: (context,
+                                                                    setState) {
                                                               return AlertDialog(
                                                                 title: const Text(
                                                                     'Выберите причину возврата'),
@@ -487,14 +490,14 @@ class _ProductListPageState extends State<ProductListPage> {
                                                                                 });
                                                                               },
                                                                               hint: const Text("Select item"))),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            commentController,
-                                                                        decoration:
-                                                                            const InputDecoration(hintText: "Причина"),
-                                                                        maxLength:
-                                                                            100,
-                                                                      ),
+                                                                      _value ==
+                                                                              10
+                                                                          ? TextFormField(
+                                                                              controller: commentController,
+                                                                              decoration: const InputDecoration(hintText: "Причина"),
+                                                                              maxLength: 100,
+                                                                            )
+                                                                          : Container(),
                                                                     ],
                                                                   ),
                                                                 ),
@@ -575,23 +578,24 @@ class _ProductListPageState extends State<ProductListPage> {
                                                                 ],
                                                               );
                                                             });
-                                                      } else {
-                                                        setState(() {
-                                                          var ind = AppConstants
-                                                              .basketIDs_return
-                                                              .indexOf(
-                                                                  products[i]
-                                                                      ['id']);
-                                                          AppConstants
-                                                              .basketIDs_return
-                                                              .remove(
-                                                                  products[i]
-                                                                      ['id']);
-                                                          AppConstants
-                                                              .basket_return
-                                                              .removeAt(ind);
-                                                        });
-                                                      }
+                                                          });
+                                                      // } else {
+                                                      //   setState(() {
+                                                      //     var ind = AppConstants
+                                                      //         .basketIDs_return
+                                                      //         .indexOf(
+                                                      //             products[i]
+                                                      //                 ['id']);
+                                                      //     AppConstants
+                                                      //         .basketIDs_return
+                                                      //         .remove(
+                                                      //             products[i]
+                                                      //                 ['id']);
+                                                      //     AppConstants
+                                                      //         .basket_return
+                                                      //         .removeAt(ind);
+                                                      //   });
+                                                      // }
                                                     },
                                                     child: Text(
                                                       "Возврат",
@@ -604,7 +608,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                                                 .contains(
                                                                     products[i]
                                                                         ['id'])
-                                                            ? Colors.grey
+                                                            ? Colors.pink
                                                             : Colors.red),
                                                   ),
                                                   products[i]['hit'] == 1
@@ -682,11 +686,22 @@ class _ProductListPageState extends State<ProductListPage> {
                                                 ),
                                               ),
                                             ),
-                                            Text(
-                                              "${discount != 0 ? products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - discount) / 100 : products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - products[i]['discount']) / 100} тг/${products[i]['measure'] == 1 ? "шт" : "кг"}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                            products[i]['counteragent_prices'] !=
+                                                    null
+                                                ? products[i]
+                                                        ['counteragent_prices']
+                                                    .any((element) {
+                                                    if (element.values.contains(
+                                                        widget.counteragentID))
+                                                      return Text(
+                                                          "${element['price']} тг/${products[i]['measure'] == 1 ? "шт" : "кг"}");
+                                                  })
+                                                : Text(
+                                                    "${(discount != 0 ? products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - discount) / 100 : products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - products[i]['discount']) / 100)} тг/${products[i]['measure'] == 1 ? "шт" : "кг"}",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                             SizedBox(
                                               height: 2,
                                             ),
