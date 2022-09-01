@@ -1,8 +1,8 @@
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/views/history_orders/history_counteragents_page.dart';
 import 'package:boszhan_sales/views/history_orders/history_stores_page.dart';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 import '../home_page.dart';
 
@@ -296,7 +296,37 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                               ],
                             ),
                           ),
-                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.1,
+                              width: MediaQuery.of(context).size.width * 0.15,
+                              child: ElevatedButton(
+                                child: const Text(
+                                  'Поделиться',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Colors.black),
+                                ),
+                                onPressed: () async {
+                                  String text =
+                                      'Физ. лицо \nКоличество заявок: $physCount \nСумма заявок: $physSum \nКоличество возвратов: $physCountReturn \nСумма возврата: $physSumReturn \nЮр лицо \nКоличество заявок: $legCount \nСумма заявок: $legSum \nКоличество возвратов: $legCountReturn \nСумма возврата: $legSumReturn';
+
+                                  await FlutterShare.share(
+                                    title: 'Первомайские деликатесы',
+                                    text: text,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.yellow[700],
+                                  textStyle: const TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Spacer()
                         ],
                       ),
                     ],

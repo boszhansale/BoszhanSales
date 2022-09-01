@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:boszhan_sales/components/app_bar.dart';
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/views/order/product_list_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../home_page.dart';
 
@@ -120,6 +118,8 @@ class _AddNewOutletState extends State<AddNewOutlet> {
                         controller: phoneController,
                         style:
                             const TextStyle(color: Colors.black, fontSize: 20),
+                        keyboardType: TextInputType.number,
+                        maxLength: 11,
                         decoration: InputDecoration(
                             hintStyle:
                                 TextStyle(color: Colors.grey, fontSize: 20),
@@ -243,7 +243,7 @@ class _AddNewOutletState extends State<AddNewOutlet> {
   void createOutletAction() async {
     if (!isSending) {
       if (nameController.text.length > 1 &&
-          phoneController.text.length > 1 &&
+          phoneController.text.length == 11 &&
           addressController.text.length > 1) {
         isSending = true;
         Map<String, dynamic> response = {};

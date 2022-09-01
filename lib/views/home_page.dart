@@ -466,10 +466,11 @@ class _HomePageState extends State<HomePage> {
                                           appVersion ==
                                               AppConstants.appVersion) {
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CatalogPage()));
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CatalogPage()))
+                                            .whenComplete(() => checkVersion());
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
@@ -511,6 +512,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getAllData() async {
+    checkVersion();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var responseCounteragents = await SalesRepProvider().getCounteragents();
     var responseBrends = await SalesRepProvider().getBrends();

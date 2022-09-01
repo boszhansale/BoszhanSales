@@ -686,22 +686,23 @@ class _ProductListPageState extends State<ProductListPage> {
                                                 ),
                                               ),
                                             ),
-                                            products[i]['counteragent_prices'] !=
-                                                    null
-                                                ? products[i]
-                                                        ['counteragent_prices']
-                                                    .any((element) {
-                                                    if (element.values.contains(
-                                                        widget.counteragentID))
-                                                      return Text(
-                                                          "${element['price']} тг/${products[i]['measure'] == 1 ? "шт" : "кг"}");
-                                                  })
-                                                : Text(
-                                                    "${(discount != 0 ? products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - discount) / 100 : products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - products[i]['discount']) / 100)} тг/${products[i]['measure'] == 1 ? "шт" : "кг"}",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
+                                            // products[i]['counteragent_prices'] !=
+                                            //         null
+                                            //     ? products[i]
+                                            //             ['counteragent_prices']
+                                            //         .any((element) {
+                                            //         if (element.values.contains(
+                                            //             widget.counteragentID))
+                                            //           return Text(
+                                            //               "${element['price']} тг/${products[i]['measure'] == 1 ? "шт" : "кг"}");
+                                            //       })
+                                            //     :
+
+                                            Text(
+                                              "${(discount != 0 ? products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - discount) / 100 : products[i]['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - products[i]['discount']) / 100)} тг/${products[i]['measure'] == 1 ? "шт" : "кг"}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                             SizedBox(
                                               height: 2,
                                             ),

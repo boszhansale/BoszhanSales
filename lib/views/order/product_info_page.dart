@@ -488,26 +488,28 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 20, vertical: 10),
-                                        child: thisProduct[
-                                                    'counteragent_prices'] !=
-                                                null
-                                            ? thisProduct['counteragent_prices']
-                                                .any((element) {
-                                                if (element.values.contains(
-                                                    widget.counteragentID))
-                                                  return Text(
-                                                      "${element['price']} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}");
-                                              })
-                                            : Text(
-                                                "${thisProduct['prices'][widget.priceTypeId - 1]['price']} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}",
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  decoration: TextDecoration
-                                                      .lineThrough,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
+                                        child:
+                                            // thisProduct[
+                                            //             'counteragent_prices'] !=
+                                            //         null
+                                            //     ? thisProduct['counteragent_prices']
+                                            //         .any((element) {
+                                            //         if (element.values.contains(
+                                            //             widget.counteragentID))
+                                            //           return Text(
+                                            //               "${element['price']} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}");
+                                            //       })
+                                            //     :
+                                            Text(
+                                          "${thisProduct['prices'][widget.priceTypeId - 1]['price']} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       )
                                     : SizedBox(),
                                 Spacer(),

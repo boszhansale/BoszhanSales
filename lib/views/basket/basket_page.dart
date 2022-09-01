@@ -62,6 +62,10 @@ class _BasketPageState extends State<BasketPage> {
     String datetime = DateFormat("yyyy-MM-dd").format(selectedDate);
     deliveryDate = datetime;
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _selectDate(context);
+    });
+
     super.initState();
   }
 
