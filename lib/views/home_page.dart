@@ -553,7 +553,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (responsePhysicalOutlets != 'Error') {
-      print(responsePhysicalOutlets);
       prefs.setString(
           "responsePhysicalOutlets", jsonEncode(responsePhysicalOutlets));
     } else {

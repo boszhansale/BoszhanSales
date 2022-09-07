@@ -71,11 +71,18 @@ class _BasketPageState extends State<BasketPage> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(
-            DateTime.now().year, DateTime.now().month, DateTime.now().day),
-        lastDate: DateTime(2101));
+      context: context,
+      initialDate: selectedDate.weekday != 6 || selectedDate.weekday != 7
+          ? selectedDate
+          : selectedDate.weekday == 6
+              ? selectedDate.add(const Duration(days: 1))
+              : selectedDate.add(const Duration(days: 2)),
+      firstDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      lastDate: DateTime(2101),
+      selectableDayPredicate: (DateTime val) =>
+          val.weekday == 6 || val.weekday == 7 ? false : true,
+    );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -140,7 +147,6 @@ class _BasketPageState extends State<BasketPage> {
 
   void checkAndSendLocation() async {
     if (widget.outlet['lat'] == null) {
-      print("Null");
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       var response = await SalesRepProvider()
@@ -166,13 +172,6 @@ class _BasketPageState extends State<BasketPage> {
   getBasket() async {
     products = AppConstants.basket;
     returns = AppConstants.basket_return;
-    // for (int i = 0; i < AppConstants.basket.length; i++) {
-    //   if (AppConstants.basket[i]['type'] == 0) {
-    //     products.add(AppConstants.basket[i]);
-    //   } else {
-    //     returns.add(AppConstants.basket[i]);
-    //   }
-    // }
   }
 
   void calculateSum() {

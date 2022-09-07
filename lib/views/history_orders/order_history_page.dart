@@ -3,6 +3,7 @@ import 'package:boszhan_sales/views/history_orders/history_counteragents_page.da
 import 'package:boszhan_sales/views/history_orders/history_stores_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
 
@@ -23,9 +24,19 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   int legCountReturn = 0;
   double legSumReturn = 0;
 
+  String name = '';
+
   void initState() {
     getData();
+    getName();
     super.initState();
+  }
+
+  void getName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('full_name')!;
+    });
   }
 
   void getData() async {
@@ -311,7 +322,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                 ),
                                 onPressed: () async {
                                   String text =
-                                      'Физ. лицо \nКоличество заявок: $physCount \nСумма заявок: $physSum \nКоличество возвратов: $physCountReturn \nСумма возврата: $physSumReturn \nЮр лицо \nКоличество заявок: $legCount \nСумма заявок: $legSum \nКоличество возвратов: $legCountReturn \nСумма возврата: $legSumReturn';
+                                      '$name \n Физ. лицо \nКоличество заявок: $physCount \nСумма заявок: $physSum \nКоличество возвратов: $physCountReturn \nСумма возврата: $physSumReturn \nЮр лицо \nКоличество заявок: $legCount \nСумма заявок: $legSum \nКоличество возвратов: $legCountReturn \nСумма возврата: $legSumReturn';
 
                                   await FlutterShare.share(
                                     title: 'Первомайские деликатесы',

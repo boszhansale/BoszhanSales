@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/views/order/product_info_page.dart';
+import 'package:boszhan_sales/views/order/store_orders_history.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -230,7 +231,23 @@ class _ProductListPageState extends State<ProductListPage> {
                               height: 0,
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            StoreOrdersHistory(
+                                                widget.outletName,
+                                                widget.outletDiscount,
+                                                widget.outletId,
+                                                widget.counteragentID,
+                                                widget.counteragentName,
+                                                widget.counteragentDiscount,
+                                                widget.priceTypeId,
+                                                widget.debt,
+                                                widget.outlet,
+                                                discount)));
+                              },
                               child: Container(
                                   color: Colors.yellow[700],
                                   width:
