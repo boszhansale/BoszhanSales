@@ -462,23 +462,23 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.black),
                                     ),
                                     onPressed: () {
-                                      if (appVersion != "" &&
-                                          appVersion ==
-                                              AppConstants.appVersion) {
-                                        Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CatalogPage()))
-                                            .whenComplete(() => checkVersion());
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                          content: Text(
-                                              "Обновитесь до последней версии!",
-                                              style: TextStyle(fontSize: 20)),
-                                        ));
-                                      }
+                                      // if (appVersion != "" &&
+                                      //     appVersion ==
+                                      //         AppConstants.appVersion) {
+                                      Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CatalogPage()))
+                                          .whenComplete(() => checkVersion());
+                                      // } else {
+                                      //   ScaffoldMessenger.of(context)
+                                      //       .showSnackBar(const SnackBar(
+                                      //     content: Text(
+                                      //         "Обновитесь до последней версии!",
+                                      //         style: TextStyle(fontSize: 20)),
+                                      //   ));
+                                      // }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Colors.yellow[700],

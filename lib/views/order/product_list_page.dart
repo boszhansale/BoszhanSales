@@ -805,115 +805,133 @@ class _ProductListPageState extends State<ProductListPage> {
                                                 ),
                                                 ElevatedButton.icon(
                                                   onPressed: () {
-                                                    if (!AppConstants.basketIDs
-                                                        .contains(products[i]
-                                                            ['id'])) {
-                                                      // showDialog(
-                                                      //     context: context,
-                                                      //     builder: (context) {
-                                                      //       countDialogTextFieldController
-                                                      //           .text = '';
-                                                      //       return AlertDialog(
-                                                      //         title: Text(
-                                                      //             'Введите количество:'),
-                                                      //         content:
-                                                      //             TextField(
-                                                      //           keyboardType:
-                                                      //               TextInputType
-                                                      //                   .number,
-                                                      //           autofocus: true,
-                                                      //           focusNode:
-                                                      //               _focusNode,
-                                                      //           onChanged:
-                                                      //               (value) {
-                                                      //             setState(() {
-                                                      //               countValueText =
-                                                      //                   value;
-                                                      //             });
-                                                      //           },
-                                                      //           controller:
-                                                      //               countDialogTextFieldController,
-                                                      //           decoration:
-                                                      //               InputDecoration(
-                                                      //                   hintText:
-                                                      //                       "Число"),
-                                                      //         ),
-                                                      //         actions: <Widget>[
-                                                      //           FlatButton(
-                                                      //             color: Colors
-                                                      //                 .green,
-                                                      //             textColor:
-                                                      //                 Colors
-                                                      //                     .white,
-                                                      //             child: Text(
-                                                      //                 'OK'),
-                                                      //             onPressed:
-                                                      //                 () {
-                                                      //               setState(
-                                                      //                   () {
-                                                      //                 AppConstants
-                                                      //                     .basket
-                                                      //                     .add({
-                                                      //                   'product':
-                                                      //                       products[i],
-                                                      //                   'count': double.parse(countValueText ==
-                                                      //                           ''
-                                                      //                       ? '1'
-                                                      //                       : countValueText),
-                                                      //                   'type':
-                                                      //                       0
-                                                      //                 });
-                                                      //                 AppConstants
-                                                      //                     .basketIDs
-                                                      //                     .add(products[i]
-                                                      //                         [
-                                                      //                         'id']);
-                                                      //               });
-                                                      //
-                                                      //               Navigator.pop(
-                                                      //                   context);
-                                                      //             },
-                                                      //           ),
-                                                      //         ],
-                                                      //       );
-                                                      //     });
+                                                    if (products[i]
+                                                            ['purchase'] ==
+                                                        1) {
+                                                      if (!AppConstants
+                                                          .basketIDs
+                                                          .contains(products[i]
+                                                              ['id'])) {
+                                                        // showDialog(
+                                                        //     context: context,
+                                                        //     builder: (context) {
+                                                        //       countDialogTextFieldController
+                                                        //           .text = '';
+                                                        //       return AlertDialog(
+                                                        //         title: Text(
+                                                        //             'Введите количество:'),
+                                                        //         content:
+                                                        //             TextField(
+                                                        //           keyboardType:
+                                                        //               TextInputType
+                                                        //                   .number,
+                                                        //           autofocus: true,
+                                                        //           focusNode:
+                                                        //               _focusNode,
+                                                        //           onChanged:
+                                                        //               (value) {
+                                                        //             setState(() {
+                                                        //               countValueText =
+                                                        //                   value;
+                                                        //             });
+                                                        //           },
+                                                        //           controller:
+                                                        //               countDialogTextFieldController,
+                                                        //           decoration:
+                                                        //               InputDecoration(
+                                                        //                   hintText:
+                                                        //                       "Число"),
+                                                        //         ),
+                                                        //         actions: <Widget>[
+                                                        //           FlatButton(
+                                                        //             color: Colors
+                                                        //                 .green,
+                                                        //             textColor:
+                                                        //                 Colors
+                                                        //                     .white,
+                                                        //             child: Text(
+                                                        //                 'OK'),
+                                                        //             onPressed:
+                                                        //                 () {
+                                                        //               setState(
+                                                        //                   () {
+                                                        //                 AppConstants
+                                                        //                     .basket
+                                                        //                     .add({
+                                                        //                   'product':
+                                                        //                       products[i],
+                                                        //                   'count': double.parse(countValueText ==
+                                                        //                           ''
+                                                        //                       ? '1'
+                                                        //                       : countValueText),
+                                                        //                   'type':
+                                                        //                       0
+                                                        //                 });
+                                                        //                 AppConstants
+                                                        //                     .basketIDs
+                                                        //                     .add(products[i]
+                                                        //                         [
+                                                        //                         'id']);
+                                                        //               });
+                                                        //
+                                                        //               Navigator.pop(
+                                                        //                   context);
+                                                        //             },
+                                                        //           ),
+                                                        //         ],
+                                                        //       );
+                                                        //     });
 
-                                                      setState(() {
-                                                        AppConstants.basket
-                                                            .add({
-                                                          'product':
-                                                              products[i],
-                                                          'count': double.parse(
-                                                              productsTextFieldControllers[
-                                                                      i]
-                                                                  .text),
-                                                          'type': 0
+                                                        setState(() {
+                                                          AppConstants.basket
+                                                              .add({
+                                                            'product':
+                                                                products[i],
+                                                            'count': double.parse(
+                                                                productsTextFieldControllers[
+                                                                        i]
+                                                                    .text),
+                                                            'type': 0
+                                                          });
+                                                          AppConstants.basketIDs
+                                                              .add(products[i]
+                                                                  ['id']);
                                                         });
-                                                        AppConstants.basketIDs
-                                                            .add(products[i]
-                                                                ['id']);
-                                                      });
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                const SnackBar(
+                                                          content: Text(
+                                                              "Добавлено в корзину.",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      20)),
+                                                        ));
+                                                      } else {
+                                                        setState(() {
+                                                          var ind = AppConstants
+                                                              .basketIDs
+                                                              .indexOf(
+                                                                  products[i]
+                                                                      ['id']);
+                                                          AppConstants.basketIDs
+                                                              .remove(
+                                                                  products[i]
+                                                                      ['id']);
+                                                          AppConstants.basket
+                                                              .removeAt(ind);
+                                                        });
+                                                      }
+                                                    } else {
                                                       ScaffoldMessenger.of(
                                                               context)
                                                           .showSnackBar(
                                                               const SnackBar(
                                                         content: Text(
-                                                            "Добавлено в корзину.",
+                                                            "Невозможно добавить в корзину.",
                                                             style: TextStyle(
                                                                 fontSize: 20)),
                                                       ));
-                                                    } else {
-                                                      setState(() {
-                                                        var ind = AppConstants
-                                                            .basketIDs
-                                                            .indexOf(products[i]
-                                                                ['id']);
-                                                        AppConstants.basketIDs
-                                                            .remove(products[i]
-                                                                ['id']);
-                                                        AppConstants.basket
-                                                            .removeAt(ind);
-                                                      });
                                                     }
                                                   },
                                                   label: Text(

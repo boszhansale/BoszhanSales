@@ -8,10 +8,10 @@ class AppColors {
 }
 
 class AppConstants {
-  static final String baseUrl = "http://new.boszhan.kz/";
+  static final String baseUrl = "https://boszhan.kz/";
   static List<int> basketIDs = [];
   static List<int> basketIDs_return = [];
   static List<dynamic> basket = [];
   static List<dynamic> basket_return = [];
-  static String appVersion = "2.2";
+  static String appVersion = "2.3";
 }

@@ -604,78 +604,87 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                             ),
                             ElevatedButton.icon(
                               onPressed: () {
-                                if (!AppConstants.basketIDs
-                                    .contains(thisProduct['id'])) {
-                                  // showDialog(
-                                  //     context: context,
-                                  //     builder: (context) {
-                                  //       countDialogTextFieldController.text =
-                                  //           '';
-                                  //       return AlertDialog(
-                                  //         title: Text('Введите количество:'),
-                                  //         content: TextField(
-                                  //           keyboardType: TextInputType.number,
-                                  //           focusNode: _focusNode,
-                                  //           autofocus: true,
-                                  //           onChanged: (value) {
-                                  //             setState(() {
-                                  //               countValueText = value;
-                                  //             });
-                                  //           },
-                                  //           controller:
-                                  //               countDialogTextFieldController,
-                                  //           decoration: InputDecoration(
-                                  //               hintText: "Число"),
-                                  //         ),
-                                  //         actions: <Widget>[
-                                  //           FlatButton(
-                                  //             color: Colors.green,
-                                  //             textColor: Colors.white,
-                                  //             child: Text('OK'),
-                                  //             onPressed: () {
-                                  //               setState(() {
-                                  //                 AppConstants.basket.add({
-                                  //                   'product': thisProduct,
-                                  //                   'count': double.parse(
-                                  //                       countValueText == ''
-                                  //                           ? '1'
-                                  //                           : countValueText),
-                                  //                   'type': 0
-                                  //                 });
-                                  //                 AppConstants.basketIDs
-                                  //                     .add(thisProduct['id']);
-                                  //               });
-                                  //
-                                  //               Navigator.pop(context);
-                                  //             },
-                                  //           ),
-                                  //         ],
-                                  //       );
-                                  //     });
+                                if (thisProduct['purchase'] == 1) {
+                                  if (!AppConstants.basketIDs
+                                      .contains(thisProduct['id'])) {
+                                    // showDialog(
+                                    //     context: context,
+                                    //     builder: (context) {
+                                    //       countDialogTextFieldController.text =
+                                    //           '';
+                                    //       return AlertDialog(
+                                    //         title: Text('Введите количество:'),
+                                    //         content: TextField(
+                                    //           keyboardType: TextInputType.number,
+                                    //           focusNode: _focusNode,
+                                    //           autofocus: true,
+                                    //           onChanged: (value) {
+                                    //             setState(() {
+                                    //               countValueText = value;
+                                    //             });
+                                    //           },
+                                    //           controller:
+                                    //               countDialogTextFieldController,
+                                    //           decoration: InputDecoration(
+                                    //               hintText: "Число"),
+                                    //         ),
+                                    //         actions: <Widget>[
+                                    //           FlatButton(
+                                    //             color: Colors.green,
+                                    //             textColor: Colors.white,
+                                    //             child: Text('OK'),
+                                    //             onPressed: () {
+                                    //               setState(() {
+                                    //                 AppConstants.basket.add({
+                                    //                   'product': thisProduct,
+                                    //                   'count': double.parse(
+                                    //                       countValueText == ''
+                                    //                           ? '1'
+                                    //                           : countValueText),
+                                    //                   'type': 0
+                                    //                 });
+                                    //                 AppConstants.basketIDs
+                                    //                     .add(thisProduct['id']);
+                                    //               });
+                                    //
+                                    //               Navigator.pop(context);
+                                    //             },
+                                    //           ),
+                                    //         ],
+                                    //       );
+                                    //     });
 
-                                  setState(() {
-                                    AppConstants.basket.add({
-                                      'product': thisProduct,
-                                      'count': double.parse(
-                                          countTextFieldController.text),
-                                      'type': 0
+                                    setState(() {
+                                      AppConstants.basket.add({
+                                        'product': thisProduct,
+                                        'count': double.parse(
+                                            countTextFieldController.text),
+                                        'type': 0
+                                      });
+                                      AppConstants.basketIDs
+                                          .add(thisProduct['id']);
                                     });
-                                    AppConstants.basketIDs
-                                        .add(thisProduct['id']);
-                                  });
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text("Добавлено в корзину.",
+                                          style: TextStyle(fontSize: 20)),
+                                    ));
+                                  } else {
+                                    setState(() {
+                                      var ind = AppConstants.basketIDs
+                                          .indexOf(thisProduct['id']);
+                                      AppConstants.basketIDs
+                                          .remove(thisProduct['id']);
+                                      AppConstants.basket.removeAt(ind);
+                                    });
+                                  }
+                                } else {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
-                                    content: Text("Добавлено в корзину.",
+                                    content: Text(
+                                        "Невозможно добавить в корзину.",
                                         style: TextStyle(fontSize: 20)),
                                   ));
-                                } else {
-                                  setState(() {
-                                    var ind = AppConstants.basketIDs
-                                        .indexOf(thisProduct['id']);
-                                    AppConstants.basketIDs
-                                        .remove(thisProduct['id']);
-                                    AppConstants.basket.removeAt(ind);
-                                  });
                                 }
                               },
                               label: Text(
