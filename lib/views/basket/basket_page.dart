@@ -336,159 +336,177 @@ class _BasketPageState extends State<BasketPage> {
             currentFocus.unfocus();
           }
         },
-        child: Stack(
-          children: [
-            Image.asset(
-              "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-            Scaffold(
-                backgroundColor: Colors.white.withOpacity(0.85),
-                body: SingleChildScrollView(
-                    child: Column(children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()));
-                          },
-                          child: SizedBox(
-                            child: Image.asset("assets/images/logo.png"),
-                            width: MediaQuery.of(context).size.width * 0.2,
-                          )),
-                      Spacer(),
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                              color: Colors.yellow[700],
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              height: 60,
-                              child: Row(
-                                children: [
-                                  Spacer(),
-                                  Text('Контрагент: ${widget.counteragentName}',
-                                      style: TextStyle(fontSize: 16)),
-                                  Spacer(),
-                                  Text('Торговая точка: ${widget.outletName}',
-                                      style: TextStyle(fontSize: 16)),
-                                  Spacer(),
-                                  Text('Долг: ${widget.debt} тг',
-                                      style: TextStyle(fontSize: 16)),
-                                  Spacer(),
-                                ],
-                              )),
-                        ],
-                      ),
-                      Spacer(),
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.yellow[700],
-                  ),
-                  _createDataTable(),
-                  Container(
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: Stack(
+            children: [
+              Image.asset(
+                "assets/images/bbq_bg.jpg",
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              Scaffold(
+                  backgroundColor: Colors.white.withOpacity(0.85),
+                  body: SingleChildScrollView(
+                      child: Column(children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            },
+                            child: SizedBox(
+                              child: Image.asset("assets/images/logo.png"),
+                              width: MediaQuery.of(context).size.width * 0.2,
+                            )),
+                        Spacer(),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                                color: Colors.yellow[700],
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                height: 60,
+                                child: Row(
+                                  children: [
+                                    Spacer(),
+                                    Text(
+                                        'Контрагент: ${widget.counteragentName}',
+                                        style: TextStyle(fontSize: 16)),
+                                    Spacer(),
+                                    Text('Торговая точка: ${widget.outletName}',
+                                        style: TextStyle(fontSize: 16)),
+                                    Spacer(),
+                                    Text('Долг: ${widget.debt} тг',
+                                        style: TextStyle(fontSize: 16)),
+                                    Spacer(),
+                                  ],
+                                )),
+                          ],
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                    Divider(
                       color: Colors.yellow[700],
+                    ),
+                    _createDataTable(),
+                    Container(
+                        color: Colors.yellow[700],
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        child: Row(
+                          children: [
+                            Spacer(),
+                            Text('Сумма покупок: $sumBuy тг',
+                                style: TextStyle(fontSize: 16)),
+                            Spacer(),
+                            Text('Сумма возврата: $sumReturn тг',
+                                style: TextStyle(fontSize: 16)),
+                            Spacer(),
+                            Text('Итого к оплате: $sumAll тг',
+                                style: TextStyle(fontSize: 16)),
+                            Spacer(),
+                          ],
+                        )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
                       width: MediaQuery.of(context).size.width,
                       height: 60,
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          Text('Сумма покупок: $sumBuy тг',
-                              style: TextStyle(fontSize: 16)),
-                          Spacer(),
-                          Text('Сумма возврата: $sumReturn тг',
-                              style: TextStyle(fontSize: 16)),
-                          Spacer(),
-                          Text('Итого к оплате: $sumAll тг',
-                              style: TextStyle(fontSize: 16)),
-                          Spacer(),
-                        ],
-                      )),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 60,
-                    child: Row(children: [
-                      Spacer(),
-                      SizedBox(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            share();
+                      child: Row(children: [
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
                           },
-                          label: Text(
-                            "Отправить заказ клиенту",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          icon: Icon(
-                            Icons.share,
-                            color: Colors.black,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            // NEW
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 0),
+                            child: Icon(
+                              Icons.menu,
+                              size: 44,
+                            ),
                           ),
                         ),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          _selectDate(context);
-                        },
-                        child: SizedBox(
-                            width: 140,
-                            child: Text(" Когда доставить: $deliveryDate",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold))),
-                      ),
-                      Spacer(),
-                      SizedBox(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            if (sumAll > 0) {
-                              isActive ? createOrder() : null;
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text("Итоговая сумма некорректна.",
-                                    style: TextStyle(fontSize: 20)),
-                              ));
-                            }
-                          },
-                          label: Text(
-                            "Подтвердить заказ",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          icon: Icon(
-                            Icons.shopping_cart_outlined,
-                            color: Colors.black,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.green[700],
-                            // NEW
+                        Spacer(),
+                        SizedBox(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              share();
+                            },
+                            label: Text(
+                              "Отправить заказ клиенту",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            icon: Icon(
+                              Icons.share,
+                              color: Colors.black,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              // NEW
+                            ),
                           ),
                         ),
-                      ),
-                      Spacer(),
-                    ]),
-                  )
-                ]))),
-          ],
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            _selectDate(context);
+                          },
+                          child: SizedBox(
+                              width: 140,
+                              child: Text(" Когда доставить: $deliveryDate",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold))),
+                        ),
+                        Spacer(),
+                        SizedBox(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              if (sumAll > 0) {
+                                isActive ? createOrder() : null;
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text("Итоговая сумма некорректна.",
+                                      style: TextStyle(fontSize: 20)),
+                                ));
+                              }
+                            },
+                            label: Text(
+                              "Подтвердить заказ",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            icon: Icon(
+                              Icons.shopping_cart_outlined,
+                              color: Colors.black,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.green[700],
+                              // NEW
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                      ]),
+                    )
+                  ]))),
+            ],
+          ),
         ));
   }
 
