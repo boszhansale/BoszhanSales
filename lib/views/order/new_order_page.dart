@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:boszhan_sales/components/global_data.dart';
 import 'package:boszhan_sales/views/physical_persons/outlet_list.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
 import '../legal_entities/legal_entities_list.dart';
@@ -12,6 +16,8 @@ class NewOrderPage extends StatefulWidget {
 class _NewOrderPageState extends State<NewOrderPage> {
   @override
   void initState() {
+    getCounteragents();
+    getOutlets();
     super.initState();
   }
 
@@ -167,5 +173,35 @@ class _NewOrderPageState extends State<NewOrderPage> {
             ),
           ],
         ));
+  }
+
+  void getCounteragents() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("responseCounteragents")!;
+    if (data != 'Error') {
+      List<dynamic> responseList = jsonDecode(data);
+      setState(() {
+        globalCounteragents = responseList;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+  }
+
+  void getOutlets() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("responsePhysicalOutlets")!;
+    if (data != 'Error') {
+      List<dynamic> responseList = jsonDecode(data);
+      setState(() {
+        globalOutletList = responseList;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
   }
 }

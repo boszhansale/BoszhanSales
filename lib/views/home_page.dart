@@ -32,6 +32,8 @@ class _HomePageState extends State<HomePage> {
   bool newVersion = false;
   String appVersion = "";
 
+  bool loadBool = true;
+
   @override
   void initState() {
     initFunction();
@@ -436,7 +438,7 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.black),
                                     ),
                                     onPressed: () {
-                                      getAllData();
+                                      if (loadBool) getAllData();
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Colors.yellow[700],
@@ -512,6 +514,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getAllData() async {
+    loadBool = false;
     checkVersion();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var responseCounteragents = await SalesRepProvider().getCounteragents();
@@ -604,6 +607,7 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Загружено!", style: TextStyle(fontSize: 20)),
     ));
+    loadBool = true;
   }
 
   void downloadNewVersion() async {

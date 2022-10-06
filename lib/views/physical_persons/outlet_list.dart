@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:boszhan_sales/components/global_data.dart';
 import 'package:boszhan_sales/views/physical_persons/add_new_outlet.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,16 +15,14 @@ class OutletListPage extends StatefulWidget {
 
 class _OutletListPageState extends State<OutletListPage> {
   final searchController = TextEditingController();
-  List<dynamic> outletList = [];
 
   @override
   void initState() {
-    getOutlets();
     super.initState();
   }
 
   void searchAction() async {
-    outletList = [];
+    List<dynamic> outletList = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString("responsePhysicalOutlets")!;
     if (data != 'Error') {
@@ -32,11 +31,12 @@ class _OutletListPageState extends State<OutletListPage> {
         if (responseList[i]['name']
             .toLowerCase()
             .contains(searchController.text.toLowerCase())) {
-          setState(() {
-            outletList.add(responseList[i]);
-          });
+          outletList.add(responseList[i]);
         }
       }
+      setState(() {
+        globalOutletList = outletList;
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
@@ -162,11 +162,13 @@ class _OutletListPageState extends State<OutletListPage> {
         data: Theme.of(context).copyWith(dividerColor: Colors.yellow[700]),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: DataTable(
+          child: PaginatedDataTable(
+            onRowsPerPageChanged: (perPage) {},
+            rowsPerPage: 10,
             showCheckboxColumn: false,
             columns: _createColumns(),
-            rows: _createRows(),
             dataRowHeight: 80,
+            source: MyData(context),
           ),
         ));
   }
@@ -178,47 +180,51 @@ class _OutletListPageState extends State<OutletListPage> {
       DataColumn(label: Text('Номер телефона')),
     ];
   }
+}
 
-  List<DataRow> _createRows() {
-    return [
-      for (int i = 0; i < outletList.length; i++)
-        DataRow(
-            onSelectChanged: (newValue) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProductListPage(
-                          outletList[i]['name'],
-                          outletList[i]['discount'],
-                          outletList[i]['id'],
-                          0,
-                          outletList[i]['salesrep']['name'],
-                          0,
-                          1,
-                          '0',
-                          outletList[i])));
-            },
-            cells: [
-              DataCell(Text(outletList[i]['name'])),
-              DataCell(Text(outletList[i]['address'])),
-              DataCell(Text(outletList[i]['phone'])),
-            ]),
-    ];
-  }
+class MyData extends DataTableSource {
+  MyData(this.context);
 
-  void getOutlets() async {
-    outletList = [];
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString("responsePhysicalOutlets")!;
-    if (data != 'Error') {
-      List<dynamic> responseList = jsonDecode(data);
-      setState(() {
-        outletList = responseList;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
-      ));
-    }
+  final List<dynamic> _data = globalOutletList;
+  final BuildContext context;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _data.length;
+
+  @override
+  int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(
+        onSelectChanged: (newValue) {
+          if (_data[index]['enabled'] == 1) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProductListPage(
+                        _data[index]['name'],
+                        _data[index]['discount'],
+                        _data[index]['id'],
+                        0,
+                        _data[index]['salesrep']['name'],
+                        0,
+                        1,
+                        '0',
+                        _data[index])));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Заблокирован!", style: TextStyle(fontSize: 20)),
+            ));
+          }
+        },
+        cells: [
+          DataCell(Text(_data[index]['name'])),
+          DataCell(Text(_data[index]['address'])),
+          DataCell(Text(_data[index]['phone'])),
+        ]);
   }
 }

@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:boszhan_sales/components/global_data.dart';
 import 'package:boszhan_sales/views/legal_entities/legal_outlet_list.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
+
+final globalKey = GlobalKey<ScaffoldState>();
 
 class LegalEntitiesList extends StatefulWidget {
   @override
@@ -13,16 +16,14 @@ class LegalEntitiesList extends StatefulWidget {
 
 class _LegalEntitiesListState extends State<LegalEntitiesList> {
   final searchController = TextEditingController();
-  List<dynamic> counteragents = [];
 
   @override
   void initState() {
-    getCounteragents();
     super.initState();
   }
 
   void searchAction() async {
-    counteragents = [];
+    List<dynamic> counteragents = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString("responseCounteragents")!;
     if (data != 'Error') {
@@ -31,11 +32,12 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
         if (responseList[i]['name']
             .toLowerCase()
             .contains(searchController.text.toLowerCase())) {
-          setState(() {
-            counteragents.add(responseList[i]);
-          });
+          counteragents.add(responseList[i]);
         }
       }
+      setState(() {
+        globalCounteragents = counteragents;
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
@@ -62,6 +64,7 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
               fit: BoxFit.cover,
             ),
             Scaffold(
+              key: globalKey,
               backgroundColor: Colors.white.withOpacity(0.85),
               body: SingleChildScrollView(
                 child: Column(
@@ -136,11 +139,13 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
         data: Theme.of(context).copyWith(dividerColor: Colors.yellow[700]),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: DataTable(
+          child: PaginatedDataTable(
+            onRowsPerPageChanged: (perPage) {},
+            rowsPerPage: 10,
             showCheckboxColumn: false,
             columns: _createColumns(),
-            rows: _createRows(),
             dataRowHeight: 80,
+            source: MyData(context),
           ),
         ));
   }
@@ -155,56 +160,54 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
       DataColumn(label: Text('Проср.')),
     ];
   }
+}
 
-  List<DataRow> _createRows() {
-    return [
-      for (int i = 0; i < counteragents.length; i++)
-        DataRow(
-            onSelectChanged: (newValue) {
-              if (counteragents[i]['enabled'] == 1) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LegalOutletListPage(
-                            counteragents[i]['id'],
-                            counteragents[i]['name'],
-                            counteragents[i]['discount'],
-                            counteragents[i]['price_type']['id'],
-                            counteragents[i]['debt'].toString())));
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content:
-                      Text("Заблокирован!", style: TextStyle(fontSize: 20)),
-                ));
-              }
-            },
-            cells: [
-              DataCell(
-                  Text(counteragents[i]['enabled'] == 1 ? '' : 'заблокирован')),
-              DataCell(Text(
-                counteragents[i]['name'],
-                overflow: TextOverflow.fade,
-              )),
-              DataCell(Text(counteragents[i]['price_type']['name'])),
-              DataCell(Text(counteragents[i]['payment_type']['name'])),
-              DataCell(Text(counteragents[i]['debt'].toString())),
-              DataCell(Text(counteragents[i]['delay'].toString())),
-            ]),
-    ];
-  }
+class MyData extends DataTableSource {
+  MyData(this.context);
 
-  void getCounteragents() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString("responseCounteragents")!;
-    if (data != 'Error') {
-      List<dynamic> responseList = jsonDecode(data);
-      setState(() {
-        counteragents = responseList;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
-      ));
-    }
+  final List<dynamic> _data = globalCounteragents;
+  final BuildContext context;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _data.length;
+
+  @override
+  int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(
+        onSelectChanged: (newValue) {
+          if (_data[index]['enabled'] == 1) {
+            Navigator.push(
+                globalKey.currentContext!,
+                MaterialPageRoute(
+                    builder: (context) => LegalOutletListPage(
+                        _data[index]['id'],
+                        _data[index]['name'],
+                        _data[index]['discount'],
+                        _data[index]['price_type']['id'],
+                        _data[index]['debt'].toString())));
+          } else {
+            ScaffoldMessenger.of(globalKey.currentContext!)
+                .showSnackBar(const SnackBar(
+              content: Text("Заблокирован!", style: TextStyle(fontSize: 20)),
+            ));
+          }
+        },
+        cells: [
+          DataCell(Text(_data[index]['enabled'] == 1 ? '' : 'заблокирован')),
+          DataCell(Text(
+            _data[index]['name'],
+            overflow: TextOverflow.fade,
+          )),
+          DataCell(Text(_data[index]['price_type']['name'])),
+          DataCell(Text(_data[index]['payment_type']['name'])),
+          DataCell(Text(_data[index]['debt'].toString())),
+          DataCell(Text(_data[index]['delay'].toString())),
+        ]);
   }
 }
