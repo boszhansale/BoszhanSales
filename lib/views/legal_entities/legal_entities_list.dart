@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/components/global_data.dart';
+import 'package:boszhan_sales/views/legal_entities/legal_entities_group.dart';
 import 'package:boszhan_sales/views/legal_entities/legal_outlet_list.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,11 +29,34 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
     var data = prefs.getString("responseCounteragents")!;
     if (data != 'Error') {
       List<dynamic> responseList = jsonDecode(data);
+      List<String> existGroups = [];
       for (int i = 0; i < responseList.length; i++) {
         if (responseList[i]['name']
             .toLowerCase()
             .contains(searchController.text.toLowerCase())) {
-          counteragents.add(responseList[i]);
+          if (responseList[i]['group'] != null) {
+            if (!existGroups.contains(responseList[i]['group'])) {
+              existGroups.add(responseList[i]['group']);
+              counteragents.add(responseList[i]);
+            }
+          } else {
+            counteragents.add(responseList[i]);
+          }
+        } else {
+          if (responseList[i]['group'] != null) {
+            if (responseList[i]['group']
+                .toLowerCase()
+                .contains(searchController.text.toLowerCase())) {
+              if (responseList[i]['group'] != null) {
+                if (!existGroups.contains(responseList[i]['group'])) {
+                  existGroups.add(responseList[i]['group']);
+                  counteragents.add(responseList[i]);
+                }
+              } else {
+                counteragents.add(responseList[i]);
+              }
+            }
+          }
         }
       }
       setState(() {
@@ -181,27 +205,45 @@ class MyData extends DataTableSource {
   DataRow getRow(int index) {
     return DataRow(
         onSelectChanged: (newValue) {
-          if (_data[index]['enabled'] == 1) {
+          if (_data[index]['group'] != null) {
+            List<dynamic> counteragents = [];
+            for (int i = 0; i < globalAllCounteragents.length; i++) {
+              if (_data[index]['group'] == globalAllCounteragents[i]['group']) {
+                counteragents.add(globalAllCounteragents[i]);
+              }
+            }
+            globalGroup = counteragents;
             Navigator.push(
-                globalKey.currentContext!,
-                MaterialPageRoute(
-                    builder: (context) => LegalOutletListPage(
-                        _data[index]['id'],
-                        _data[index]['name'],
-                        _data[index]['discount'],
-                        _data[index]['price_type']['id'],
-                        _data[index]['debt'].toString())));
+              globalKey.currentContext!,
+              MaterialPageRoute(
+                builder: (context) => LegalEntitiesGroup(),
+              ),
+            );
           } else {
-            ScaffoldMessenger.of(globalKey.currentContext!)
-                .showSnackBar(const SnackBar(
-              content: Text("Заблокирован!", style: TextStyle(fontSize: 20)),
-            ));
+            if (_data[index]['enabled'] == 1) {
+              Navigator.push(
+                  globalKey.currentContext!,
+                  MaterialPageRoute(
+                      builder: (context) => LegalOutletListPage(
+                          _data[index]['id'],
+                          _data[index]['name'],
+                          _data[index]['discount'],
+                          _data[index]['price_type']['id'],
+                          _data[index]['debt'].toString())));
+            } else {
+              ScaffoldMessenger.of(globalKey.currentContext!)
+                  .showSnackBar(const SnackBar(
+                content: Text("Заблокирован!", style: TextStyle(fontSize: 20)),
+              ));
+            }
           }
         },
         cells: [
           DataCell(Text(_data[index]['enabled'] == 1 ? '' : 'заблокирован')),
           DataCell(Text(
-            _data[index]['name'],
+            _data[index]['group'] != null
+                ? _data[index]['group']
+                : _data[index]['name'],
             overflow: TextOverflow.fade,
           )),
           DataCell(Text(_data[index]['price_type']['name'])),

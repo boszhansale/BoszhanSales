@@ -180,8 +180,21 @@ class _NewOrderPageState extends State<NewOrderPage> {
     var data = prefs.getString("responseCounteragents")!;
     if (data != 'Error') {
       List<dynamic> responseList = jsonDecode(data);
+      List<String> existGroups = [];
+      List<dynamic> finishList = [];
+      for (int j = 0; j < responseList.length; j++) {
+        if (responseList[j]['group'] != null) {
+          if (!existGroups.contains(responseList[j]['group'])) {
+            existGroups.add(responseList[j]['group']);
+            finishList.add(responseList[j]);
+          }
+        } else {
+          finishList.add(responseList[j]);
+        }
+      }
       setState(() {
-        globalCounteragents = responseList;
+        globalCounteragents = finishList;
+        globalAllCounteragents = responseList;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
