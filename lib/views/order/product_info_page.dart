@@ -46,6 +46,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
   Map<String, dynamic> thisProduct = {};
   int indexOfProduct = 0;
   String countValueText = '1';
+  double price = 0;
 
   Object? _value = 1;
   TextEditingController commentController = TextEditingController();
@@ -57,7 +58,44 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
         : "https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png";
     thisProduct = widget.product;
     countTextFieldController.text = '1.0';
+    getPrice();
     super.initState();
+  }
+
+  getPrice() {
+    if (thisProduct['counteragent_prices'] != null) {
+      price = widget.discount != 0
+          ? thisProduct['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - widget.discount) /
+              100
+          : thisProduct['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - thisProduct['discount']) /
+              100;
+
+      for (int i = 0; i < thisProduct['counteragent_prices'].length; i++) {
+        if (thisProduct['counteragent_prices'][i]['counteragent_id'] ==
+            widget.counteragentID) {
+          price = thisProduct['counteragent_prices'][i]['price'];
+        }
+      }
+    } else {
+      price = widget.discount != 0
+          ? thisProduct['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - widget.discount) /
+              100
+          : thisProduct['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - thisProduct['discount']) /
+              100;
+    }
+    setState(() {});
   }
 
   @override
@@ -535,7 +573,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 10),
                                     child: Text(
-                                      "${thisProduct['prices'].where((e) => e['price_type_id'] == widget.priceTypeId).toList()[0]['price'] * (100 - widget.discount) / 100} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}",
+                                      "${price} тг/${thisProduct['measure'] == 1 ? "шт" : "кг"}",
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -844,6 +882,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
       setState(() {
         indexOfProduct -= 1;
         thisProduct = widget.listProducts[indexOfProduct];
+        getPrice();
         indexOfImage = 0;
 
         mainImageURL = thisProduct['images'].length > 0
@@ -858,6 +897,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
       setState(() {
         indexOfProduct += 1;
         thisProduct = widget.listProducts[indexOfProduct];
+        getPrice();
         indexOfImage = 0;
         mainImageURL = thisProduct['images'].length > 0
             ? thisProduct['images'][indexOfImage]['path']

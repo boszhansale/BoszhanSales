@@ -319,13 +319,32 @@ class _HomePageState extends State<HomePage> {
                                         0.08,
                                   )),
                               Spacer(),
-                              Container(
-                                decoration: BoxDecoration(
-                                    // color: Colors.yellow[700],
-                                    borderRadius: BorderRadius.circular(130)),
-                                child: Image.asset("assets/images/logo.png",
+                              Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        // color: Colors.yellow[700],
+                                        borderRadius:
+                                            BorderRadius.circular(130)),
+                                    child: Image.asset("assets/images/logo.png",
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.5),
+                                  ),
+                                  Container(
                                     width: MediaQuery.of(context).size.height *
-                                        0.5),
+                                        0.7,
+                                    child: const Text(
+                                      'Bız bar yqylasymyzben jäne tolyq jauapkerşılıgımızben kün saiyn adamdar tañdaityn önımderdı daiyndaimyz',
+                                      style: TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
                               ),
                               Spacer(),
                               newVersion
