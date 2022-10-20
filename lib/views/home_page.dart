@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:boszhan_sales/components/global_data.dart';
 import 'package:boszhan_sales/services/auth_api_provider.dart';
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/views/analytics_page.dart';
@@ -483,9 +484,8 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.black),
                                     ),
                                     onPressed: () {
-                                      if (appVersion != "" &&
-                                          appVersion ==
-                                              AppConstants.appVersion) {
+                                      if (localSavedAppVersion ==
+                                          AppConstants.appVersion) {
                                         Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -641,11 +641,13 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           newVersion = true;
           appVersion = result['version'];
+          localSavedAppVersion = result['version'];
         });
       } else {
         setState(() {
           newVersion = false;
           appVersion = result['version'];
+          localSavedAppVersion = result['version'];
         });
       }
     } else {

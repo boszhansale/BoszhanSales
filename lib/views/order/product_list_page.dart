@@ -122,7 +122,13 @@ class _ProductListPageState extends State<ProductListPage> {
         for (int i = 0; i < productsData.length; i++) {
           existingCategoriesId.add(productsData[i]['category_id']);
           if (productsData[i]['category_id'] == selectedCategoryID) {
-            products.add(productsData[i]);
+            if (widget.priceTypeId == 4) {
+              if (productsData[i]['prices'][3]['price'] != 0) {
+                products.add(productsData[i]);
+              }
+            } else {
+              products.add(productsData[i]);
+            }
           }
         }
       });
