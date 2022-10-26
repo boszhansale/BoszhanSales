@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Colors.white.withOpacity(0.85),
                 body: SingleChildScrollView(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.95,
+                    height: 520,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

@@ -52,6 +52,8 @@ class _ProductListPageState extends State<ProductListPage> {
   Object? _value = 1;
   TextEditingController commentController = TextEditingController();
 
+  List<double> productPrices = [];
+
   @override
   void initState() {
     getInfo();
@@ -114,6 +116,7 @@ class _ProductListPageState extends State<ProductListPage> {
   getProductsFromPrefs() async {
     products = [];
     existingCategoriesId = [];
+    productPrices = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString("responseProducts")!;
     if (data != 'Error') {
@@ -125,9 +128,93 @@ class _ProductListPageState extends State<ProductListPage> {
             if (widget.priceTypeId == 4) {
               if (productsData[i]['prices'][3]['price'] != 0) {
                 products.add(productsData[i]);
+                double thisPrice = 0;
+                if (productsData[i]['counteragent_prices'] != null) {
+                  thisPrice = discount != 0
+                      ? productsData[i]['prices']
+                              .where((e) =>
+                                  e['price_type_id'] == widget.priceTypeId)
+                              .toList()[0]['price'] *
+                          (100 - discount) /
+                          100
+                      : productsData[i]['prices']
+                              .where((e) =>
+                                  e['price_type_id'] == widget.priceTypeId)
+                              .toList()[0]['price'] *
+                          (100 - productsData[i]['discount']) /
+                          100;
+
+                  for (int i = 0;
+                      i < productsData[i]['counteragent_prices'].length;
+                      i++) {
+                    if (productsData[i]['counteragent_prices'][i]
+                            ['counteragent_id'] ==
+                        widget.counteragentID) {
+                      thisPrice =
+                          productsData[i]['counteragent_prices'][i]['price'];
+                    }
+                  }
+                } else {
+                  thisPrice = discount != 0
+                      ? productsData[i]['prices']
+                              .where((e) =>
+                                  e['price_type_id'] == widget.priceTypeId)
+                              .toList()[0]['price'] *
+                          (100 - discount) /
+                          100
+                      : productsData[i]['prices']
+                              .where((e) =>
+                                  e['price_type_id'] == widget.priceTypeId)
+                              .toList()[0]['price'] *
+                          (100 - productsData[i]['discount']) /
+                          100;
+                }
+                productPrices.add(thisPrice);
               }
             } else {
               products.add(productsData[i]);
+              double thisPrice = 0;
+              if (productsData[i]['counteragent_prices'] != null) {
+                thisPrice = discount != 0
+                    ? productsData[i]['prices']
+                            .where(
+                                (e) => e['price_type_id'] == widget.priceTypeId)
+                            .toList()[0]['price'] *
+                        (100 - discount) /
+                        100
+                    : productsData[i]['prices']
+                            .where(
+                                (e) => e['price_type_id'] == widget.priceTypeId)
+                            .toList()[0]['price'] *
+                        (100 - productsData[i]['discount']) /
+                        100;
+
+                for (int i = 0;
+                    i < productsData[i]['counteragent_prices'].length;
+                    i++) {
+                  if (productsData[i]['counteragent_prices'][i]
+                          ['counteragent_id'] ==
+                      widget.counteragentID) {
+                    thisPrice =
+                        productsData[i]['counteragent_prices'][i]['price'];
+                  }
+                }
+              } else {
+                thisPrice = discount != 0
+                    ? productsData[i]['prices']
+                            .where(
+                                (e) => e['price_type_id'] == widget.priceTypeId)
+                            .toList()[0]['price'] *
+                        (100 - discount) /
+                        100
+                    : productsData[i]['prices']
+                            .where(
+                                (e) => e['price_type_id'] == widget.priceTypeId)
+                            .toList()[0]['price'] *
+                        (100 - productsData[i]['discount']) /
+                        100;
+              }
+              productPrices.add(thisPrice);
             }
           }
         }
@@ -141,6 +228,7 @@ class _ProductListPageState extends State<ProductListPage> {
 
   void searchAction() async {
     products = [];
+    productPrices = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString("responseProducts")!;
     if (data != 'Error') {
@@ -151,6 +239,48 @@ class _ProductListPageState extends State<ProductListPage> {
               .toLowerCase()
               .contains(searchController.text.toLowerCase())) {
             products.add(productsData[i]);
+            double thisPrice = 0;
+            if (productsData[i]['counteragent_prices'] != null) {
+              thisPrice = discount != 0
+                  ? productsData[i]['prices']
+                          .where(
+                              (e) => e['price_type_id'] == widget.priceTypeId)
+                          .toList()[0]['price'] *
+                      (100 - discount) /
+                      100
+                  : productsData[i]['prices']
+                          .where(
+                              (e) => e['price_type_id'] == widget.priceTypeId)
+                          .toList()[0]['price'] *
+                      (100 - productsData[i]['discount']) /
+                      100;
+
+              for (int i = 0;
+                  i < productsData[i]['counteragent_prices'].length;
+                  i++) {
+                if (productsData[i]['counteragent_prices'][i]
+                        ['counteragent_id'] ==
+                    widget.counteragentID) {
+                  thisPrice =
+                      productsData[i]['counteragent_prices'][i]['price'];
+                }
+              }
+            } else {
+              thisPrice = discount != 0
+                  ? productsData[i]['prices']
+                          .where(
+                              (e) => e['price_type_id'] == widget.priceTypeId)
+                          .toList()[0]['price'] *
+                      (100 - discount) /
+                      100
+                  : productsData[i]['prices']
+                          .where(
+                              (e) => e['price_type_id'] == widget.priceTypeId)
+                          .toList()[0]['price'] *
+                      (100 - productsData[i]['discount']) /
+                      100;
+            }
+            productPrices.add(thisPrice);
           }
         }
       });
@@ -394,46 +524,48 @@ class _ProductListPageState extends State<ProductListPage> {
                               children: [
                                 for (int i = 0; i < products.length; i++)
                                   GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProductInfoPage(
-                                                        widget.outletName,
-                                                        widget.outletId,
-                                                        widget.counteragentID,
-                                                        widget.counteragentName,
-                                                        widget.debt,
-                                                        products[i],
-                                                        discount != 0
-                                                            ? discount
-                                                            : products[i]
-                                                                ['discount'],
-                                                        widget.priceTypeId,
-                                                        products,
-                                                        widget.outlet))).then(
-                                          (_) => setState(() {}),
-                                        );
-                                      },
-                                      child: ProductListCard(
-                                          products[i],
-                                          widget.priceTypeId,
-                                          discount,
-                                          widget.counteragentID,
-                                          ProductInfoPage(
-                                              widget.outletName,
-                                              widget.outletId,
-                                              widget.counteragentID,
-                                              widget.counteragentName,
-                                              widget.debt,
-                                              products[i],
-                                              discount != 0
-                                                  ? discount
-                                                  : products[i]['discount'],
-                                              widget.priceTypeId,
-                                              products,
-                                              widget.outlet)))
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProductInfoPage(
+                                                      widget.outletName,
+                                                      widget.outletId,
+                                                      widget.counteragentID,
+                                                      widget.counteragentName,
+                                                      widget.debt,
+                                                      products[i],
+                                                      discount != 0
+                                                          ? discount
+                                                          : products[i]
+                                                              ['discount'],
+                                                      widget.priceTypeId,
+                                                      products,
+                                                      widget.outlet))).then(
+                                        (_) => setState(() {}),
+                                      );
+                                    },
+                                    child: ProductListCard(
+                                        products[i],
+                                        widget.priceTypeId,
+                                        discount,
+                                        widget.counteragentID,
+                                        ProductInfoPage(
+                                            widget.outletName,
+                                            widget.outletId,
+                                            widget.counteragentID,
+                                            widget.counteragentName,
+                                            widget.debt,
+                                            products[i],
+                                            discount != 0
+                                                ? discount
+                                                : products[i]['discount'],
+                                            widget.priceTypeId,
+                                            products,
+                                            widget.outlet),
+                                        productPrices[i]),
+                                  )
                               ],
                             ),
                           )

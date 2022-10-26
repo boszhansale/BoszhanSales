@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 
 class ProductListCard extends StatefulWidget {
   ProductListCard(this.product, this.priceTypeId, this.discount,
-      this.counteragentId, this.page);
+      this.counteragentId, this.page, this.price);
 
   final Map<String, dynamic> product;
   final int priceTypeId;
   final int discount;
   final int counteragentId;
   final Widget page;
+  final double price;
 
   @override
   _ProductListCardState createState() => _ProductListCardState();
@@ -21,48 +22,50 @@ class _ProductListCardState extends State<ProductListCard> {
   TextEditingController commentController = TextEditingController();
   TextEditingController productTextFieldController = TextEditingController();
 
-  double price = 0;
+  // double price = 0;
 
   @override
   void initState() {
-    getPrice();
+    // getPrice();
     productTextFieldController.text = '1.0';
     super.initState();
   }
 
   getPrice() {
-    if (widget.product['counteragent_prices'] != null) {
-      price = widget.discount != 0
-          ? widget.product['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
-              (100 - widget.discount) /
-              100
-          : widget.product['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
-              (100 - widget.product['discount']) /
-              100;
-
-      for (int i = 0; i < widget.product['counteragent_prices'].length; i++) {
-        if (widget.product['counteragent_prices'][i]['counteragent_id'] ==
-            widget.counteragentId) {
-          price = widget.product['counteragent_prices'][i]['price'];
-        }
-      }
-    } else {
-      price = widget.discount != 0
-          ? widget.product['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
-              (100 - widget.discount) /
-              100
-          : widget.product['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
-              (100 - widget.product['discount']) /
-              100;
-    }
+    setState(() {
+      // if (widget.product['counteragent_prices'] != null) {
+      //   price = widget.discount != 0
+      //       ? widget.product['prices']
+      //               .where((e) => e['price_type_id'] == widget.priceTypeId)
+      //               .toList()[0]['price'] *
+      //           (100 - widget.discount) /
+      //           100
+      //       : widget.product['prices']
+      //               .where((e) => e['price_type_id'] == widget.priceTypeId)
+      //               .toList()[0]['price'] *
+      //           (100 - widget.product['discount']) /
+      //           100;
+      //
+      //   for (int i = 0; i < widget.product['counteragent_prices'].length; i++) {
+      //     if (widget.product['counteragent_prices'][i]['counteragent_id'] ==
+      //         widget.counteragentId) {
+      //       price = widget.product['counteragent_prices'][i]['price'];
+      //     }
+      //   }
+      // } else {
+      //   price = widget.discount != 0
+      //       ? widget.product['prices']
+      //               .where((e) => e['price_type_id'] == widget.priceTypeId)
+      //               .toList()[0]['price'] *
+      //           (100 - widget.discount) /
+      //           100
+      //       : widget.product['prices']
+      //               .where((e) => e['price_type_id'] == widget.priceTypeId)
+      //               .toList()[0]['price'] *
+      //           (100 - widget.product['discount']) /
+      //           100;
+      // }
+    });
   }
 
   @override
@@ -355,7 +358,7 @@ class _ProductListCardState extends State<ProductListCard> {
                   ),
                 ),
                 Text(
-                  "${price} тг/${widget.product['measure'] == 1 ? "шт" : "кг"}",
+                  "${widget.price} тг/${widget.product['measure'] == 1 ? "шт" : "кг"}",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
