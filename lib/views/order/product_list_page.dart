@@ -127,7 +127,6 @@ class _ProductListPageState extends State<ProductListPage> {
           if (productsData[i]['category_id'] == selectedCategoryID) {
             if (widget.priceTypeId == 4) {
               if (productsData[i]['prices'][3]['price'] != 0) {
-                products.add(productsData[i]);
                 double thisPrice = 0;
                 if (productsData[i]['counteragent_prices'] != null) {
                   thisPrice = discount != 0
@@ -169,10 +168,12 @@ class _ProductListPageState extends State<ProductListPage> {
                           (100 - productsData[i]['discount']) /
                           100;
                 }
-                productPrices.add(thisPrice);
+                if (thisPrice != 0) {
+                  productPrices.add(thisPrice);
+                  products.add(productsData[i]);
+                }
               }
             } else {
-              products.add(productsData[i]);
               double thisPrice = 0;
               if (productsData[i]['counteragent_prices'] != null) {
                 thisPrice = discount != 0
@@ -214,7 +215,10 @@ class _ProductListPageState extends State<ProductListPage> {
                         (100 - productsData[i]['discount']) /
                         100;
               }
-              productPrices.add(thisPrice);
+              if (thisPrice != 0) {
+                productPrices.add(thisPrice);
+                products.add(productsData[i]);
+              }
             }
           }
         }
@@ -238,7 +242,6 @@ class _ProductListPageState extends State<ProductListPage> {
           if (productsData[i]['name']
               .toLowerCase()
               .contains(searchController.text.toLowerCase())) {
-            products.add(productsData[i]);
             double thisPrice = 0;
             if (productsData[i]['counteragent_prices'] != null) {
               thisPrice = discount != 0
@@ -280,7 +283,10 @@ class _ProductListPageState extends State<ProductListPage> {
                       (100 - productsData[i]['discount']) /
                       100;
             }
-            productPrices.add(thisPrice);
+            if (thisPrice != 0) {
+              productPrices.add(thisPrice);
+              products.add(productsData[i]);
+            }
           }
         }
       });

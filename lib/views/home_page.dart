@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Colors.white.withOpacity(0.85),
                 body: SingleChildScrollView(
                   child: SizedBox(
-                    height: 520,
+                    height: 550,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -328,9 +328,7 @@ class _HomePageState extends State<HomePage> {
                                         borderRadius:
                                             BorderRadius.circular(130)),
                                     child: Image.asset("assets/images/logo.png",
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.5),
+                                        width: 300),
                                   ),
                                   Container(
                                     width: MediaQuery.of(context).size.height *
