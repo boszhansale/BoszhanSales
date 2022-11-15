@@ -50,6 +50,7 @@ dependencies:
   workmanager: ^0.5.0
   flutter_background_geolocation: ^4.6.3
   intl: ^0.17.0
+  socket_io_client: ^2.0.0
 
 dev_dependencies:
   flutter_test:
