@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:boszhan_sales/components/app_bar.dart';
 import 'package:boszhan_sales/services/auth_api_provider.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -25,6 +25,8 @@ class _LoginPageState extends State<LoginPage> {
 
   late Timer _timer;
   int _start = 5;
+
+  int id = 0;
 
   late IO.Socket socket;
 
@@ -49,8 +51,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Future<Position> getLocationByGeolocator() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+  void getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = prefs.getInt('user_id') ?? 1;
+  }
+
   @override
   void initState() {
+    getUserId();
     // emailController.text = 'sad@mail.ru';
     // passwordController.text = '123456';
 
@@ -64,110 +78,118 @@ class _LoginPageState extends State<LoginPage> {
       print('connect');
     });
 
-    socket.on('position', (newMessage) {
-      print(newMessage);
+    socket.on('position', (newMessage) async {
+      Position position = await getLocationByGeolocator();
+
+      socket.emit(
+          'position',
+          jsonEncode({
+            'id': id,
+            'lat': position.latitude,
+            'lng': position.longitude,
+          }));
     });
 
-    bg.BackgroundGeolocation.onMotionChange((bg.Location location) async {
-      print('[motionchange long] - ${location.coords.longitude}');
-      print('[motionchange lat] - ${location.coords.latitude}');
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var id = prefs.getInt('user_id');
-
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.mobile) {
-        AuthProvider()
-            .sendLocation(location.coords.latitude, location.coords.longitude);
-        if (prefs.getString("CoordsData") != null) {
-          var list = jsonDecode(prefs.getString("CoordsData")!);
-          for (int i = 0; i < list.length; i++) {
-            if (list[i]["isSended"] == false) {
-              var response =
-                  AuthProvider().sendLocation(list[i]['lat'], list[i]['long']);
-              socket.emit(
-                  'position',
-                  jsonEncode({
-                    'id': id,
-                    'lat': location.coords.latitude,
-                    'lng': location.coords.longitude,
-                  }));
-              if (response != "Error") {
-                list[i]["isSended"] = true;
-              }
-            }
-          }
-          prefs.setString("CoordsData", jsonEncode(list));
-        }
-      } else if (connectivityResult == ConnectivityResult.wifi) {
-        AuthProvider()
-            .sendLocation(location.coords.latitude, location.coords.longitude);
-        socket.emit(
-            'position',
-            jsonEncode({
-              'id': id,
-              'lat': location.coords.latitude,
-              'lng': location.coords.longitude,
-            }));
-        if (prefs.getString("CoordsData") != null) {
-          var list = jsonDecode(prefs.getString("CoordsData")!);
-          for (int i = 0; i < list.length; i++) {
-            if (list[i]["isSended"] == false) {
-              var response =
-                  AuthProvider().sendLocation(list[i]['lat'], list[i]['long']);
-              socket.emit(
-                  'position',
-                  jsonEncode({
-                    'id': id,
-                    'lat': location.coords.latitude,
-                    'lng': location.coords.longitude,
-                  }));
-              list[i]["isSended"] = true;
-              if (response != "Error") {
-                list[i]["isSended"] = true;
-              }
-            }
-          }
-          prefs.setString("CoordsData", jsonEncode(list));
-        }
-      } else {
-        if (prefs.getString("CoordsData") != null) {
-          var list = jsonDecode(prefs.getString("CoordsData")!);
-          if (list.length > 50) {
-            list.removeAt(0);
-            list.add({
-              "lat": location.coords.latitude,
-              "long": location.coords.longitude,
-              "isSended": false
-            });
-          } else {
-            list.add({
-              "lat": location.coords.latitude,
-              "long": location.coords.longitude,
-              "isSended": false
-            });
-          }
-          prefs.setString("CoordsData", jsonEncode(list));
-        } else {
-          var list = [];
-          if (list.length > 50) {
-            list.removeAt(0);
-            list.add({
-              "lat": location.coords.latitude,
-              "long": location.coords.longitude,
-              "isSended": false
-            });
-          } else {
-            list.add({
-              "lat": location.coords.latitude,
-              "long": location.coords.longitude,
-              "isSended": false
-            });
-          }
-          prefs.setString("CoordsData", jsonEncode(list));
-        }
-      }
-    });
+    // bg.BackgroundGeolocation.onMotionChange((bg.Location location) async {
+    //   print('[motionchange long] - ${location.coords.longitude}');
+    //   print('[motionchange lat] - ${location.coords.latitude}');
+    //
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   var id = prefs.getInt('user_id');
+    //
+    //   var connectivityResult = await (Connectivity().checkConnectivity());
+    //   if (connectivityResult == ConnectivityResult.mobile) {
+    //     AuthProvider()
+    //         .sendLocation(location.coords.latitude, location.coords.longitude);
+    //     if (prefs.getString("CoordsData") != null) {
+    //       var list = jsonDecode(prefs.getString("CoordsData")!);
+    //       for (int i = 0; i < list.length; i++) {
+    //         if (list[i]["isSended"] == false) {
+    //           var response =
+    //               AuthProvider().sendLocation(list[i]['lat'], list[i]['long']);
+    //           socket.emit(
+    //               'position',
+    //               jsonEncode({
+    //                 'id': id,
+    //                 'lat': location.coords.latitude,
+    //                 'lng': location.coords.longitude,
+    //               }));
+    //           if (response != "Error") {
+    //             list[i]["isSended"] = true;
+    //           }
+    //         }
+    //       }
+    //       prefs.setString("CoordsData", jsonEncode(list));
+    //     }
+    //   } else if (connectivityResult == ConnectivityResult.wifi) {
+    //     AuthProvider()
+    //         .sendLocation(location.coords.latitude, location.coords.longitude);
+    //     socket.emit(
+    //         'position',
+    //         jsonEncode({
+    //           'id': id,
+    //           'lat': location.coords.latitude,
+    //           'lng': location.coords.longitude,
+    //         }));
+    //     if (prefs.getString("CoordsData") != null) {
+    //       var list = jsonDecode(prefs.getString("CoordsData")!);
+    //       for (int i = 0; i < list.length; i++) {
+    //         if (list[i]["isSended"] == false) {
+    //           var response =
+    //               AuthProvider().sendLocation(list[i]['lat'], list[i]['long']);
+    //           socket.emit(
+    //               'position',
+    //               jsonEncode({
+    //                 'id': id,
+    //                 'lat': location.coords.latitude,
+    //                 'lng': location.coords.longitude,
+    //               }));
+    //           list[i]["isSended"] = true;
+    //           if (response != "Error") {
+    //             list[i]["isSended"] = true;
+    //           }
+    //         }
+    //       }
+    //       prefs.setString("CoordsData", jsonEncode(list));
+    //     }
+    //   } else {
+    //     if (prefs.getString("CoordsData") != null) {
+    //       var list = jsonDecode(prefs.getString("CoordsData")!);
+    //       if (list.length > 50) {
+    //         list.removeAt(0);
+    //         list.add({
+    //           "lat": location.coords.latitude,
+    //           "long": location.coords.longitude,
+    //           "isSended": false
+    //         });
+    //       } else {
+    //         list.add({
+    //           "lat": location.coords.latitude,
+    //           "long": location.coords.longitude,
+    //           "isSended": false
+    //         });
+    //       }
+    //       prefs.setString("CoordsData", jsonEncode(list));
+    //     } else {
+    //       var list = [];
+    //       if (list.length > 50) {
+    //         list.removeAt(0);
+    //         list.add({
+    //           "lat": location.coords.latitude,
+    //           "long": location.coords.longitude,
+    //           "isSended": false
+    //         });
+    //       } else {
+    //         list.add({
+    //           "lat": location.coords.latitude,
+    //           "long": location.coords.longitude,
+    //           "isSended": false
+    //         });
+    //       }
+    //       prefs.setString("CoordsData", jsonEncode(list));
+    //     }
+    //   }
+    // });
 
     bg.BackgroundGeolocation.ready(bg.Config(
             desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,

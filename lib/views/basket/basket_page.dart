@@ -40,7 +40,7 @@ class _BasketPageState extends State<BasketPage> {
   List<TextEditingController> returnsTextFieldControllers = [];
 
   String deliveryDate = "";
-  DateTime selectedDate = DateTime.now().add(Duration(days: 1));
+  DateTime selectedDate = DateTime.now();
 
   List<dynamic> products = [];
   List<dynamic> returns = [];
@@ -78,8 +78,7 @@ class _BasketPageState extends State<BasketPage> {
               ? selectedDate.add(const Duration(days: 1))
               : selectedDate.add(const Duration(days: 2)),
       firstDate: DateTime(
-              DateTime.now().year, DateTime.now().month, DateTime.now().day)
-          .add(Duration(days: 1)),
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
       lastDate: DateTime(2101),
       selectableDayPredicate: (DateTime val) =>
           val.weekday == 6 || val.weekday == 7 ? false : true,
