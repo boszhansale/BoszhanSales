@@ -1,18 +1,10 @@
 import 'dart:convert';
 
-import 'package:boszhan_sales/views/history_orders/history_legal_stores_page.dart';
-import 'package:boszhan_sales/views/history_orders/history_legal_stores_page.dart';
-import 'package:boszhan_sales/views/history_orders/history_legal_stores_page.dart';
-import 'package:boszhan_sales/views/history_orders/history_legal_stores_page.dart';
-import 'package:boszhan_sales/views/history_orders/history_legal_stores_page.dart';
-import 'package:boszhan_sales/views/physical_persons/add_new_outlet.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
-import '../order/product_list_page.dart';
 import 'history_orders_list.dart';
-import 'history_products_list.dart';
 
 class HistoryStoresPage extends StatefulWidget {
   @override
@@ -38,52 +30,55 @@ class _HistoryStoresPageState extends State<HistoryStoresPage> {
             currentFocus.unfocus();
           }
         },
-        child: Stack(
-          children: [
-            Image.asset(
-              "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-            Scaffold(
-              backgroundColor: Colors.white.withOpacity(0.85),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomePage()));
-                            },
-                            child: SizedBox(
-                              child: Image.asset("assets/images/logo.png"),
-                              width: MediaQuery.of(context).size.width * 0.2,
-                            )),
-                        Spacer(),
-                        Text(
-                          'Торговые точки'.toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 34),
-                        ),
-                        Spacer()
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.yellow[700],
-                    ),
-                    _createDataTable(),
-                  ],
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: Stack(
+            children: [
+              Image.asset(
+                "assets/images/bbq_bg.jpg",
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              Scaffold(
+                backgroundColor: Colors.white.withOpacity(0.85),
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()));
+                              },
+                              child: SizedBox(
+                                child: Image.asset("assets/images/logo.png"),
+                                width: MediaQuery.of(context).size.width * 0.2,
+                              )),
+                          Spacer(),
+                          Text(
+                            'Торговые точки'.toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 34),
+                          ),
+                          Spacer()
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.yellow[700],
+                      ),
+                      _createDataTable(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 

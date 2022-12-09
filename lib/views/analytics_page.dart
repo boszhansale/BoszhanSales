@@ -94,446 +94,463 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
             currentFocus.unfocus();
           }
         },
-        child: Stack(
-          children: [
-            Image.asset(
-              "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-            Scaffold(
-              backgroundColor: Colors.white.withOpacity(0.85),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomePage()));
-                            },
-                            child: SizedBox(
-                              child: Image.asset("assets/images/logo.png"),
-                              width: MediaQuery.of(context).size.width * 0.2,
-                            )),
-                        Spacer(),
-                        Text(
-                          'Мотивирующий отчет'.toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 34),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.yellow[700],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: Column(
-                            children: [
-                              // Text(
-                              //   'Вы на 7-ом месте за декабрь 2022г.',
-                              //   style: TextStyle(
-                              //       fontSize: 18, fontWeight: FontWeight.bold),
-                              // ),
-                              // Padding(
-                              //   padding: const EdgeInsets.all(30),
-                              //   child: SfCartesianChart(
-                              //       // Columns will be rendered back to back
-                              //       enableSideBySideSeriesPlacement: false,
-                              //       series: <ChartSeries<ColumnChartData, int>>[
-                              //         ColumnSeries<ColumnChartData, int>(
-                              //             dataSource: columnChartData,
-                              //             xValueMapper:
-                              //                 (ColumnChartData data, _) =>
-                              //                     data.x,
-                              //             yValueMapper:
-                              //                 (ColumnChartData data, _) =>
-                              //                     data.y),
-                              //       ]),
-                              // ),
-                              Column(
-                                children: [
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: Stack(
+            children: [
+              Image.asset(
+                "assets/images/bbq_bg.jpg",
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              Scaffold(
+                backgroundColor: Colors.white.withOpacity(0.85),
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()));
+                              },
+                              child: SizedBox(
+                                child: Image.asset("assets/images/logo.png"),
+                                width: MediaQuery.of(context).size.width * 0.2,
+                              )),
+                          Spacer(),
+                          Text(
+                            'Мотивирующий отчет'.toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 34),
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.yellow[700],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Column(
+                              children: [
+                                // Text(
+                                //   'Вы на 7-ом месте за декабрь 2022г.',
+                                //   style: TextStyle(
+                                //       fontSize: 18, fontWeight: FontWeight.bold),
+                                // ),
+                                // Padding(
+                                //   padding: const EdgeInsets.all(30),
+                                //   child: SfCartesianChart(
+                                //       // Columns will be rendered back to back
+                                //       enableSideBySideSeriesPlacement: false,
+                                //       series: <ChartSeries<ColumnChartData, int>>[
+                                //         ColumnSeries<ColumnChartData, int>(
+                                //             dataSource: columnChartData,
+                                //             xValueMapper:
+                                //                 (ColumnChartData data, _) =>
+                                //                     data.x,
+                                //             yValueMapper:
+                                //                 (ColumnChartData data, _) =>
+                                //                     data.y),
+                                //       ]),
+                                // ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3,
+                                              child: SfCircularChart(series: <
+                                                  CircularSeries>[
+                                                // Render pie chart
+                                                PieSeries<ChartData, String>(
+                                                    dataSource: chartDataPlan,
+                                                    pointColorMapper:
+                                                        (ChartData data, _) =>
+                                                            data.color,
+                                                    xValueMapper:
+                                                        (ChartData data, _) =>
+                                                            data.x,
+                                                    yValueMapper:
+                                                        (ChartData data, _) =>
+                                                            data.y)
+                                              ]),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  color: Colors.redAccent,
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text('Выполнено'),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  color: Colors.blueAccent,
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                SizedBox(
+                                                    width: 150,
+                                                    child: Text('Осталось')),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Text(
+                                      'Ваш план составляет: ${plan} тг',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Text(
+                                      'На данный момент выполнено: ${completedPlan} тг',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          child: SfCircularChart(
+                                              series: <CircularSeries>[
+                                                // Render pie chart
+                                                PieSeries<ChartData, String>(
+                                                    dataSource: chartData,
+                                                    pointColorMapper:
+                                                        (ChartData data, _) =>
+                                                            data.color,
+                                                    xValueMapper:
+                                                        (ChartData data, _) =>
+                                                            data.x,
+                                                    yValueMapper:
+                                                        (ChartData data, _) =>
+                                                            data.y)
+                                              ]),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        widget.analyticsData['brands'].length >
+                                                0
+                                            ? Row(
+                                                children: [
+                                                  Container(
+                                                    width: 10,
+                                                    height: 10,
+                                                    color: Colors.green,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  Text(widget.analyticsData[
+                                                          'brands'][0]['brand']
+                                                      ['name']),
+                                                ],
+                                              )
+                                            : Container(),
+                                        widget.analyticsData['brands'].length >
+                                                1
+                                            ? Row(
+                                                children: [
+                                                  Container(
+                                                    width: 10,
+                                                    height: 10,
+                                                    color: Colors.yellow,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  SizedBox(
+                                                      width: 150,
+                                                      child: Text(
+                                                          widget.analyticsData[
+                                                                      'brands']
+                                                                  [1]['brand']
+                                                              ['name'])),
+                                                ],
+                                              )
+                                            : Container(),
+                                        widget.analyticsData['brands'].length >
+                                                2
+                                            ? Row(
+                                                children: [
+                                                  Container(
+                                                    width: 10,
+                                                    height: 10,
+                                                    color: Colors.orange,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  SizedBox(
+                                                      width: 150,
+                                                      child: Text(
+                                                          widget.analyticsData[
+                                                                      'brands']
+                                                                  [2]['brand']
+                                                              ['name'])),
+                                                ],
+                                              )
+                                            : Container(),
+                                        widget.analyticsData['brands'].length >
+                                                3
+                                            ? Row(
+                                                children: [
+                                                  Container(
+                                                    width: 10,
+                                                    height: 10,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  SizedBox(
+                                                      width: 150,
+                                                      child: Text(
+                                                          widget.analyticsData[
+                                                                      'brands']
+                                                                  [3]['brand']
+                                                              ['name'])),
+                                                ],
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                for (int i = 0;
+                                    i < widget.analyticsData['brands'].length;
+                                    i++)
                                   Row(
                                     children: [
-                                      Column(
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.3,
-                                            child: SfCircularChart(
-                                                series: <CircularSeries>[
-                                                  // Render pie chart
-                                                  PieSeries<ChartData, String>(
-                                                      dataSource: chartDataPlan,
-                                                      pointColorMapper:
-                                                          (ChartData data, _) =>
-                                                              data.color,
-                                                      xValueMapper:
-                                                          (ChartData data, _) =>
-                                                              data.x,
-                                                      yValueMapper:
-                                                          (ChartData data, _) =>
-                                                              data.y)
-                                                ]),
-                                          ),
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        child: Text(
+                                          widget
+                                                      .analyticsData['brands']
+                                                          [i]['brand']['name']
+                                                      .length >
+                                                  18
+                                              ? widget.analyticsData['brands']
+                                                      [i]['brand']['name']
+                                                  .substring(0, 18)
+                                              : widget.analyticsData['brands']
+                                                  [i]['brand']['name'],
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.normal),
+                                        ),
                                       ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: 10,
-                                                height: 10,
-                                                color: Colors.redAccent,
-                                              ),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Text('Выполнено'),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: 10,
-                                                height: 10,
-                                                color: Colors.blueAccent,
-                                              ),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              SizedBox(
-                                                  width: 150,
-                                                  child: Text('Осталось')),
-                                            ],
-                                          ),
-                                        ],
+                                      Spacer(),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        child: Text(
+                                          '${widget.analyticsData['brands'][i]['plan']}тг/${widget.analyticsData['brands'][i]['completed']}тг',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.normal),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    'Ваш план составляет: ${plan} тг',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      Divider(),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Text(
+                                      'По команде супервайзера ${widget.analyticsData['group_name']}',
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    'На данный момент выполнено: ${completedPlan} тг',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Text(
+                                      'План по команде составляет: ${groupPlan} тг',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Text(
+                                      'На данный момент выполнено: ${groupCompleted} тг',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Text(
+                                      'По команде вы на ${groupPosition} месте',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Column(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Column(
+                              children: [
+                                SizedBox(height: 30),
+                                for (int i = 0;
+                                    i <
+                                        widget.analyticsData['group_brands']
+                                            .length;
+                                    i++)
+                                  Row(
                                     children: [
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.3,
-                                        child: SfCircularChart(
-                                            series: <CircularSeries>[
-                                              // Render pie chart
-                                              PieSeries<ChartData, String>(
-                                                  dataSource: chartData,
-                                                  pointColorMapper:
-                                                      (ChartData data, _) =>
-                                                          data.color,
-                                                  xValueMapper:
-                                                      (ChartData data, _) =>
-                                                          data.x,
-                                                  yValueMapper:
-                                                      (ChartData data, _) =>
-                                                          data.y)
-                                            ]),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        child: Text(
+                                          widget
+                                                      .analyticsData[
+                                                          'group_brands'][i]
+                                                          ['brand']['name']
+                                                      .length >
+                                                  18
+                                              ? widget
+                                                  .analyticsData['group_brands']
+                                                      [i]['brand']['name']
+                                                  .substring(0, 18)
+                                              : widget.analyticsData[
+                                                      'group_brands'][i]
+                                                  ['brand']['name'],
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.normal),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        child: Text(
+                                          '${widget.analyticsData['group_brands'][i]['plan']}тг/ ${widget.analyticsData['group_brands'][i]['completed']}тг',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.normal),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      widget.analyticsData['brands'].length > 0
-                                          ? Row(
-                                              children: [
-                                                Container(
-                                                  width: 10,
-                                                  height: 10,
-                                                  color: Colors.green,
-                                                ),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                Text(widget
-                                                        .analyticsData['brands']
-                                                    [0]['brand']['name']),
-                                              ],
-                                            )
-                                          : Container(),
-                                      widget.analyticsData['brands'].length > 1
-                                          ? Row(
-                                              children: [
-                                                Container(
-                                                  width: 10,
-                                                  height: 10,
-                                                  color: Colors.yellow,
-                                                ),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                SizedBox(
-                                                    width: 150,
-                                                    child: Text(
-                                                        widget.analyticsData[
-                                                                'brands'][1]
-                                                            ['brand']['name'])),
-                                              ],
-                                            )
-                                          : Container(),
-                                      widget.analyticsData['brands'].length > 2
-                                          ? Row(
-                                              children: [
-                                                Container(
-                                                  width: 10,
-                                                  height: 10,
-                                                  color: Colors.orange,
-                                                ),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                SizedBox(
-                                                    width: 150,
-                                                    child: Text(
-                                                        widget.analyticsData[
-                                                                'brands'][2]
-                                                            ['brand']['name'])),
-                                              ],
-                                            )
-                                          : Container(),
-                                      widget.analyticsData['brands'].length > 3
-                                          ? Row(
-                                              children: [
-                                                Container(
-                                                  width: 10,
-                                                  height: 10,
-                                                  color: Colors.grey,
-                                                ),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                SizedBox(
-                                                    width: 150,
-                                                    child: Text(
-                                                        widget.analyticsData[
-                                                                'brands'][3]
-                                                            ['brand']['name'])),
-                                              ],
-                                            )
-                                          : Container(),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              for (int i = 0;
-                                  i < widget.analyticsData['brands'].length;
-                                  i++)
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Text(
-                                        widget
-                                                    .analyticsData['brands'][i]
-                                                        ['brand']['name']
-                                                    .length >
-                                                18
-                                            ? widget.analyticsData['brands'][i]
-                                                    ['brand']['name']
-                                                .substring(0, 18)
-                                            : widget.analyticsData['brands'][i]
-                                                ['brand']['name'],
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 5),
-                                      child: Text(
-                                        '${widget.analyticsData['brands'][i]['plan']}тг/${widget.analyticsData['brands'][i]['completed']}тг',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    Divider(),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    'По команде супервайзера ${widget.analyticsData['group_name']}',
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    'План по команде составляет: ${groupPlan} тг',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    'На данный момент выполнено: ${groupCompleted} тг',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    'По команде вы на ${groupPosition} месте',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: Column(
-                            children: [
-                              SizedBox(height: 30),
-                              for (int i = 0;
-                                  i <
-                                      widget
-                                          .analyticsData['group_brands'].length;
-                                  i++)
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Text(
-                                        widget
-                                                    .analyticsData[
-                                                        'group_brands'][i]
-                                                        ['brand']['name']
-                                                    .length >
-                                                18
-                                            ? widget
-                                                .analyticsData['group_brands']
-                                                    [i]['brand']['name']
-                                                .substring(0, 18)
-                                            : widget.analyticsData[
-                                                    'group_brands'][i]['brand']
-                                                ['name'],
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Text(
-                                        '${widget.analyticsData['group_brands'][i]['plan']}тг/ ${widget.analyticsData['group_brands'][i]['completed']}тг',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

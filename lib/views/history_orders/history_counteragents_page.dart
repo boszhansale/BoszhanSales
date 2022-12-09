@@ -54,81 +54,84 @@ class _HistoryCounteragnetsPageState extends State<HistoryCounteragnetsPage> {
             currentFocus.unfocus();
           }
         },
-        child: Stack(
-          children: [
-            Image.asset(
-              "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-            Scaffold(
-              backgroundColor: Colors.white.withOpacity(0.85),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomePage()));
-                            },
-                            child: SizedBox(
-                              child: Image.asset("assets/images/logo.png"),
-                              width: MediaQuery.of(context).size.width * 0.2,
-                            )),
-                        Spacer(),
-                        Text(
-                          'Справочник юридических лиц'.toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 34),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.yellow[700],
-                    ),
-                    Row(
-                      children: [
-                        Spacer(),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            controller: searchController,
-                            decoration: const InputDecoration(
-                              hintText: "Поиск",
-                              border: UnderlineInputBorder(),
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: Stack(
+            children: [
+              Image.asset(
+                "assets/images/bbq_bg.jpg",
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              Scaffold(
+                backgroundColor: Colors.white.withOpacity(0.85),
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()));
+                              },
+                              child: SizedBox(
+                                child: Image.asset("assets/images/logo.png"),
+                                width: MediaQuery.of(context).size.width * 0.2,
+                              )),
+                          Spacer(),
+                          Text(
+                            'Справочник юридических лиц'.toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 34),
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.yellow[700],
+                      ),
+                      Row(
+                        children: [
+                          Spacer(),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              controller: searchController,
+                              decoration: const InputDecoration(
+                                hintText: "Поиск",
+                                border: UnderlineInputBorder(),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            searchAction();
-                          },
-                          child: Icon(
-                            Icons.search,
-                            size: 40,
+                          SizedBox(
+                            width: 20,
                           ),
-                        ),
-                        Spacer()
-                      ],
-                    ),
-                    _createDataTable(),
-                  ],
+                          GestureDetector(
+                            onTap: () {
+                              searchAction();
+                            },
+                            child: Icon(
+                              Icons.search,
+                              size: 40,
+                            ),
+                          ),
+                          Spacer()
+                        ],
+                      ),
+                      _createDataTable(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 

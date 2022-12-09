@@ -41,202 +41,205 @@ class _AddNewOutletState extends State<AddNewOutlet> {
             currentFocus.unfocus();
           }
         },
-        child: Stack(
-          children: [
-            Image.asset(
-              "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-            Scaffold(
-              backgroundColor: Colors.white.withOpacity(0.85),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomePage()));
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: Stack(
+            children: [
+              Image.asset(
+                "assets/images/bbq_bg.jpg",
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              Scaffold(
+                backgroundColor: Colors.white.withOpacity(0.85),
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()));
+                              },
+                              child: SizedBox(
+                                child: Image.asset("assets/images/logo.png"),
+                                width: MediaQuery.of(context).size.width * 0.2,
+                              )),
+                          Spacer(),
+                          Text(
+                            'Добавить торговую точку'.toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 34),
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.yellow[700],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 30, 30, 10),
+                        child: TextFormField(
+                          controller: nameController,
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 20),
+                          decoration: InputDecoration(
+                              hintStyle:
+                                  TextStyle(color: Colors.grey, fontSize: 20),
+                              fillColor: Colors.yellow[700],
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.yellow[700]!)),
+                              hintText: 'Название',
+                              labelText: 'Название',
+                              labelStyle: TextStyle(
+                                  color: Colors.black87, fontSize: 20),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.yellow[700]!)),
+                              prefixIcon: Icon(
+                                Icons.info,
+                                color: Colors.black87,
+                              ),
+                              prefixText: '',
+                              suffixStyle:
+                                  TextStyle(color: Colors.black, fontSize: 20)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        child: TextFormField(
+                          controller: phoneController,
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 20),
+                          keyboardType: TextInputType.number,
+                          maxLength: 11,
+                          decoration: InputDecoration(
+                              hintStyle:
+                                  TextStyle(color: Colors.grey, fontSize: 20),
+                              fillColor: Colors.yellow[700],
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.yellow[700]!)),
+                              hintText: 'Номер телефона',
+                              labelText: 'Номер телефона',
+                              labelStyle: TextStyle(
+                                  color: Colors.black87, fontSize: 20),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.yellow[700]!)),
+                              prefixIcon: Icon(
+                                Icons.info,
+                                color: Colors.black87,
+                              ),
+                              prefixText: '',
+                              suffixStyle:
+                                  TextStyle(color: Colors.black, fontSize: 20)),
+                        ),
+                      ),
+                      // widget.counteragentId != 0
+                      //     ? Padding(
+                      //         padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                      //         child: TextFormField(
+                      //           controller: binController,
+                      //           style: const TextStyle(
+                      //               color: Colors.black, fontSize: 20),
+                      //           decoration: InputDecoration(
+                      //               hintStyle: TextStyle(
+                      //                   color: Colors.grey, fontSize: 20),
+                      //               fillColor: Colors.yellow[700],
+                      //               border: OutlineInputBorder(
+                      //                   borderSide:
+                      //                       BorderSide(color: Colors.white)),
+                      //               enabledBorder: OutlineInputBorder(
+                      //                   borderSide: BorderSide(
+                      //                       color: Colors.yellow[700]!)),
+                      //               hintText: 'БИН',
+                      //               labelText: 'БИН',
+                      //               labelStyle: TextStyle(
+                      //                   color: Colors.black87, fontSize: 20),
+                      //               focusedBorder: OutlineInputBorder(
+                      //                   borderSide: BorderSide(
+                      //                       color: Colors.yellow[700]!)),
+                      //               prefixIcon: Icon(
+                      //                 Icons.info,
+                      //                 color: Colors.black87,
+                      //               ),
+                      //               prefixText: '',
+                      //               suffixStyle: TextStyle(
+                      //                   color: Colors.black, fontSize: 20)),
+                      //         ),
+                      //       )
+                      //     : SizedBox(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        child: TextFormField(
+                          controller: addressController,
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 20),
+                          decoration: InputDecoration(
+                              hintStyle:
+                                  TextStyle(color: Colors.grey, fontSize: 20),
+                              fillColor: Colors.yellow[700],
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.yellow[700]!)),
+                              hintText: 'Адрес',
+                              labelText: 'Адрес',
+                              labelStyle: TextStyle(
+                                  color: Colors.black87, fontSize: 20),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.yellow[700]!)),
+                              prefixIcon: Icon(
+                                Icons.info,
+                                color: Colors.black87,
+                              ),
+                              prefixText: '',
+                              suffixStyle:
+                                  TextStyle(color: Colors.black, fontSize: 20)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.width * 0.07,
+                          child: ElevatedButton.icon(
+                            icon: const Icon(Icons.create, color: Colors.black),
+                            label: const Text(
+                              'СОЗДАТЬ',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            onPressed: () {
+                              createOutletAction();
                             },
-                            child: SizedBox(
-                              child: Image.asset("assets/images/logo.png"),
-                              width: MediaQuery.of(context).size.width * 0.2,
-                            )),
-                        Spacer(),
-                        Text(
-                          'Добавить торговую точку'.toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 34),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.yellow[700],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 30, 30, 10),
-                      child: TextFormField(
-                        controller: nameController,
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 20),
-                        decoration: InputDecoration(
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 20),
-                            fillColor: Colors.yellow[700],
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.yellow[700]!)),
-                            hintText: 'Название',
-                            labelText: 'Название',
-                            labelStyle:
-                                TextStyle(color: Colors.black87, fontSize: 20),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.yellow[700]!)),
-                            prefixIcon: Icon(
-                              Icons.info,
-                              color: Colors.black87,
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.yellow[700]!,
+                              textStyle: const TextStyle(
+                                  color: Colors.black, fontSize: 20),
                             ),
-                            prefixText: '',
-                            suffixStyle:
-                                TextStyle(color: Colors.black, fontSize: 20)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                      child: TextFormField(
-                        controller: phoneController,
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 20),
-                        keyboardType: TextInputType.number,
-                        maxLength: 11,
-                        decoration: InputDecoration(
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 20),
-                            fillColor: Colors.yellow[700],
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.yellow[700]!)),
-                            hintText: 'Номер телефона',
-                            labelText: 'Номер телефона',
-                            labelStyle:
-                                TextStyle(color: Colors.black87, fontSize: 20),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.yellow[700]!)),
-                            prefixIcon: Icon(
-                              Icons.info,
-                              color: Colors.black87,
-                            ),
-                            prefixText: '',
-                            suffixStyle:
-                                TextStyle(color: Colors.black, fontSize: 20)),
-                      ),
-                    ),
-                    // widget.counteragentId != 0
-                    //     ? Padding(
-                    //         padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                    //         child: TextFormField(
-                    //           controller: binController,
-                    //           style: const TextStyle(
-                    //               color: Colors.black, fontSize: 20),
-                    //           decoration: InputDecoration(
-                    //               hintStyle: TextStyle(
-                    //                   color: Colors.grey, fontSize: 20),
-                    //               fillColor: Colors.yellow[700],
-                    //               border: OutlineInputBorder(
-                    //                   borderSide:
-                    //                       BorderSide(color: Colors.white)),
-                    //               enabledBorder: OutlineInputBorder(
-                    //                   borderSide: BorderSide(
-                    //                       color: Colors.yellow[700]!)),
-                    //               hintText: 'БИН',
-                    //               labelText: 'БИН',
-                    //               labelStyle: TextStyle(
-                    //                   color: Colors.black87, fontSize: 20),
-                    //               focusedBorder: OutlineInputBorder(
-                    //                   borderSide: BorderSide(
-                    //                       color: Colors.yellow[700]!)),
-                    //               prefixIcon: Icon(
-                    //                 Icons.info,
-                    //                 color: Colors.black87,
-                    //               ),
-                    //               prefixText: '',
-                    //               suffixStyle: TextStyle(
-                    //                   color: Colors.black, fontSize: 20)),
-                    //         ),
-                    //       )
-                    //     : SizedBox(),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                      child: TextFormField(
-                        controller: addressController,
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 20),
-                        decoration: InputDecoration(
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 20),
-                            fillColor: Colors.yellow[700],
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.yellow[700]!)),
-                            hintText: 'Адрес',
-                            labelText: 'Адрес',
-                            labelStyle:
-                                TextStyle(color: Colors.black87, fontSize: 20),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.yellow[700]!)),
-                            prefixIcon: Icon(
-                              Icons.info,
-                              color: Colors.black87,
-                            ),
-                            prefixText: '',
-                            suffixStyle:
-                                TextStyle(color: Colors.black, fontSize: 20)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        height: MediaQuery.of(context).size.width * 0.07,
-                        child: ElevatedButton.icon(
-                          icon: const Icon(Icons.create, color: Colors.black),
-                          label: const Text(
-                            'СОЗДАТЬ',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () {
-                            createOutletAction();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.yellow[700]!,
-                            textStyle: const TextStyle(
-                                color: Colors.black, fontSize: 20),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 

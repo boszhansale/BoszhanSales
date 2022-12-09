@@ -68,284 +68,312 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
             currentFocus.unfocus();
           }
         },
-        child: Stack(
-          children: [
-            Image.asset(
-              "assets/images/bbq_bg.jpg",
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-            Scaffold(
-              backgroundColor: Colors.white.withOpacity(0.85),
-              body: SingleChildScrollView(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 50),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                // color: Colors.yellow[700],
-                                borderRadius: BorderRadius.circular(130)),
-                            child: Image.asset("assets/images/logo.png",
-                                width:
-                                    MediaQuery.of(context).size.height * 0.5),
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: Stack(
+            children: [
+              Image.asset(
+                "assets/images/bbq_bg.jpg",
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              Scaffold(
+                backgroundColor: Colors.white.withOpacity(0.85),
+                body: SingleChildScrollView(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 50),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  // color: Colors.yellow[700],
+                                  borderRadius: BorderRadius.circular(130)),
+                              child: Image.asset("assets/images/logo.png",
+                                  width:
+                                      MediaQuery.of(context).size.height * 0.5),
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          "История заказов".toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            "История заказов".toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 28, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Spacer(),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.45,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Column(
-                              children: [
-                                Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.12,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.25,
-                                    child: ElevatedButton(
-                                      child: const Text(
-                                        'Юридические лица',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            color: Colors.black),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HistoryCounteragnetsPage()));
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.yellow[700],
-                                        textStyle: const TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                        Row(
+                          children: [
+                            Spacer(),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.45,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Column(
+                                children: [
+                                  Spacer(),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.12,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.25,
+                                      child: ElevatedButton(
+                                        child: const Text(
+                                          'Юридические лица',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color: Colors.black),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HistoryCounteragnetsPage()));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.yellow[700],
+                                          textStyle: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.12,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.25,
-                                    child: ElevatedButton(
-                                      child: const Text(
-                                        'Физические лица',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            color: Colors.black),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HistoryStoresPage()));
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.yellow[700],
-                                        textStyle: const TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                  Spacer(),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.12,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.25,
+                                      child: ElevatedButton(
+                                        child: const Text(
+                                          'Физические лица',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color: Colors.black),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HistoryStoresPage()));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.yellow[700],
+                                          textStyle: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Spacer(),
-                              ],
+                                  Spacer(),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.48,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.2,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.25,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Юр лицо',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.48,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.25,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5, vertical: 2),
+                                              child: Text(
+                                                'Юр лицо',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Количество заявок: $legCount',
-                                              style: TextStyle(fontSize: 15),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              child: Text(
+                                                'Количество заявок: $legCount',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Сумма заявок: $legSum',
-                                              style: TextStyle(fontSize: 15),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              child: Text(
+                                                'Сумма заявок: $legSum',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Количество возвратов: $legCountReturn',
-                                              style: TextStyle(fontSize: 15),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              child: Text(
+                                                'Количество возвратов: $legCountReturn',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Сумма возврата: $legSumReturn',
-                                              style: TextStyle(fontSize: 15),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              child: Text(
+                                                'Сумма возврата: $legSumReturn',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.2,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.25,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Физ лицо',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                                          ],
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.25,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5, vertical: 2),
+                                              child: Text(
+                                                'Физ лицо',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Количество заявок: $physCount',
-                                              style: TextStyle(fontSize: 15),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              child: Text(
+                                                'Количество заявок: $physCount',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Сумма заявок: $physSum',
-                                              style: TextStyle(fontSize: 15),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              child: Text(
+                                                'Сумма заявок: $physSum',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Количество возвратов: $physCountReturn',
-                                              style: TextStyle(fontSize: 15),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              child: Text(
+                                                'Количество возвратов: $physCountReturn',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 2),
-                                            child: Text(
-                                              'Сумма возврата: $physSumReturn',
-                                              style: TextStyle(fontSize: 15),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              child: Text(
+                                                'Сумма возврата: $physSumReturn',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                              ],
+                                          ],
+                                        )),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              width: MediaQuery.of(context).size.width * 0.15,
-                              child: ElevatedButton(
-                                child: const Text(
-                                  'Поделиться',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: Colors.black),
-                                ),
-                                onPressed: () async {
-                                  String text =
-                                      '$name \n Физ. лицо \nКоличество заявок: $physCount \nСумма заявок: $physSum \nКоличество возвратов: $physCountReturn \nСумма возврата: $physSumReturn \nЮр лицо \nКоличество заявок: $legCount \nСумма заявок: $legSum \nКоличество возвратов: $legCountReturn \nСумма возврата: $legSumReturn';
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                                width: MediaQuery.of(context).size.width * 0.15,
+                                child: ElevatedButton(
+                                  child: const Text(
+                                    'Поделиться',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.black),
+                                  ),
+                                  onPressed: () async {
+                                    String text =
+                                        '$name \n Физ. лицо \nКоличество заявок: $physCount \nСумма заявок: $physSum \nКоличество возвратов: $physCountReturn \nСумма возврата: $physSumReturn \nЮр лицо \nКоличество заявок: $legCount \nСумма заявок: $legSum \nКоличество возвратов: $legCountReturn \nСумма возврата: $legSumReturn';
 
-                                  await FlutterShare.share(
-                                    title: 'Первомайские деликатесы',
-                                    text: text,
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.yellow[700],
-                                  textStyle: const TextStyle(
-                                      color: Colors.white, fontSize: 20),
+                                    await FlutterShare.share(
+                                      title: 'Первомайские деликатесы',
+                                      text: text,
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.yellow[700],
+                                    textStyle: const TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Spacer()
-                        ],
-                      ),
-                    ],
+                            Spacer()
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }
