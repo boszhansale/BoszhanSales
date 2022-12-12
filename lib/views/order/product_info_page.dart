@@ -880,6 +880,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
   void previousProduct() {
     if (indexOfProduct > 0) {
       setState(() {
+        countTextFieldController.text = '1.0';
         indexOfProduct -= 1;
         thisProduct = widget.listProducts[indexOfProduct];
         getPrice();
@@ -895,6 +896,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
   void nextProduct() {
     if (indexOfProduct < widget.listProducts.length - 1) {
       setState(() {
+        countTextFieldController.text = '1.0';
         indexOfProduct += 1;
         thisProduct = widget.listProducts[indexOfProduct];
         getPrice();
