@@ -41,7 +41,7 @@ class _HistoryStoresPageState extends State<HistoryStoresPage> {
                 fit: BoxFit.cover,
               ),
               Scaffold(
-                backgroundColor: Colors.white.withOpacity(0.85),
+                backgroundColor: Colors.transparent,
                 body: SingleChildScrollView(
                   child: Column(
                     children: [

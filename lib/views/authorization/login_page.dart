@@ -230,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
           fit: BoxFit.cover,
         ),
         Scaffold(
-            backgroundColor: Colors.white.withOpacity(0.85),
+            backgroundColor: Colors.transparent,
             appBar: PreferredSize(
                 preferredSize: const Size.fromHeight(60.0),
                 child: buildAppBar('Авторизация')),

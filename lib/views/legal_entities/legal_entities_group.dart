@@ -39,7 +39,7 @@ class _LegalEntitiesGroupState extends State<LegalEntitiesGroup> {
               ),
               Scaffold(
                 key: globalKey,
-                backgroundColor: Colors.white.withOpacity(0.85),
+                backgroundColor: Colors.transparent,
                 body: SingleChildScrollView(
                   child: Column(
                     children: [
