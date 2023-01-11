@@ -4,6 +4,7 @@ import 'package:boszhan_sales/components/global_data.dart';
 import 'package:boszhan_sales/services/auth_api_provider.dart';
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/views/analytics_page.dart';
+import 'package:boszhan_sales/views/authorization/login_page.dart';
 import 'package:boszhan_sales/views/catalog/catalog_page.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
@@ -89,6 +90,35 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.all(50),
                             child: Row(
                               children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setBool("isBasketCompleted", true);
+                                    prefs.remove('BasketData');
+                                    prefs.remove('responsePhysicalOutlets');
+                                    prefs.remove('responseLegalOutlets');
+                                    prefs.remove('responseCounteragents');
+                                    prefs.remove('responseBrends');
+                                    prefs.remove('driver_phone');
+                                    prefs.remove('driver_name');
+                                    prefs.setBool("isLogedIn", false);
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage()));
+                                  },
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.08,
+                                    height: MediaQuery.of(context).size.width *
+                                        0.08,
+                                    child: const Icon(
+                                      Icons.logout,
+                                    ),
+                                  ),
+                                ),
                                 SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.17,
