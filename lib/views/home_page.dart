@@ -568,15 +568,13 @@ class _HomePageState extends State<HomePage> {
 
   void getProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    var profileInfo = await AuthProvider().getProfileInfo();
 
     setState(() {
       name = prefs.getString('full_name')!;
-      if (prefs.getString('driver_name') != null) {
-        driverName = prefs.getString('driver_name')!;
-      }
-      if (prefs.getString('driver_phone') != null) {
-        driverPhone = prefs.getString('driver_phone')!;
-      }
+      name = profileInfo['name'] ?? prefs.getString('full_name');
+      driverName = profileInfo['driver']['name'] ?? '';
+      driverPhone = profileInfo['driver']['phone'] ?? '';
     });
   }
 

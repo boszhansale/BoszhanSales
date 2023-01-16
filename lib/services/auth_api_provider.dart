@@ -48,7 +48,7 @@ class AuthProvider {
     }
   }
 
-  Future<dynamic> getProfileInfo(int id) async {
+  Future<dynamic> getProfileInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
@@ -64,7 +64,7 @@ class AuthProvider {
       Map<String, dynamic> result = jsonDecode(response.body);
       return result;
     } else {
-      final result = 'Error';
+      const result = 'Error';
       return result;
     }
   }
