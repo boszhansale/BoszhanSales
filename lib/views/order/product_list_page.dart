@@ -748,9 +748,11 @@ class _ProductListPageState extends State<ProductListPage> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  textStyle: const TextStyle(color: Colors.white),
+                ),
                 child: const Text('Отмена'),
                 onPressed: () {
                   setState(() {
@@ -758,9 +760,11 @@ class _ProductListPageState extends State<ProductListPage> {
                   });
                 },
               ),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  textStyle: const TextStyle(color: Colors.white),
+                ),
                 child: const Text('Сохранить'),
                 onPressed: () async {},
               ),

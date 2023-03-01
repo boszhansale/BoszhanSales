@@ -191,20 +191,26 @@ class _ProductListCardState extends State<ProductListCard> {
                                         ),
                                       ),
                                       actions: <Widget>[
-                                        FlatButton(
-                                          color: Colors.red,
-                                          textColor: Colors.white,
+                                        ElevatedButton(
                                           child: const Text('Отмена'),
                                           onPressed: () {
                                             setState(() {
                                               Navigator.pop(context);
                                             });
                                           },
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.red,
+                                            textStyle: const TextStyle(
+                                                color: Colors.white),
+                                          ),
                                         ),
-                                        FlatButton(
-                                          color: Colors.green,
-                                          textColor: Colors.white,
+                                        ElevatedButton(
                                           child: const Text('Сохранить'),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.green,
+                                            textStyle: const TextStyle(
+                                                color: Colors.white),
+                                          ),
                                           onPressed: () async {
                                             if (_value != 10 ||
                                                 commentController.text != '') {

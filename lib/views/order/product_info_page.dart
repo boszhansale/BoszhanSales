@@ -419,19 +419,31 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                                   ),
                                                 ),
                                                 actions: <Widget>[
-                                                  FlatButton(
-                                                    color: Colors.red,
-                                                    textColor: Colors.white,
+                                                  ElevatedButton(
                                                     child: const Text('Отмена'),
                                                     onPressed: () {
                                                       setState(() {
                                                         Navigator.pop(context);
                                                       });
                                                     },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.red,
+                                                      textStyle:
+                                                          const TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                    ),
                                                   ),
-                                                  FlatButton(
-                                                    color: Colors.green,
-                                                    textColor: Colors.white,
+                                                  ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.green,
+                                                      textStyle:
+                                                          const TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                    ),
                                                     child:
                                                         const Text('Сохранить'),
                                                     onPressed: () async {
