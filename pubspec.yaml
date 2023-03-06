@@ -51,6 +51,7 @@ dependencies:
   flutter_background_geolocation: ^4.6.3
   intl: ^0.17.0
   socket_io_client: ^2.0.0
+  file: ^6.1.4
 
 dev_dependencies:
   flutter_test:

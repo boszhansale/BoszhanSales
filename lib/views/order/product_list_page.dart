@@ -570,7 +570,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                             widget.priceTypeId,
                                             products,
                                             widget.outlet),
-                                        productPrices[i]),
+                                        productPrices[i],
+                                        widget.outletId),
                                   )
                               ],
                             ),

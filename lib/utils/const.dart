@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -13,5 +11,5 @@ class AppConstants {
   static List<int> basketIDs_return = [];
   static List<dynamic> basket = [];
   static List<dynamic> basket_return = [];
-  static String appVersion = "3.7";
+  static String appVersion = "3.8";
 }

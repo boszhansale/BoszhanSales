@@ -7,8 +7,8 @@ import 'package:boszhan_sales/views/analytics_page.dart';
 import 'package:boszhan_sales/views/authorization/login_page.dart';
 import 'package:boszhan_sales/views/catalog/catalog_page.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -581,6 +581,11 @@ class _HomePageState extends State<HomePage> {
   void getAllData() async {
     loadBool = false;
     checkVersion();
+
+    String endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String startDate = DateFormat('yyyy-MM-dd')
+        .format(DateTime.now().subtract(Duration(days: 3)));
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var responseCounteragents = await SalesRepProvider().getCounteragents();
     var responseBrends = await SalesRepProvider().getBrends();
@@ -588,6 +593,8 @@ class _HomePageState extends State<HomePage> {
     var responsePhysicalOutlets = await SalesRepProvider().getPhysicalOutlets();
     var responseProducts = await SalesRepProvider().getProducts();
     var responseAnalytics = await SalesRepProvider().getAnalytics();
+    var responseHistoryForReturns =
+        await SalesRepProvider().getHistoryOrdersFromDate(startDate, endDate);
 
     if (responseCounteragents != 'Error') {
       prefs.setString(
@@ -665,6 +672,17 @@ class _HomePageState extends State<HomePage> {
       prefs.setString("responseAnalytics", 'Error');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Something went wrong. (Analytics)",
+            style: TextStyle(fontSize: 20)),
+      ));
+    }
+
+    if (responseHistoryForReturns != 'Error') {
+      prefs.setString(
+          "responseHistoryForReturns", jsonEncode(responseHistoryForReturns));
+    } else {
+      prefs.setString("responseHistoryForReturns", 'Error');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong. (responseHistoryForReturns)",
             style: TextStyle(fontSize: 20)),
       ));
     }

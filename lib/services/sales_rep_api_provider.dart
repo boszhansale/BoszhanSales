@@ -308,4 +308,27 @@ class SalesRepProvider {
       return result;
     }
   }
+
+  Future<dynamic> getHistoryOrdersFromDate(
+      String startDate, String endDate) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+
+    final response = await http.get(
+      Uri.parse(API_URL +
+          'api/salesrep/order?start_date=$startDate&end_date=$endDate'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Bearer $token"
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      return result;
+    } else {
+      final result = 'Error';
+      return result;
+    }
+  }
 }
