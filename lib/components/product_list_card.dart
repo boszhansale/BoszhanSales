@@ -104,6 +104,7 @@ class _ProductListCardState extends State<ProductListCard> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
+                          print(permittedProductIds);
                           if (permittedProductIds
                               .contains(widget.product['id'])) {
                             if (widget.product['return'] == 1) {
@@ -592,11 +593,15 @@ class _ProductListCardState extends State<ProductListCard> {
           jsonDecode(prefs.getString('responseHistoryForReturns')!);
 
       for (int i = 0; i < historyForReturn.length; i++) {
-        if (historyForReturn[i]['store_id'] == widget.outletId) {
-          for (int j = 0; j < historyForReturn[i]['baskets'].length; j++) {
-            if (historyForReturn[i]['baskets'][j]['type'] == 0) {
-              permittedProductIds
-                  .add(historyForReturn[i]['baskets'][j]['product_id']);
+        if (historyForReturn[i]['id'] == widget.outletId) {
+          for (int k = 0; k < historyForReturn[i]['orders'].length; k++) {
+            for (int j = 0;
+                j < historyForReturn[i]['orders'][k]['baskets'].length;
+                j++) {
+              if (historyForReturn[i]['orders'][k]['baskets'][j]['type'] == 0) {
+                permittedProductIds.add(historyForReturn[i]['orders'][k]
+                    ['baskets'][j]['product_id']);
+              }
             }
           }
         }

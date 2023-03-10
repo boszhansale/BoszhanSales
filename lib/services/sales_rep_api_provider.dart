@@ -309,14 +309,12 @@ class SalesRepProvider {
     }
   }
 
-  Future<dynamic> getHistoryOrdersFromDate(
-      String startDate, String endDate) async {
+  Future<dynamic> getLastThreeOrders() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
     final response = await http.get(
-      Uri.parse(API_URL +
-          'api/salesrep/order?start_date=$startDate&end_date=$endDate'),
+      Uri.parse(API_URL + 'api/salesrep/store/last-orders'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
