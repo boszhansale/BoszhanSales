@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:boszhan_sales/utils/const.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -39,6 +40,9 @@ class _BasketPageState extends State<BasketPage> {
   List<TextEditingController> productsTextFieldControllers = [];
   List<TextEditingController> returnsTextFieldControllers = [];
 
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+
   String deliveryDate = "";
   DateTime selectedDate = DateTime.now();
 
@@ -52,6 +56,9 @@ class _BasketPageState extends State<BasketPage> {
   bool isActive = true;
 
   List<dynamic> orderHistory = [];
+
+  Object? _value = 1;
+  Object? _value2 = 1;
 
   @override
   void initState() {
@@ -110,10 +117,14 @@ class _BasketPageState extends State<BasketPage> {
       try {
         if (orderHistory[i]['isSended'] == false) {
           var response = await SalesRepProvider().createOrder(
-              orderHistory[i]['outletId'],
-              orderHistory[i]['mobileId'],
-              orderHistory[i]['basket'],
-              orderHistory[i]['delivery_date']);
+            orderHistory[i]['outletId'],
+            orderHistory[i]['mobileId'],
+            orderHistory[i]['basket'],
+            orderHistory[i]['delivery_date'],
+            orderHistory[i]['payment_type'],
+            orderHistory[i]['payment_partial'],
+            orderHistory[i]['amount'],
+          );
 
           if (response != 'Error') {
             setState(() {
@@ -247,6 +258,10 @@ class _BasketPageState extends State<BasketPage> {
       thisMap['purchase_buy'] = sumBuy;
       thisMap['purchase_return'] = sumReturn;
       thisMap['isSended'] = false;
+      thisMap['payment_type'] = int.parse(_value.toString());
+      thisMap['payment_partial'] =
+          int.parse(_value2.toString()) == 1 ? true : false;
+      thisMap['amount'] = amountController.text;
       if (deliveryDate != DateFormat("yyyy-MM-dd").format(DateTime.now())) {
         thisMap['delivery_date'] = deliveryDate;
       } else {
@@ -268,6 +283,10 @@ class _BasketPageState extends State<BasketPage> {
           thisMap['isSended'] = false;
           thisMap['purchase_buy'] = sumBuy;
           thisMap['purchase_return'] = sumReturn;
+          thisMap['payment_type'] = int.parse(_value.toString());
+          thisMap['payment_partial'] =
+              int.parse(_value2.toString()) == 1 ? true : false;
+          thisMap['amount'] = amountController.text;
           if (deliveryDate != DateFormat("yyyy-MM-dd").format(DateTime.now())) {
             thisMap['delivery_date'] = deliveryDate;
           } else {
@@ -478,7 +497,7 @@ class _BasketPageState extends State<BasketPage> {
                           child: ElevatedButton.icon(
                             onPressed: () {
                               if (sumAll > 0) {
-                                isActive ? createOrder() : null;
+                                isActive ? displayPaymentTypeDialog() : null;
                               } else {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
@@ -732,5 +751,165 @@ class _BasketPageState extends State<BasketPage> {
               ))
             ]),
     ];
+  }
+
+  Future<void> displayPaymentTypeDialog() async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Выберите способ оплаты'),
+            content: SizedBox(
+              height: 270,
+              child: Column(
+                children: [
+                  SizedBox(
+                      height: 60,
+                      child: DropdownButton(
+                          value: _value,
+                          items: const [
+                            DropdownMenuItem(
+                              child: Text("Наличный"),
+                              value: 1,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Без наличный"),
+                              value: 2,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Отсрочка платежа"),
+                              value: 3,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Kaspi.kz"),
+                              value: 4,
+                            )
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _value = value;
+                              Navigator.pop(context);
+                              displayPaymentTypeDialog();
+                            });
+                          },
+                          hint: const Text("Select item"))),
+                  // _value == 4
+                  //     ? TextFormField(
+                  //         controller: phoneController,
+                  //         decoration: const InputDecoration(
+                  //             hintText: "Номер телефона kaspi.kz"),
+                  //         keyboardType: TextInputType.phone,
+                  //         inputFormatters: <TextInputFormatter>[
+                  //           FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                  //           _mobileFormatter,
+                  //         ],
+                  //         maxLength: 12,
+                  //         validator: (value) {
+                  //           if (value!.isEmpty) {
+                  //             return 'Номер телефона';
+                  //           } else if (!value.contains('+')) {
+                  //             return 'Введите корректный номер телефона';
+                  //           }
+                  //           return null;
+                  //         },
+                  //       )
+                  //     : Container(),
+                  // _value == 4 ||
+                  _value == 1
+                      ? SizedBox(
+                          height: 60,
+                          child: DropdownButton(
+                              value: _value2,
+                              items: const [
+                                DropdownMenuItem(
+                                  child: Text("Полное погашение"),
+                                  value: 1,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text("Частичное погашение"),
+                                  value: 2,
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _value2 = value;
+                                  Navigator.pop(context);
+                                  displayPaymentTypeDialog();
+                                });
+                              },
+                              hint: const Text("Select item")))
+                      : Container(),
+                  // (_value2 == 2 && _value == 4) ||
+                  (_value == 1 && _value2 == 2)
+                      ? TextFormField(
+                          controller: amountController,
+                          decoration:
+                              const InputDecoration(hintText: "Введите сумму"),
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                          ],
+                          maxLength: 30,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Введите сумму';
+                            }
+                            return null;
+                          },
+                        )
+                      : Container(),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  textStyle: const TextStyle(color: Colors.white),
+                ),
+                child: const Text('Отмена'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  textStyle: const TextStyle(color: Colors.white),
+                ),
+                child: const Text('Сохранить'),
+                onPressed: () async {
+                  var connectivityResult =
+                      await (Connectivity().checkConnectivity());
+                  if (connectivityResult == ConnectivityResult.mobile ||
+                      connectivityResult == ConnectivityResult.wifi) {
+                    if (_value == 4) {
+                      if (phoneController.text.length == 12) {
+                        setState(() {
+                          createOrder();
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Введите корректный номер телефона.",
+                              style: TextStyle(fontSize: 20)),
+                        ));
+                      }
+                    } else {
+                      createOrder();
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Соединение с интернетом отсутствует.",
+                          style: TextStyle(fontSize: 20)),
+                    ));
+                  }
+                },
+              ),
+            ],
+          );
+        });
   }
 }

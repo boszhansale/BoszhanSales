@@ -460,10 +460,14 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
         try {
           if (orderHistory[i]['isSended'] == false) {
             var response = await SalesRepProvider().createOrder(
-                orderHistory[i]['outletId'],
-                orderHistory[i]['mobileId'],
-                orderHistory[i]['basket'],
-                orderHistory[i]['delivery_date']);
+              orderHistory[i]['outletId'],
+              orderHistory[i]['mobileId'],
+              orderHistory[i]['basket'],
+              orderHistory[i]['delivery_date'],
+              orderHistory[i]['payment_type'],
+              orderHistory[i]['payment_partial'],
+              orderHistory[i]['amount'],
+            );
 
             if (response != 'Error') {
               setState(() {

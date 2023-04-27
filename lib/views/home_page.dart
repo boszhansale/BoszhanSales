@@ -529,7 +529,9 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     onPressed: () {
                                       if (localSavedAppVersion ==
-                                          AppConstants.appVersion) {
+                                              AppConstants.appVersion
+                                          // true
+                                          ) {
                                         Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

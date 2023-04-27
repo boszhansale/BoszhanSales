@@ -155,8 +155,14 @@ class SalesRepProvider {
     }
   }
 
-  Future<dynamic> createOrder(int storeId, String mobileId,
-      List<dynamic> basket, String deliveryDate) async {
+  Future<dynamic> createOrder(
+      int storeId,
+      String mobileId,
+      List<dynamic> basket,
+      String deliveryDate,
+      int paymentType,
+      bool paymentPartial,
+      String amount) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
 
@@ -164,11 +170,17 @@ class SalesRepProvider {
       "store_id": storeId,
       "mobile_id": mobileId,
       "baskets": basket,
-      "salesrep_mobile_app_version": AppConstants.appVersion
+      "salesrep_mobile_app_version": AppConstants.appVersion,
+      "payment_type_id": paymentType,
+      "payment_full": paymentPartial,
     };
 
     if (deliveryDate != '') {
       bodyVar["delivery_date"] = deliveryDate;
+    }
+
+    if (!paymentPartial) {
+      bodyVar['payment_partial'] = amount;
     }
 
     final response = await http.post(

@@ -11,5 +11,5 @@ class AppConstants {
   static List<int> basketIDs_return = [];
   static List<dynamic> basket = [];
   static List<dynamic> basket_return = [];
-  static String appVersion = "3.8";
+  static String appVersion = "3.9";
 }
