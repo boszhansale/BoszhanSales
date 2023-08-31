@@ -885,21 +885,7 @@ class _BasketPageState extends State<BasketPage> {
                       await (Connectivity().checkConnectivity());
                   if (connectivityResult == ConnectivityResult.mobile ||
                       connectivityResult == ConnectivityResult.wifi) {
-                    if (_value == 4) {
-                      if (phoneController.text.length == 12) {
-                        setState(() {
-                          createOrder();
-                        });
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text("Введите корректный номер телефона.",
-                              style: TextStyle(fontSize: 20)),
-                        ));
-                      }
-                    } else {
-                      createOrder();
-                    }
+                    createOrder();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Соединение с интернетом отсутствует.",
