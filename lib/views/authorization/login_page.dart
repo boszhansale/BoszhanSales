@@ -24,33 +24,33 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  late Timer _timer;
-  int _start = 5;
+  // late Timer _timer;
+  // int _start = 5;
 
   int id = 0;
 
   late IO.Socket socket;
 
-  void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (_start == 0) {
-          socket.emit('position',
-              jsonEncode({'id': 192, 'lat': 43.3077969, 'lng': 77.2193498}));
-          print('Sended');
-          setState(() {
-            _start = 5;
-          });
-        } else {
-          setState(() {
-            _start--;
-          });
-        }
-      },
-    );
-  }
+  // void startTimer() {
+  //   const oneSec = const Duration(seconds: 1);
+  //   _timer = new Timer.periodic(
+  //     oneSec,
+  //     (Timer timer) {
+  //       if (_start == 0) {
+  //         socket.emit('position',
+  //             jsonEncode({'id': 192, 'lat': 43.3077969, 'lng': 77.2193498}));
+  //         print('Sended');
+  //         setState(() {
+  //           _start = 5;
+  //         });
+  //       } else {
+  //         setState(() {
+  //           _start--;
+  //         });
+  //       }
+  //     },
+  //   );
+  // }
 
   Future<Position> getLocationByGeolocator() async {
     Position position = await Geolocator.getCurrentPosition(
@@ -94,13 +94,20 @@ class _LoginPageState extends State<LoginPage> {
     //       }));
     // });
 
+    // Timer.periodic(
+    //   Duration(seconds: 10),
+    //   (Timer timer) async {
+    //     print();
+    //   },
+    // );
+
     super.initState();
   }
 
   void setupBackgroundGeolocation() async {
     // Инициализация настроек
     await bg.BackgroundGeolocation.ready(bg.Config(
-      desiredAccuracy: bg.Config.DESIRED_ACCURACY_MEDIUM,
+      desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
       distanceFilter: 100,
       disableElasticity: true,
       stopOnTerminate: false,
@@ -110,64 +117,53 @@ class _LoginPageState extends State<LoginPage> {
     ));
 
     bg.BackgroundGeolocation.onLocation((bg.Location location) async {
-      print('[motionchange long] - ${location.coords.longitude}');
-      print('[motionchange lat] - ${location.coords.latitude}');
+      // print('[onLocation long] - ${location.coords.longitude}');
+      // print('[onLocation lat] - ${location.coords.latitude}');
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       // var id = prefs.getInt('user_id');
 
       var connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult != ConnectivityResult.none) {
-        await AuthProvider()
-            .sendLocation(location.coords.latitude, location.coords.longitude);
+        await AuthProvider().sendLocation(
+            location.coords.latitude, location.coords.longitude, []);
 
         if (prefs.getString("CoordsData") != null) {
           var list = jsonDecode(prefs.getString("CoordsData")!);
-          for (int i = 0; i < list.length; i++) {
-            if (list[i]["isSended"] == false) {
-              var response = await AuthProvider()
-                  .sendLocation(list[i]['lat'], list[i]['long']);
-              if (response != "Error") {
-                list[i]["isSended"] = true;
-              }
-            }
+
+          var response = await AuthProvider().sendLocation(0, 0, list);
+
+          if (response != "Error") {
+            prefs.remove("CoordsData");
           }
-          prefs.setString("CoordsData", jsonEncode(list));
         }
       } else {
         if (prefs.getString("CoordsData") != null) {
           var list = jsonDecode(prefs.getString("CoordsData")!);
-          if (list.length > 50) {
+
+          if (list.length > 1000) {
             list.removeAt(0);
             list.add({
               "lat": location.coords.latitude,
-              "long": location.coords.longitude,
-              "isSended": false
+              "lng": location.coords.longitude,
+              "created_at": DateTime.now().toString().substring(0, 19),
             });
           } else {
             list.add({
               "lat": location.coords.latitude,
-              "long": location.coords.longitude,
-              "isSended": false
+              "lng": location.coords.longitude,
+              "created_at": DateTime.now().toString().substring(0, 19),
             });
           }
+
           prefs.setString("CoordsData", jsonEncode(list));
         } else {
           var list = [];
-          if (list.length > 50) {
-            list.removeAt(0);
-            list.add({
-              "lat": location.coords.latitude,
-              "long": location.coords.longitude,
-              "isSended": false
-            });
-          } else {
-            list.add({
-              "lat": location.coords.latitude,
-              "long": location.coords.longitude,
-              "isSended": false
-            });
-          }
+          list.add({
+            "lat": location.coords.latitude,
+            "lng": location.coords.longitude,
+            "created_at": DateTime.now().toString().substring(0, 19),
+          });
           prefs.setString("CoordsData", jsonEncode(list));
         }
       }

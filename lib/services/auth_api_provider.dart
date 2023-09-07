@@ -90,9 +90,19 @@ class AuthProvider {
     }
   }
 
-  Future<String> sendLocation(double lat, double long) async {
+  Future<String> sendLocation(
+      double lat, double long, List<dynamic> coords) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
+
+    Map<String, dynamic> jsonBody = {};
+
+    if (lat != 0) {
+      jsonBody['lat'] = lat;
+      jsonBody['lng'] = long;
+    } else {
+      jsonBody['positions'] = coords;
+    }
 
     final response = await http.post(
       Uri.parse(API_URL + 'api/position'),
@@ -100,10 +110,7 @@ class AuthProvider {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
       },
-      body: jsonEncode(<String, dynamic>{
-        "lat": lat,
-        "lng": long,
-      }),
+      body: jsonEncode(jsonBody),
     );
 
     print(response.body);
