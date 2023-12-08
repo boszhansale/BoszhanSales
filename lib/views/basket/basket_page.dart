@@ -231,6 +231,43 @@ class _BasketPageState extends State<BasketPage> {
         'name': products[i]['product']['name'],
         'price': products[i]['product']['prices'][0]['price'],
       });
+
+      if (products[i]['product']['id'] == 2216) {
+        basket.add({
+          'product_id': 2707,
+          'count': (products[i]['count'] / 5).truncate(),
+          'type': products[i]['type'],
+          'name': products[i]['product']['name'] + " ПОДАРОК",
+          'price': 1 * (products[i]['count'] / 5).truncate(),
+        });
+
+        showGiftAlertDialog(products[i]['product']['name'] +
+            " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
+      }
+
+      if (products[i]['product']['id'] == 2212) {
+        basket.add({
+          'product_id': 2708,
+          'count': (products[i]['count'] / 5).truncate(),
+          'type': products[i]['type'],
+          'name': products[i]['product']['name'] + " ПОДАРОК",
+          'price': 1 * (products[i]['count'] / 5).truncate(),
+        });
+        showGiftAlertDialog(products[i]['product']['name'] +
+            " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
+      }
+
+      if (products[i]['product']['id'] == 798) {
+        basket.add({
+          'product_id': 2709,
+          'count': (products[i]['count'] / 5).truncate(),
+          'type': products[i]['type'],
+          'name': products[i]['product']['name'] + " ПОДАРОК",
+          'price': 1 * (products[i]['count'] / 5).truncate(),
+        });
+        showGiftAlertDialog(products[i]['product']['name'] +
+            " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
+      }
     }
 
     for (int i = 0; i < returns.length; i++) {
@@ -323,6 +360,28 @@ class _BasketPageState extends State<BasketPage> {
     }
   }
 
+  showGiftAlertDialog(String content) async {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text("Поздравляю!"),
+      content: Text("Вы получили продукт $content по акции!"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   Future<void> share() async {
     String text = '';
     for (int i = 0; i < products.length; i++) {
@@ -382,10 +441,10 @@ class _BasketPageState extends State<BasketPage> {
                               child: Image.asset("assets/images/logo.png"),
                               width: MediaQuery.of(context).size.width * 0.2,
                             )),
-                        Spacer(),
+                        const Spacer(),
                         Column(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             Container(
@@ -394,22 +453,22 @@ class _BasketPageState extends State<BasketPage> {
                                 height: 60,
                                 child: Row(
                                   children: [
-                                    Spacer(),
+                                    const Spacer(),
                                     Text(
                                         'Контрагент: ${widget.counteragentName}',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
+                                        style: const TextStyle(fontSize: 16)),
+                                    const Spacer(),
                                     Text('Торговая точка: ${widget.outletName}',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
+                                        style: const TextStyle(fontSize: 16)),
+                                    const Spacer(),
                                     Text('Долг: ${widget.debt} тг',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
+                                        style: const TextStyle(fontSize: 16)),
+                                    const Spacer(),
                                   ],
                                 )),
                           ],
                         ),
-                        Spacer(),
+                        const Spacer(),
                       ],
                     ),
                     Divider(
@@ -422,32 +481,32 @@ class _BasketPageState extends State<BasketPage> {
                         height: 60,
                         child: Row(
                           children: [
-                            Spacer(),
+                            const Spacer(),
                             Text('Сумма покупок: $sumBuy тг',
-                                style: TextStyle(fontSize: 16)),
-                            Spacer(),
+                                style: const TextStyle(fontSize: 16)),
+                            const Spacer(),
                             Text('Сумма возврата: $sumReturn тг',
-                                style: TextStyle(fontSize: 16)),
-                            Spacer(),
+                                style: const TextStyle(fontSize: 16)),
+                            const Spacer(),
                             Text('Итого к оплате: $sumAll тг',
-                                style: TextStyle(fontSize: 16)),
-                            Spacer(),
+                                style: const TextStyle(fontSize: 16)),
+                            const Spacer(),
                           ],
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 60,
                       child: Row(children: [
-                        Spacer(),
+                        const Spacer(),
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 0),
                             child: Icon(
                               Icons.menu,
@@ -455,7 +514,7 @@ class _BasketPageState extends State<BasketPage> {
                             ),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         SizedBox(
                           height: 40,
                           width: MediaQuery.of(context).size.width * 0.3,
@@ -463,11 +522,11 @@ class _BasketPageState extends State<BasketPage> {
                             onPressed: () {
                               share();
                             },
-                            label: Text(
+                            label: const Text(
                               "Отправить заказ клиенту",
                               style: TextStyle(color: Colors.black),
                             ),
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.share,
                               color: Colors.black,
                             ),
@@ -477,7 +536,7 @@ class _BasketPageState extends State<BasketPage> {
                             ),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         GestureDetector(
                           onTap: () {
                             _selectDate(context);
@@ -486,11 +545,11 @@ class _BasketPageState extends State<BasketPage> {
                               width: 140,
                               child: Text(" Когда доставить: $deliveryDate",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold))),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         SizedBox(
                           height: 40,
                           width: MediaQuery.of(context).size.width * 0.3,
@@ -506,11 +565,11 @@ class _BasketPageState extends State<BasketPage> {
                                 ));
                               }
                             },
-                            label: Text(
+                            label: const Text(
                               "Подтвердить заказ",
                               style: TextStyle(color: Colors.black),
                             ),
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.shopping_cart_outlined,
                               color: Colors.black,
                             ),
@@ -520,7 +579,7 @@ class _BasketPageState extends State<BasketPage> {
                             ),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                       ]),
                     )
                   ]))),
@@ -546,11 +605,11 @@ class _BasketPageState extends State<BasketPage> {
 
   List<DataColumn> _createColumns() {
     return [
-      DataColumn(label: Text('Название')),
-      DataColumn(label: Text('кл.')),
-      DataColumn(label: Text('цена')),
-      DataColumn(label: Text('итого')),
-      DataColumn(label: Text('')),
+      const DataColumn(label: Text('Название')),
+      const DataColumn(label: Text('кл.')),
+      const DataColumn(label: Text('цена')),
+      const DataColumn(label: Text('итого')),
+      const DataColumn(label: Text('')),
     ];
   }
 
@@ -574,7 +633,7 @@ class _BasketPageState extends State<BasketPage> {
                       calculateSum();
                     });
                   },
-                  child: Icon(Icons.remove),
+                  child: const Icon(Icons.remove),
                   style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                 ),
               ),
@@ -608,7 +667,7 @@ class _BasketPageState extends State<BasketPage> {
                       calculateSum();
                     });
                   },
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                   style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                 ),
               ),
@@ -643,7 +702,7 @@ class _BasketPageState extends State<BasketPage> {
                 // products.remove(products[i]);
               });
             },
-            child: Icon(
+            child: const Icon(
               Icons.cancel,
               size: 35,
             ),
@@ -671,7 +730,7 @@ class _BasketPageState extends State<BasketPage> {
                           calculateSum();
                         });
                       },
-                      child: Icon(Icons.remove),
+                      child: const Icon(Icons.remove),
                       style:
                           ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                     ),
@@ -706,7 +765,7 @@ class _BasketPageState extends State<BasketPage> {
                           calculateSum();
                         });
                       },
-                      child: Icon(Icons.add),
+                      child: const Icon(Icons.add),
                       style:
                           ElevatedButton.styleFrom(primary: Colors.yellow[700]),
                     ),
@@ -744,7 +803,7 @@ class _BasketPageState extends State<BasketPage> {
                     calculateSum();
                   });
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.cancel,
                   size: 35,
                 ),

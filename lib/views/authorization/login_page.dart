@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
     // Инициализация настроек
     await bg.BackgroundGeolocation.ready(bg.Config(
       desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-      distanceFilter: 100,
+      distanceFilter: 300,
       disableElasticity: true,
       stopOnTerminate: false,
       startOnBoot: true,
