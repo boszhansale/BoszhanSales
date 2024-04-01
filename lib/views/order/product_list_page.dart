@@ -479,7 +479,9 @@ class _ProductListPageState extends State<ProductListPage> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      searchAction();
+                                      if (searchController.text.length > 1) {
+                                        searchAction();
+                                      }
                                     },
                                     child: Icon(
                                       Icons.search,
@@ -516,64 +518,62 @@ class _ProductListPageState extends State<ProductListPage> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.7,
-                            height: MediaQuery.of(context).size.height * 0.68,
-                            child: GridView(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
+                            height: MediaQuery.of(context).size.height * 0.72,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  for (int i = 0; i < products.length; i++)
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductInfoPage(
+                                                        widget.outletName,
+                                                        widget.outletId,
+                                                        widget.counteragentID,
+                                                        widget.counteragentName,
+                                                        widget.debt,
+                                                        products[i],
+                                                        discount != 0
+                                                            ? discount
+                                                            : products[i]
+                                                                ['discount'],
+                                                        widget.priceTypeId,
+                                                        products,
+                                                        widget.outlet))).then(
+                                          (_) => setState(() {}),
+                                        );
+                                      },
+                                      child: ProductListCard(
+                                          products[i],
+                                          widget.priceTypeId,
+                                          discount,
+                                          widget.counteragentID,
+                                          ProductInfoPage(
+                                              widget.outletName,
+                                              widget.outletId,
+                                              widget.counteragentID,
+                                              widget.counteragentName,
+                                              widget.debt,
+                                              products[i],
+                                              discount != 0
+                                                  ? discount
+                                                  : products[i]['discount'],
+                                              widget.priceTypeId,
+                                              products,
+                                              widget.outlet),
+                                          productPrices[i],
+                                          widget.outletId),
+                                    )
+                                ],
                               ),
-                              children: [
-                                for (int i = 0; i < products.length; i++)
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProductInfoPage(
-                                                      widget.outletName,
-                                                      widget.outletId,
-                                                      widget.counteragentID,
-                                                      widget.counteragentName,
-                                                      widget.debt,
-                                                      products[i],
-                                                      discount != 0
-                                                          ? discount
-                                                          : products[i]
-                                                              ['discount'],
-                                                      widget.priceTypeId,
-                                                      products,
-                                                      widget.outlet))).then(
-                                        (_) => setState(() {}),
-                                      );
-                                    },
-                                    child: ProductListCard(
-                                        products[i],
-                                        widget.priceTypeId,
-                                        discount,
-                                        widget.counteragentID,
-                                        ProductInfoPage(
-                                            widget.outletName,
-                                            widget.outletId,
-                                            widget.counteragentID,
-                                            widget.counteragentName,
-                                            widget.debt,
-                                            products[i],
-                                            discount != 0
-                                                ? discount
-                                                : products[i]['discount'],
-                                            widget.priceTypeId,
-                                            products,
-                                            widget.outlet),
-                                        productPrices[i],
-                                        widget.outletId),
-                                  )
-                              ],
                             ),
                           )
                         ],

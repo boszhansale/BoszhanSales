@@ -232,41 +232,45 @@ class _BasketPageState extends State<BasketPage> {
         'price': products[i]['product']['prices'][0]['price'],
       });
 
-      if (products[i]['product']['id'] == 2216) {
-        basket.add({
-          'product_id': 2707,
-          'count': (products[i]['count'] / 5).truncate(),
-          'type': products[i]['type'],
-          'name': products[i]['product']['name'] + " ПОДАРОК",
-          'price': 1 * (products[i]['count'] / 5).truncate(),
-        });
+      if (products[i]['action'] == 1) {
+        if ((products[i]['count'] / 5).truncate() != 0) {
+          if (products[i]['product']['id'] == 2216) {
+            basket.add({
+              'product_id': 2707,
+              'count': (products[i]['count'] / 5).truncate(),
+              'type': products[i]['type'],
+              'name': products[i]['product']['name'] + " ПОДАРОК",
+              'price': 1 * (products[i]['count'] / 5).truncate(),
+            });
 
-        showGiftAlertDialog(products[i]['product']['name'] +
-            " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
-      }
+            showGiftAlertDialog(products[i]['product']['name'] +
+                " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
+          }
 
-      if (products[i]['product']['id'] == 2212) {
-        basket.add({
-          'product_id': 2708,
-          'count': (products[i]['count'] / 5).truncate(),
-          'type': products[i]['type'],
-          'name': products[i]['product']['name'] + " ПОДАРОК",
-          'price': 1 * (products[i]['count'] / 5).truncate(),
-        });
-        showGiftAlertDialog(products[i]['product']['name'] +
-            " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
-      }
+          if (products[i]['product']['id'] == 2212) {
+            basket.add({
+              'product_id': 2708,
+              'count': (products[i]['count'] / 5).truncate(),
+              'type': products[i]['type'],
+              'name': products[i]['product']['name'] + " ПОДАРОК",
+              'price': 1 * (products[i]['count'] / 5).truncate(),
+            });
+            showGiftAlertDialog(products[i]['product']['name'] +
+                " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
+          }
 
-      if (products[i]['product']['id'] == 798) {
-        basket.add({
-          'product_id': 2709,
-          'count': (products[i]['count'] / 5).truncate(),
-          'type': products[i]['type'],
-          'name': products[i]['product']['name'] + " ПОДАРОК",
-          'price': 1 * (products[i]['count'] / 5).truncate(),
-        });
-        showGiftAlertDialog(products[i]['product']['name'] +
-            " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
+          if (products[i]['product']['id'] == 798) {
+            basket.add({
+              'product_id': 2709,
+              'count': (products[i]['count'] / 5).truncate(),
+              'type': products[i]['type'],
+              'name': products[i]['product']['name'] + " ПОДАРОК",
+              'price': 1 * (products[i]['count'] / 5).truncate(),
+            });
+            showGiftAlertDialog(products[i]['product']['name'] +
+                " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
+          }
+        }
       }
     }
 

@@ -744,7 +744,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                           'product': thisProduct,
                                           'count': double.parse(
                                               countTextFieldController.text),
-                                          'type': 0
+                                          'type': 0,
+                                          'action': thisProduct['action'],
                                         });
                                         AppConstants.basketIDs
                                             .add(thisProduct['id']);
