@@ -38,13 +38,17 @@ class ProductListPage extends StatefulWidget {
 class _ProductListPageState extends State<ProductListPage> {
   final searchController = TextEditingController();
   final countDialogTextFieldController = TextEditingController();
-  FocusNode _focusNode = FocusNode();
   String name = '';
   List<Map<String, Object>> brands = [];
 
+  late List<dynamic> productsData;
   List<dynamic> categories = [];
   List<dynamic> products = [];
   List<int> existingCategoriesId = [];
+
+  List<dynamic> historyForReturn = [];
+  List<int> permittedProductIds = [];
+
   int selectedCategoryID = 23;
   int discount = 0;
   String countValueText = '1';
@@ -56,8 +60,8 @@ class _ProductListPageState extends State<ProductListPage> {
 
   @override
   void initState() {
+    super.initState();
     getInfo();
-    getProductsFromPrefs();
     setBasketData();
     if (widget.counteragentDiscount != 0) {
       discount = widget.counteragentDiscount;
@@ -68,7 +72,13 @@ class _ProductListPageState extends State<ProductListPage> {
         discount = 0;
       }
     }
-    super.initState();
+
+    loadDataFromSharedPreferences().then((data) {
+      setState(() {
+        productsData = data;
+      });
+      getProductsFromPrefs();
+    });
   }
 
   void setBasketData() async {
@@ -113,116 +123,70 @@ class _ProductListPageState extends State<ProductListPage> {
     }
   }
 
-  getProductsFromPrefs() async {
+  Future<List<dynamic>> loadDataFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("responseProducts");
+    return data != null && data != 'Error' ? List.from(jsonDecode(data)) : [];
+  }
+
+  void processProductData(Map<String, dynamic> product) {
+    double thisPrice = 0;
+    if (product['counteragent_prices'] != null) {
+      thisPrice = discount != 0
+          ? product['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - discount) /
+              100
+          : product['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - product['discount']) /
+              100;
+
+      for (int i = 0; i < product['counteragent_prices'].length; i++) {
+        if (product['counteragent_prices'][i]['counteragent_id'] ==
+            widget.counteragentID) {
+          thisPrice = product['counteragent_prices'][i]['price'];
+        }
+      }
+    } else {
+      thisPrice = discount != 0
+          ? product['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - discount) /
+              100
+          : product['prices']
+                  .where((e) => e['price_type_id'] == widget.priceTypeId)
+                  .toList()[0]['price'] *
+              (100 - product['discount']) /
+              100;
+    }
+    if (thisPrice != 0) {
+      productPrices.add(thisPrice);
+      products.add(product);
+    }
+  }
+
+  void getProductsFromPrefs() {
     products = [];
     existingCategoriesId = [];
     productPrices = [];
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString("responseProducts")!;
-    if (data != 'Error') {
-      setState(() {
-        List<dynamic> productsData = List.from(jsonDecode(data));
-        for (int i = 0; i < productsData.length; i++) {
-          existingCategoriesId.add(productsData[i]['category_id']);
-          if (productsData[i]['category_id'] == selectedCategoryID) {
-            if (widget.priceTypeId == 4) {
-              if (productsData[i]['prices'][3]['price'] != 0) {
-                double thisPrice = 0;
-                if (productsData[i]['counteragent_prices'] != null) {
-                  thisPrice = discount != 0
-                      ? productsData[i]['prices']
-                              .where((e) =>
-                                  e['price_type_id'] == widget.priceTypeId)
-                              .toList()[0]['price'] *
-                          (100 - discount) /
-                          100
-                      : productsData[i]['prices']
-                              .where((e) =>
-                                  e['price_type_id'] == widget.priceTypeId)
-                              .toList()[0]['price'] *
-                          (100 - productsData[i]['discount']) /
-                          100;
-
-                  for (int i = 0;
-                      i < productsData[i]['counteragent_prices'].length;
-                      i++) {
-                    if (productsData[i]['counteragent_prices'][i]
-                            ['counteragent_id'] ==
-                        widget.counteragentID) {
-                      thisPrice =
-                          productsData[i]['counteragent_prices'][i]['price'];
-                    }
-                  }
-                } else {
-                  thisPrice = discount != 0
-                      ? productsData[i]['prices']
-                              .where((e) =>
-                                  e['price_type_id'] == widget.priceTypeId)
-                              .toList()[0]['price'] *
-                          (100 - discount) /
-                          100
-                      : productsData[i]['prices']
-                              .where((e) =>
-                                  e['price_type_id'] == widget.priceTypeId)
-                              .toList()[0]['price'] *
-                          (100 - productsData[i]['discount']) /
-                          100;
-                }
-                if (thisPrice != 0) {
-                  productPrices.add(thisPrice);
-                  products.add(productsData[i]);
-                }
-              }
-            } else {
-              double thisPrice = 0;
-              if (productsData[i]['counteragent_prices'] != null) {
-                thisPrice = discount != 0
-                    ? productsData[i]['prices']
-                            .where(
-                                (e) => e['price_type_id'] == widget.priceTypeId)
-                            .toList()[0]['price'] *
-                        (100 - discount) /
-                        100
-                    : productsData[i]['prices']
-                            .where(
-                                (e) => e['price_type_id'] == widget.priceTypeId)
-                            .toList()[0]['price'] *
-                        (100 - productsData[i]['discount']) /
-                        100;
-
-                for (int i = 0;
-                    i < productsData[i]['counteragent_prices'].length;
-                    i++) {
-                  if (productsData[i]['counteragent_prices'][i]
-                          ['counteragent_id'] ==
-                      widget.counteragentID) {
-                    thisPrice =
-                        productsData[i]['counteragent_prices'][i]['price'];
-                  }
-                }
-              } else {
-                thisPrice = discount != 0
-                    ? productsData[i]['prices']
-                            .where(
-                                (e) => e['price_type_id'] == widget.priceTypeId)
-                            .toList()[0]['price'] *
-                        (100 - discount) /
-                        100
-                    : productsData[i]['prices']
-                            .where(
-                                (e) => e['price_type_id'] == widget.priceTypeId)
-                            .toList()[0]['price'] *
-                        (100 - productsData[i]['discount']) /
-                        100;
-              }
-              if (thisPrice != 0) {
-                productPrices.add(thisPrice);
-                products.add(productsData[i]);
-              }
+    if (productsData.isNotEmpty) {
+      for (int i = 0; i < productsData.length; i++) {
+        existingCategoriesId.add(productsData[i]['category_id']);
+        if (productsData[i]['category_id'] == selectedCategoryID) {
+          if (widget.priceTypeId == 4) {
+            if (productsData[i]['prices'][3]['price'] != 0) {
+              processProductData(productsData[i]);
             }
+          } else {
+            processProductData(productsData[i]);
           }
         }
-      });
+      }
+      setState(() {});
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
@@ -230,66 +194,18 @@ class _ProductListPageState extends State<ProductListPage> {
     }
   }
 
-  void searchAction() async {
+  void searchAction() {
     products = [];
     productPrices = [];
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString("responseProducts")!;
-    if (data != 'Error') {
-      setState(() {
-        List<dynamic> productsData = List.from(jsonDecode(data));
-        for (int i = 0; i < productsData.length; i++) {
-          if (productsData[i]['name']
-              .toLowerCase()
-              .contains(searchController.text.toLowerCase())) {
-            double thisPrice = 0;
-            if (productsData[i]['counteragent_prices'] != null) {
-              thisPrice = discount != 0
-                  ? productsData[i]['prices']
-                          .where(
-                              (e) => e['price_type_id'] == widget.priceTypeId)
-                          .toList()[0]['price'] *
-                      (100 - discount) /
-                      100
-                  : productsData[i]['prices']
-                          .where(
-                              (e) => e['price_type_id'] == widget.priceTypeId)
-                          .toList()[0]['price'] *
-                      (100 - productsData[i]['discount']) /
-                      100;
-
-              for (int i = 0;
-                  i < productsData[i]['counteragent_prices'].length;
-                  i++) {
-                if (productsData[i]['counteragent_prices'][i]
-                        ['counteragent_id'] ==
-                    widget.counteragentID) {
-                  thisPrice =
-                      productsData[i]['counteragent_prices'][i]['price'];
-                }
-              }
-            } else {
-              thisPrice = discount != 0
-                  ? productsData[i]['prices']
-                          .where(
-                              (e) => e['price_type_id'] == widget.priceTypeId)
-                          .toList()[0]['price'] *
-                      (100 - discount) /
-                      100
-                  : productsData[i]['prices']
-                          .where(
-                              (e) => e['price_type_id'] == widget.priceTypeId)
-                          .toList()[0]['price'] *
-                      (100 - productsData[i]['discount']) /
-                      100;
-            }
-            if (thisPrice != 0) {
-              productPrices.add(thisPrice);
-              products.add(productsData[i]);
-            }
-          }
+    if (productsData.isNotEmpty) {
+      for (int i = 0; i < productsData.length; i++) {
+        if (productsData[i]['name']
+            .toLowerCase()
+            .contains(searchController.text.toLowerCase())) {
+          processProductData(productsData[i]);
         }
-      });
+      }
+      setState(() {});
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
@@ -335,37 +251,11 @@ class _ProductListPageState extends State<ProductListPage> {
                                 child: Image.asset("assets/images/logo.png"),
                                 width: MediaQuery.of(context).size.width * 0.2,
                               )),
-                          Spacer(),
+                          const Spacer(),
                           Column(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.75,
-                                child: Row(
-                                  children: [
-                                    // Text(
-                                    //   'Сумма покупок: 15 000 тг',
-                                    //   style: TextStyle(fontSize: 16),
-                                    // ),
-                                    // Spacer(),
-                                    // Text(
-                                    //   'Сумма возврата: 15 000 тг',
-                                    //   style: TextStyle(fontSize: 16),
-                                    // ),
-                                    // Spacer(),
-                                    // Text(
-                                    //   'Итого к оплате: 15 000 тг',
-                                    //   style: TextStyle(
-                                    //       fontWeight: FontWeight.bold,
-                                    //       fontSize: 16),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 0,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -392,7 +282,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                     height: 60,
                                     child: Row(
                                       children: [
-                                        Spacer(),
+                                        const Spacer(),
                                         SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
@@ -400,11 +290,12 @@ class _ProductListPageState extends State<ProductListPage> {
                                               0.25,
                                           child: Text(
                                             'Контрагент: ${widget.counteragentName}',
-                                            style: TextStyle(fontSize: 16),
+                                            style:
+                                                const TextStyle(fontSize: 16),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                        Spacer(),
+                                        const Spacer(),
                                         SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
@@ -412,11 +303,12 @@ class _ProductListPageState extends State<ProductListPage> {
                                               0.33,
                                           child: Text(
                                             'Торговая точка: ${widget.outletName}',
-                                            style: TextStyle(fontSize: 16),
+                                            style:
+                                                const TextStyle(fontSize: 16),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                        Spacer(),
+                                        const Spacer(),
                                         SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
@@ -424,11 +316,12 @@ class _ProductListPageState extends State<ProductListPage> {
                                               0.15,
                                           child: Text(
                                             'Долг: ${widget.debt} тг',
-                                            style: TextStyle(fontSize: 16),
+                                            style:
+                                                const TextStyle(fontSize: 16),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                        Spacer(),
+                                        const Spacer(),
                                         GestureDetector(
                                           onTap: () {
                                             Navigator.push(
@@ -449,12 +342,12 @@ class _ProductListPageState extends State<ProductListPage> {
                                                                 .outlet))).then(
                                                 (_) => setState(() {}));
                                           },
-                                          child: Icon(
+                                          child: const Icon(
                                             Icons.shopping_cart_outlined,
                                             size: 40,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 20,
                                         )
                                       ],
@@ -474,7 +367,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 20,
                                   ),
                                   GestureDetector(
@@ -483,7 +376,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                         searchAction();
                                       }
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.search,
                                       size: 40,
                                     ),
@@ -492,7 +385,7 @@ class _ProductListPageState extends State<ProductListPage> {
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                         ],
                       ),
                       Divider(
@@ -524,56 +417,41 @@ class _ProductListPageState extends State<ProductListPage> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.7,
                             height: MediaQuery.of(context).size.height * 0.72,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  for (int i = 0; i < products.length; i++)
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProductInfoPage(
-                                                        widget.outletName,
-                                                        widget.outletId,
-                                                        widget.counteragentID,
-                                                        widget.counteragentName,
-                                                        widget.debt,
-                                                        products[i],
-                                                        discount != 0
-                                                            ? discount
-                                                            : products[i]
-                                                                ['discount'],
-                                                        widget.priceTypeId,
-                                                        products,
-                                                        widget.outlet))).then(
-                                          (_) => setState(() {}),
-                                        );
-                                      },
-                                      child: ProductListCard(
-                                          products[i],
-                                          widget.priceTypeId,
-                                          discount,
+                            child: ListView.builder(
+                              itemCount: products.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProductInfoPage(
+                                          widget.outletName,
+                                          widget.outletId,
                                           widget.counteragentID,
-                                          ProductInfoPage(
-                                              widget.outletName,
-                                              widget.outletId,
-                                              widget.counteragentID,
-                                              widget.counteragentName,
-                                              widget.debt,
-                                              products[i],
-                                              discount != 0
-                                                  ? discount
-                                                  : products[i]['discount'],
-                                              widget.priceTypeId,
-                                              products,
-                                              widget.outlet),
-                                          productPrices[i],
-                                          widget.outletId),
-                                    )
-                                ],
-                              ),
+                                          widget.counteragentName,
+                                          widget.debt,
+                                          products[index],
+                                          discount != 0
+                                              ? discount
+                                              : products[index]['discount'],
+                                          widget.priceTypeId,
+                                          products,
+                                          widget.outlet,
+                                        ),
+                                      ),
+                                    ).then((_) => setState(() {}));
+                                  },
+                                  child: ProductListCard(
+                                    products[index],
+                                    widget.priceTypeId,
+                                    discount,
+                                    widget.counteragentID,
+                                    productPrices[index],
+                                    widget.outletId,
+                                  ),
+                                );
+                              },
                             ),
                           )
                         ],
@@ -591,20 +469,13 @@ class _ProductListPageState extends State<ProductListPage> {
     List<Widget> listOfWidgets = [];
 
     for (int i = 0; i < brands.length; i++) {
-      // listOfWidgets.add(Text(
-      //   brands[i]["title"].toString(),
-      //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      // ));
-      // listOfWidgets.add(Divider(
-      //   color: Colors.yellow[700],
-      // ));
-
       listOfWidgets.add(Column(
         children: <Widget>[
           ExpansionTile(
             title: Text(
               brands[i]["title"].toString(),
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style:
+                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             children: <Widget>[
               for (int j = 0; j < categories.length; j++)
@@ -623,49 +494,6 @@ class _ProductListPageState extends State<ProductListPage> {
           ),
         ],
       ));
-
-      // for (int j = 0; j < categories.length; j++) {
-      //   if (brands[i]["id"] == categories[j]["brand_id"]) {
-      //     if (existingCategoriesId.contains(categories[j]["id"])) {
-      //       listOfWidgets.add(Padding(
-      //         padding: const EdgeInsets.fromLTRB(20, 2, 5, 2),
-      //         child: SizedBox(
-      //           width: MediaQuery
-      //               .of(context)
-      //               .size
-      //               .width * 0.3,
-      //           child: ElevatedButton(
-      //             onPressed: () {
-      //               selectedCategoryID = categories[j]["id"];
-      //               getProductsFromPrefs();
-      //             },
-      //             style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
-      //             child: Padding(
-      //               padding: const EdgeInsets.all(10),
-      //               child: SizedBox(
-      //                 width: MediaQuery
-      //                     .of(context)
-      //                     .size
-      //                     .width * 0.3,
-      //                 child: Text(
-      //                   categories[j]["name"].toString(),
-      //                   textAlign: TextAlign.left,
-      //                   style: TextStyle(
-      //                       color: Colors.black,
-      //                       fontSize: 20,
-      //                       fontWeight: FontWeight.normal),
-      //                 ),
-      //               ),
-      //             ),
-      //           ),
-      //         ),
-      //       ));
-      //     }
-      //   }
-      // }
-      // listOfWidgets.add(Divider(
-      //   color: Colors.black,
-      // ));
     }
 
     return listOfWidgets;
@@ -673,104 +501,129 @@ class _ProductListPageState extends State<ProductListPage> {
 
   Future<void> displayReturnCauseDialog() async {
     return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Выберите причину возврата'),
-            content: SizedBox(
-              height: 270,
-              child: Column(
-                children: [
-                  SizedBox(
-                      height: 60,
-                      child: DropdownButton(
-                          value: _value,
-                          items: const [
-                            DropdownMenuItem(
-                              child: Text("По сроку годности"),
-                              value: 1,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("По сроку годности более 10 дней"),
-                              value: 2,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Белая жидкость"),
-                              value: 3,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Блок продаж по решению ДР"),
-                              value: 4,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                  "Возврат конечного потребителя/скрытый брак"),
-                              value: 5,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Низкие продажи"),
-                              value: 6,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Переход на договор (с ФЗ на ЮЛ)"),
-                              value: 7,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                  "Поломка оборудования покупателя/закрытие магазина Покупателя"),
-                              value: 8,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Развакуум"),
-                              value: 9,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Прочее"),
-                              value: 10,
-                            )
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _value = value;
-                              Navigator.pop(context);
-                            });
-                          },
-                          hint: const Text("Select item"))),
-                  _value == 10
-                      ? TextFormField(
-                          controller: commentController,
-                          decoration:
-                              const InputDecoration(hintText: "Причина"),
-                          keyboardType: TextInputType.phone,
-                          maxLength: 100,
-                        )
-                      : Container(),
-                ],
-              ),
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Выберите причину возврата'),
+          content: SizedBox(
+            height: 270,
+            child: Column(
+              children: [
+                SizedBox(
+                    height: 60,
+                    child: DropdownButton(
+                        value: _value,
+                        items: const [
+                          DropdownMenuItem(
+                            child: Text("По сроку годности"),
+                            value: 1,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("По сроку годности более 10 дней"),
+                            value: 2,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Белая жидкость"),
+                            value: 3,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Блок продаж по решению ДР"),
+                            value: 4,
+                          ),
+                          DropdownMenuItem(
+                            child: Text(
+                                "Возврат конечного потребителя/скрытый брак"),
+                            value: 5,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Низкие продажи"),
+                            value: 6,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Переход на договор (с ФЗ на ЮЛ)"),
+                            value: 7,
+                          ),
+                          DropdownMenuItem(
+                            child: Text(
+                                "Поломка оборудования покупателя/закрытие магазина Покупателя"),
+                            value: 8,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Развакуум"),
+                            value: 9,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Прочее"),
+                            value: 10,
+                          )
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _value = value;
+                            Navigator.pop(context);
+                          });
+                        },
+                        hint: const Text("Select item"))),
+                _value == 10
+                    ? TextFormField(
+                        controller: commentController,
+                        decoration: const InputDecoration(hintText: "Причина"),
+                        keyboardType: TextInputType.phone,
+                        maxLength: 100,
+                      )
+                    : Container(),
+              ],
             ),
-            actions: <Widget>[
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
-                  textStyle: const TextStyle(color: Colors.white),
-                ),
-                child: const Text('Отмена'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                textStyle: const TextStyle(color: Colors.white),
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  textStyle: const TextStyle(color: Colors.white),
-                ),
-                child: const Text('Сохранить'),
-                onPressed: () async {},
+              child: const Text('Отмена'),
+              onPressed: () {
+                setState(() {
+                  Navigator.pop(context);
+                });
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                textStyle: const TextStyle(color: Colors.white),
               ),
-            ],
-          );
-        });
+              child: const Text('Сохранить'),
+              onPressed: () async {},
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // TODO: При необходимости нужно будет просто передать permittedProductIds и historyForReturn на ProductListCard
+  void getHistoryForReturns() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (prefs.getString('responseHistoryForReturns') != null) {
+      historyForReturn =
+          jsonDecode(prefs.getString('responseHistoryForReturns')!);
+
+      for (int i = 0; i < historyForReturn.length; i++) {
+        if (historyForReturn[i]['id'] == widget.outletId) {
+          for (int k = 0; k < historyForReturn[i]['orders'].length; k++) {
+            for (int j = 0;
+                j < historyForReturn[i]['orders'][k]['baskets'].length;
+                j++) {
+              if (historyForReturn[i]['orders'][k]['baskets'][j]['type'] == 0) {
+                permittedProductIds.add(historyForReturn[i]['orders'][k]
+                    ['baskets'][j]['product_id']);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
