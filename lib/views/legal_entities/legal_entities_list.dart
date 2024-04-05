@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home_page.dart';
 
-final globalKey = GlobalKey<ScaffoldState>();
+final globalKey1 = GlobalKey<ScaffoldState>();
 
 class LegalEntitiesList extends StatefulWidget {
   @override
@@ -90,7 +90,7 @@ class _LegalEntitiesListState extends State<LegalEntitiesList> {
                 fit: BoxFit.cover,
               ),
               Scaffold(
-                key: globalKey,
+                key: globalKey1,
                 backgroundColor: Colors.transparent,
                 body: SingleChildScrollView(
                   child: Column(
@@ -217,7 +217,7 @@ class MyData extends DataTableSource {
             }
             globalGroup = counteragents;
             Navigator.push(
-              globalKey.currentContext!,
+              globalKey1.currentContext!,
               MaterialPageRoute(
                 builder: (context) => LegalEntitiesGroup(),
               ),
@@ -225,7 +225,7 @@ class MyData extends DataTableSource {
           } else {
             if (_data[index]['enabled'] == 1) {
               Navigator.push(
-                  globalKey.currentContext!,
+                  globalKey1.currentContext!,
                   MaterialPageRoute(
                       builder: (context) => LegalOutletListPage(
                           _data[index]['id'],
@@ -234,7 +234,7 @@ class MyData extends DataTableSource {
                           _data[index]['price_type']['id'],
                           _data[index]['debt'].toString())));
             } else {
-              ScaffoldMessenger.of(globalKey.currentContext!)
+              ScaffoldMessenger.of(globalKey1.currentContext!)
                   .showSnackBar(const SnackBar(
                 content: Text("Заблокирован!", style: TextStyle(fontSize: 20)),
               ));

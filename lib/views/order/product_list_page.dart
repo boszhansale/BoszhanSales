@@ -132,36 +132,39 @@ class _ProductListPageState extends State<ProductListPage> {
   void processProductData(Map<String, dynamic> product) {
     double thisPrice = 0;
     if (product['counteragent_prices'] != null) {
-      thisPrice = discount != 0
-          ? product['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
-              (100 - discount) /
-              100
-          : product['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
-              (100 - product['discount']) /
-              100;
+      thisPrice = double.parse((discount != 0
+              ? product['prices']
+                      .where((e) => e['price_type_id'] == widget.priceTypeId)
+                      .toList()[0]['price'] *
+                  (100 - discount) /
+                  100
+              : product['prices']
+                      .where((e) => e['price_type_id'] == widget.priceTypeId)
+                      .toList()[0]['price'] *
+                  (100 - product['discount']) /
+                  100)
+          .toString());
 
       for (int i = 0; i < product['counteragent_prices'].length; i++) {
         if (product['counteragent_prices'][i]['counteragent_id'] ==
             widget.counteragentID) {
-          thisPrice = product['counteragent_prices'][i]['price'];
+          thisPrice = double.parse(
+              product['counteragent_prices'][i]['price'].toString());
         }
       }
     } else {
-      thisPrice = discount != 0
-          ? product['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
-              (100 - discount) /
-              100
-          : product['prices']
-                  .where((e) => e['price_type_id'] == widget.priceTypeId)
-                  .toList()[0]['price'] *
-              (100 - product['discount']) /
-              100;
+      thisPrice = double.parse((discount != 0
+              ? product['prices']
+                      .where((e) => e['price_type_id'] == widget.priceTypeId)
+                      .toList()[0]['price'] *
+                  (100 - discount) /
+                  100
+              : product['prices']
+                      .where((e) => e['price_type_id'] == widget.priceTypeId)
+                      .toList()[0]['price'] *
+                  (100 - product['discount']) /
+                  100)
+          .toString());
     }
     if (thisPrice != 0) {
       productPrices.add(thisPrice);
