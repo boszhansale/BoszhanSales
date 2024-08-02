@@ -110,7 +110,7 @@ class _OutletListPageState extends State<OutletListPage> {
                                 color: Colors.black,
                               ),
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.redAccent,
+                                backgroundColor: Colors.redAccent,
                                 minimumSize: const Size.fromHeight(50), // NEW
                               ),
                             ),

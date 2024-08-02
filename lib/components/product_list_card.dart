@@ -68,7 +68,7 @@ class _ProductListCardState extends State<ProductListCard> {
                           style: TextStyle(color: Colors.black),
                         ),
                         style: ElevatedButton.styleFrom(
-                            primary: AppConstants.basketIDs_return
+                            backgroundColor: AppConstants.basketIDs_return
                                     .contains(widget.product['id'])
                                 ? Colors.pink
                                 : Colors.red,
@@ -128,7 +128,7 @@ class _ProductListCardState extends State<ProductListCard> {
                             },
                             child: const Icon(Icons.remove),
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.yellow[700]),
+                                backgroundColor: Colors.yellow[700]),
                           ),
                         ),
                         SizedBox(
@@ -159,7 +159,7 @@ class _ProductListCardState extends State<ProductListCard> {
                               },
                               child: const Icon(Icons.add),
                               style: ElevatedButton.styleFrom(
-                                  primary: Colors.yellow[700]),
+                                  backgroundColor: Colors.yellow[700]),
                             ),
                           ),
                         ),
@@ -170,7 +170,7 @@ class _ProductListCardState extends State<ProductListCard> {
                             style: TextStyle(color: Colors.black),
                           ),
                           style: ElevatedButton.styleFrom(
-                              primary: AppConstants.basketIDs
+                              backgroundColor: AppConstants.basketIDs
                                       .contains(widget.product['id'])
                                   ? Colors.grey
                                   : Colors.green[700],
@@ -317,14 +317,14 @@ class _ProductListCardState extends State<ProductListCard> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
+                      backgroundColor: Colors.red,
                       textStyle: const TextStyle(color: Colors.white),
                     ),
                   ),
                   ElevatedButton(
                     child: const Text('Сохранить'),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
+                      backgroundColor: Colors.green,
                       textStyle: const TextStyle(color: Colors.white),
                     ),
                     onPressed: () async {

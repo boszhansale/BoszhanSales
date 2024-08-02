@@ -159,7 +159,8 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                             color: Colors.black,
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: localActive ? Colors.red : Colors.grey,
+                            backgroundColor:
+                                localActive ? Colors.red : Colors.grey,
                             // NEW
                           ),
                         ),
@@ -184,7 +185,8 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                             color: Colors.black,
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: !localActive ? Colors.red : Colors.grey,
+                            backgroundColor:
+                                !localActive ? Colors.red : Colors.grey,
                             // NEW
                           ),
                         ),
@@ -409,7 +411,7 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                             color: Colors.black,
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.green[700],
+                            backgroundColor: Colors.green[700],
                             // NEW
                           ),
                         ),
@@ -434,7 +436,7 @@ class _SalesRepresentativeOrdersState extends State<SalesRepresentativeOrders> {
                             color: Colors.black,
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.yellow[700],
+                            backgroundColor: Colors.yellow[700],
                             // NEW
                           ),
                         ),

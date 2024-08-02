@@ -6,7 +6,7 @@ import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/views/analytics_page.dart';
 import 'package:boszhan_sales/views/authorization/login_page.dart';
 import 'package:boszhan_sales/views/catalog/catalog_page.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
-                                      // primary: Colors.grey[200],
+                                      // backgroundColor: Colors.grey[200],
                                       textStyle: const TextStyle(
                                           color: Colors.white, fontSize: 20),
                                     ),
@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
-                                      // primary: Colors.grey[200],
+                                      // backgroundColor: Colors.grey[200],
                                       textStyle: const TextStyle(
                                           color: Colors.white, fontSize: 20),
                                     ),
@@ -422,7 +422,8 @@ class _HomePageState extends State<HomePage> {
                                                 downloadNewVersion();
                                               },
                                               style: ElevatedButton.styleFrom(
-                                                primary: Colors.yellow[700],
+                                                backgroundColor:
+                                                    Colors.yellow[700],
                                                 textStyle: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 20),
@@ -505,7 +506,7 @@ class _HomePageState extends State<HomePage> {
                                       if (loadBool) getAllData();
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.yellow[700],
+                                      backgroundColor: Colors.yellow[700],
                                       textStyle: const TextStyle(
                                           color: Colors.white, fontSize: 20),
                                     ),
@@ -548,7 +549,7 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.yellow[700],
+                                      backgroundColor: Colors.yellow[700],
                                       textStyle: const TextStyle(
                                           color: Colors.white, fontSize: 20),
                                     ),

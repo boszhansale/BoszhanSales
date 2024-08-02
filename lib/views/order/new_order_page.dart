@@ -106,7 +106,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                                       LegalEntitiesList()));
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          primary: Colors.yellow[700],
+                                          backgroundColor: Colors.yellow[700],
                                           textStyle: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20),
@@ -138,7 +138,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                                       OutletListPage()));
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          primary: Colors.yellow[700],
+                                          backgroundColor: Colors.yellow[700],
                                           textStyle: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20),

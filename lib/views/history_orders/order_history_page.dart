@@ -146,7 +146,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                       HistoryCounteragnetsPage()));
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          primary: Colors.yellow[700],
+                                          backgroundColor: Colors.yellow[700],
                                           textStyle: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20),
@@ -179,7 +179,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                       HistoryStoresPage()));
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          primary: Colors.yellow[700],
+                                          backgroundColor: Colors.yellow[700],
                                           textStyle: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20),
@@ -357,7 +357,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                     );
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.yellow[700],
+                                    backgroundColor: Colors.yellow[700],
                                     textStyle: const TextStyle(
                                         color: Colors.white, fontSize: 20),
                                   ),

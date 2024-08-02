@@ -437,7 +437,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
-                                                      primary: Colors.red,
+                                                      backgroundColor:
+                                                          Colors.red,
                                                       textStyle:
                                                           const TextStyle(
                                                               color:
@@ -447,7 +448,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                                   ElevatedButton(
                                                     style: ElevatedButton
                                                         .styleFrom(
-                                                      primary: Colors.green,
+                                                      backgroundColor:
+                                                          Colors.green,
                                                       textStyle:
                                                           const TextStyle(
                                                               color:
@@ -547,7 +549,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                     ),
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                      primary: AppConstants.basketIDs_return
+                                      backgroundColor: AppConstants
+                                              .basketIDs_return
                                               .contains(thisProduct['id'])
                                           ? Colors.pink
                                           : Colors.red),
@@ -639,7 +642,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                         },
                                         child: Icon(Icons.remove),
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colors.yellow[700]),
+                                            backgroundColor:
+                                                Colors.yellow[700]),
                                       ),
                                     ),
                                     SizedBox(
@@ -678,7 +682,8 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                         },
                                         child: Icon(Icons.add),
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colors.yellow[700]),
+                                            backgroundColor:
+                                                Colors.yellow[700]),
                                       ),
                                     ),
                                   ],
@@ -782,7 +787,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                   color: Colors.black,
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: AppConstants.basketIDs
+                                  backgroundColor: AppConstants.basketIDs
                                           .contains(thisProduct['id'])
                                       ? Colors.grey
                                       : Colors.green[700],
@@ -847,7 +852,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                         size: 35,
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.green[700],
+                                        backgroundColor: Colors.green[700],
                                       ),
                                     ),
                                   ],
@@ -870,7 +875,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                                         size: 35,
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.green[700],
+                                        backgroundColor: Colors.green[700],
                                       ),
                                     ),
                                   ],

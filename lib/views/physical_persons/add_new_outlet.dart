@@ -1,7 +1,6 @@
 import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/views/order/product_list_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../home_page.dart';
 
@@ -227,7 +226,7 @@ class _AddNewOutletState extends State<AddNewOutlet> {
                               createOutletAction();
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.yellow[700]!,
+                              backgroundColor: Colors.yellow[700]!,
                               textStyle: const TextStyle(
                                   color: Colors.black, fontSize: 20),
                             ),

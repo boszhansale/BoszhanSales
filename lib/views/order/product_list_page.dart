@@ -581,7 +581,7 @@ class _ProductListPageState extends State<ProductListPage> {
           actions: <Widget>[
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+                backgroundColor: Colors.red,
                 textStyle: const TextStyle(color: Colors.white),
               ),
               child: const Text('Отмена'),
@@ -593,7 +593,7 @@ class _ProductListPageState extends State<ProductListPage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                backgroundColor: Colors.green,
                 textStyle: const TextStyle(color: Colors.white),
               ),
               child: const Text('Сохранить'),

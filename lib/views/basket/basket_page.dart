@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/utils/const.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
@@ -535,7 +535,7 @@ class _BasketPageState extends State<BasketPage> {
                               color: Colors.black,
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
+                              backgroundColor: Colors.white,
                               // NEW
                             ),
                           ),
@@ -578,7 +578,7 @@ class _BasketPageState extends State<BasketPage> {
                               color: Colors.black,
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.green[700],
+                              backgroundColor: Colors.green[700],
                               // NEW
                             ),
                           ),
@@ -638,7 +638,8 @@ class _BasketPageState extends State<BasketPage> {
                     });
                   },
                   child: const Icon(Icons.remove),
-                  style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.yellow[700]),
                 ),
               ),
               SizedBox(
@@ -672,7 +673,8 @@ class _BasketPageState extends State<BasketPage> {
                     });
                   },
                   child: const Icon(Icons.add),
-                  style: ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.yellow[700]),
                 ),
               ),
             ],
@@ -735,8 +737,8 @@ class _BasketPageState extends State<BasketPage> {
                         });
                       },
                       child: const Icon(Icons.remove),
-                      style:
-                          ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.yellow[700]),
                     ),
                   ),
                   SizedBox(
@@ -770,8 +772,8 @@ class _BasketPageState extends State<BasketPage> {
                         });
                       },
                       child: const Icon(Icons.add),
-                      style:
-                          ElevatedButton.styleFrom(primary: Colors.yellow[700]),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.yellow[700]),
                     ),
                   ),
                 ],
@@ -927,7 +929,7 @@ class _BasketPageState extends State<BasketPage> {
             actions: <Widget>[
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
+                  backgroundColor: Colors.red,
                   textStyle: const TextStyle(color: Colors.white),
                 ),
                 child: const Text('Отмена'),
@@ -939,7 +941,7 @@ class _BasketPageState extends State<BasketPage> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
+                  backgroundColor: Colors.green,
                   textStyle: const TextStyle(color: Colors.white),
                 ),
                 child: const Text('Сохранить'),

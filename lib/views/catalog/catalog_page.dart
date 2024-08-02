@@ -141,7 +141,7 @@ class _CatalogPageState extends State<CatalogPage> {
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.yellow[700],
+                                      backgroundColor: Colors.yellow[700],
                                       textStyle: const TextStyle(
                                           color: Colors.white, fontSize: 20),
                                     ),
@@ -219,7 +219,7 @@ class _CatalogPageState extends State<CatalogPage> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.yellow[700],
+                                backgroundColor: Colors.yellow[700],
                                 textStyle: const TextStyle(
                                     color: Colors.white, fontSize: 20),
                               ),

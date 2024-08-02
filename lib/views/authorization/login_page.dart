@@ -287,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                             login();
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.yellow[700]!,
+                            backgroundColor: Colors.yellow[700]!,
                             textStyle: const TextStyle(
                                 color: Colors.black, fontSize: 20),
                           ),
