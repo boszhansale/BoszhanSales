@@ -106,7 +106,8 @@ class _HomePageState extends State<HomePage> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => LoginPage()));
+                                            builder: (context) =>
+                                                const LoginPage()));
                                   },
                                   child: SizedBox(
                                     width: MediaQuery.of(context).size.width *
@@ -153,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
                                 SizedBox(
@@ -189,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.4,
@@ -199,10 +200,9 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       Row(
                                         children: [
-                                          SizedBox(
-                                            width: 210,
+                                          const SizedBox(
                                             child: Text(
-                                              'До выполнения плана до конца месяца вам осталось продать: ',
+                                              'Плана до конца месяца: ',
                                               style: TextStyle(
                                                   fontStyle: FontStyle.italic,
                                                   fontWeight: FontWeight.bold,
@@ -210,40 +210,30 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           ),
                                           plan - completedPlan < 0
-                                              ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 18),
-                                                  child: Text(
-                                                    '${completedPlan - plan} тг.',
-                                                    style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 14,
-                                                        color: Colors.green),
-                                                  ),
+                                              ? Text(
+                                                  '${completedPlan - plan} тг.',
+                                                  style: const TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 14,
+                                                      color: Colors.green),
                                                 )
-                                              : Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 18),
-                                                  child: Text(
-                                                    '${plan - completedPlan} тг.',
-                                                    style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 14),
-                                                  ),
+                                              : Text(
+                                                  '${plan - completedPlan} тг.',
+                                                  style: const TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 14),
                                                 )
                                         ],
                                       ),
                                       Row(
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Первомайские деликатесы: ',
                                             style: TextStyle(
                                                 fontStyle: FontStyle.italic,
@@ -253,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                                           thirdBrandPlan < 0
                                               ? Text(
                                                   '${thirdBrandPlan * -1} тг.',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontStyle:
                                                           FontStyle.italic,
                                                       fontWeight:
@@ -263,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                                                 )
                                               : Text(
                                                   '${thirdBrandPlan} тг.',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontStyle:
                                                           FontStyle.italic,
                                                       fontWeight:
@@ -274,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       Row(
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Народные колбасы: ',
                                             style: TextStyle(
                                                 fontStyle: FontStyle.italic,
@@ -284,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                                           secondBrandPlan < 0
                                               ? Text(
                                                   '${secondBrandPlan * -1} тг.',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontStyle:
                                                           FontStyle.italic,
                                                       fontWeight:
@@ -294,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                                                 )
                                               : Text(
                                                   '${secondBrandPlan} тг.',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontStyle:
                                                           FontStyle.italic,
                                                       fontWeight:
@@ -305,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       Row(
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Boszhan: ',
                                             style: TextStyle(
                                                 fontStyle: FontStyle.italic,
@@ -315,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                                           firstBrandPlan < 0
                                               ? Text(
                                                   '${firstBrandPlan * -1} тг.',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontStyle:
                                                           FontStyle.italic,
                                                       fontWeight:
@@ -325,7 +315,7 @@ class _HomePageState extends State<HomePage> {
                                                 )
                                               : Text(
                                                   '${firstBrandPlan} тг.',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontStyle:
                                                           FontStyle.italic,
                                                       fontWeight:
@@ -350,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                                     height: MediaQuery.of(context).size.width *
                                         0.08,
                                   )),
-                              Spacer(),
+                              const Spacer(),
                               Column(
                                 children: [
                                   Container(
@@ -360,13 +350,13 @@ class _HomePageState extends State<HomePage> {
                                             BorderRadius.circular(130)),
                                     child: Image.asset(
                                       "assets/images/logo.png",
-                                      width: 300,
+                                      width: 250,
                                     ),
                                   ),
                                   const SizedBox(height: 10),
-                                  Container(
+                                  const SizedBox(
                                     width: 400,
-                                    child: const Text(
+                                    child: Text(
                                       'Bız bar yqylasymyzben jäne tolyq jauapkerşılıgımızben kün saiyn adamdar tañdaityn önımderdı daiyndaimyz',
                                       style: TextStyle(
                                         fontStyle: FontStyle.italic,
@@ -377,9 +367,9 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   const SizedBox(height: 10),
-                                  Container(
+                                  const SizedBox(
                                     width: 400,
-                                    child: const Text(
+                                    child: Text(
                                       'Мы с душой и полной ответственностью создаем продукты, которые каждый день выбирают люди',
                                       style: TextStyle(
                                         fontStyle: FontStyle.italic,
@@ -391,14 +381,14 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ],
                               ),
-                              Spacer(),
+                              const Spacer(),
                               newVersion
                                   ? Padding(
                                       padding: const EdgeInsets.only(right: 50),
                                       child: Column(
                                         children: [
-                                          Text("Доступна новая версия!"),
-                                          SizedBox(
+                                          const Text("Доступна новая версия!"),
+                                          const SizedBox(
                                             height: 20,
                                           ),
                                           SizedBox(
@@ -454,30 +444,44 @@ class _HomePageState extends State<HomePage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Удачных продаж!',
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
+                                      // Text(
+                                      //   'Удачных продаж!',
+                                      //   style: TextStyle(
+                                      //       fontStyle: FontStyle.italic,
+                                      //       fontWeight: FontWeight.bold,
+                                      //       fontSize: 16),
+                                      // ),
                                       Text(
                                         'ТП: $name',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
                                       Text(
                                         'Водитель: $driverName',
-                                        style: TextStyle(
+                                        style: const TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      // Text(
+                                      //   'Номер водителя: $driverPhone',
+                                      //   style: const TextStyle(
+                                      //       fontStyle: FontStyle.italic,
+                                      //       fontWeight: FontWeight.bold,
+                                      //       fontSize: 16),
+                                      // ),
+                                      Text(
+                                        'Версия локально: ${AppConstants.appVersion}',
+                                        style: const TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
                                       Text(
-                                        'Номер водителя: $driverPhone',
-                                        style: TextStyle(
+                                        'Версия с сервера: $localSavedAppVersion',
+                                        style: const TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
@@ -486,7 +490,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               Padding(
                                 padding: const EdgeInsets.only(right: 50),
                                 child: SizedBox(
@@ -530,9 +534,8 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     onPressed: () {
                                       if (localSavedAppVersion ==
-                                              AppConstants.appVersion
-                                          // true
-                                          ) {
+                                              AppConstants.appVersion ||
+                                          localSavedAppVersion == '') {
                                         Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -697,6 +700,7 @@ class _HomePageState extends State<HomePage> {
 
   void checkVersion() async {
     var result = await AuthProvider().checkApplicationVersion();
+    // print('-------------------- ${result}');
 
     if (result != 'Error') {
       if (result['version'] != AppConstants.appVersion) {
