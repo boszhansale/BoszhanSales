@@ -185,21 +185,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
         ));
   }
 
-  void getOutlets() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString("responsePhysicalOutlets")!;
-    if (data != 'Error') {
-      List<dynamic> responseList = jsonDecode(data);
-      setState(() {
-        globalOutletList = responseList;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
-      ));
-    }
-  }
-
   void getCounteragents() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString("responseCounteragents")!;
@@ -220,6 +205,21 @@ class _NewOrderPageState extends State<NewOrderPage> {
       setState(() {
         globalCounteragents = finishList;
         globalAllCounteragents = responseList;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Something went wrong.", style: TextStyle(fontSize: 20)),
+      ));
+    }
+  }
+
+  void getOutlets() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("responsePhysicalOutlets")!;
+    if (data != 'Error') {
+      List<dynamic> responseList = jsonDecode(data);
+      setState(() {
+        globalOutletList = responseList;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
