@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'views/authorization/login_page.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

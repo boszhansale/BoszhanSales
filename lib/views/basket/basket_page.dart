@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:boszhan_sales/services/order_isolate_service.dart';
+import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/utils/const.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../services/sales_rep_api_provider.dart';
 import '../home_page.dart';
 
 class BasketPage extends StatefulWidget {
@@ -98,74 +99,6 @@ class _BasketPageState extends State<BasketPage> {
     }
   }
 
-  void getOrderHistory() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.getString("OrderHistory") != 'Error' &&
-        prefs.getString('OrderHistory') != null) {
-      setState(() {
-        var data = prefs.getString("OrderHistory")!;
-        orderHistory = List.from(jsonDecode(data));
-        orderHistory = orderHistory.reversed.toList();
-      });
-    }
-  }
-
-  void sendDataToServer() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    for (int i = 0; i < orderHistory.length; i++) {
-      try {
-        if (orderHistory[i]['isSended'] == false) {
-          var response = await SalesRepProvider().createOrder(
-            orderHistory[i]['outletId'],
-            orderHistory[i]['mobileId'],
-            orderHistory[i]['basket'],
-            orderHistory[i]['delivery_date'],
-            orderHistory[i]['payment_type'],
-            orderHistory[i]['payment_partial'],
-            orderHistory[i]['amount'],
-          );
-
-          if (response != 'Error') {
-            setState(() {
-              orderHistory[i]['isSended'] = true;
-              prefs.setString("OrderHistory", jsonEncode(orderHistory));
-            });
-
-            print(
-                'Succes, store ID: ' + orderHistory[i]['outletId'].toString());
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => HomePage()),
-                (Route<dynamic> route) => false);
-          } else {
-            print('Error, store ID: ' + orderHistory[i]['outletId'].toString());
-          }
-          setState(() {
-            isActive = true;
-          });
-        }
-      } catch (error) {
-        setState(() {
-          isActive = true;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content:
-              Text("Something went wrong.", style: TextStyle(fontSize: 20)),
-        ));
-      }
-    }
-  }
-
-  void checkAndSendLocation() async {
-    if (widget.outlet['lat'] == null) {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      var response = await SalesRepProvider()
-          .updateOutlet(widget.outletId, position.latitude, position.longitude);
-      print(response);
-    }
-  }
-
   void createTextFieldControllers() {
     for (int i = 0; i < products.length; i++) {
       final controller = TextEditingController();
@@ -222,7 +155,55 @@ class _BasketPageState extends State<BasketPage> {
     setState(() {
       isActive = false;
     });
+
+    // Формирование корзины (как у вас)
+    List<dynamic> basket = prepareBasket();
+
+    // Сохранение данных в SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<dynamic> orderHistory = saveOrderToPreferences(prefs, basket);
+
+    // Обновление состояния
+    setState(() {
+      AppConstants.basket = [];
+      AppConstants.basketIDs = [];
+      AppConstants.basket_return = [];
+      AppConstants.basketIDs_return = [];
+    });
+
+    await prefs.setBool("isBasketCompleted", true);
+
+    // Проверка подключения
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      sendLocationData();
+
+      // Запуск изолятов
+      RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+      bool orderHistoryResult =
+          await OrderIsolateService.runSendOrderHistoryIsolate(
+        orderHistory,
+        rootIsolateToken,
+      );
+      print(orderHistoryResult);
+    }
+
+    setState(() {
+      isActive = true;
+    });
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => HomePage()),
+      (Route<dynamic> route) => false,
+    );
+  }
+
+  List<dynamic> prepareBasket() {
     List<dynamic> basket = [];
+
+    // Обработка продуктов
     for (int i = 0; i < products.length; i++) {
       basket.add({
         'product_id': products[i]['product']['id'],
@@ -232,48 +213,36 @@ class _BasketPageState extends State<BasketPage> {
         'price': products[i]['product']['prices'][0]['price'],
       });
 
+      // Обработка подарков
       if (products[i]['action'] == 1) {
-        if ((products[i]['count'] / 5).truncate() != 0) {
+        int giftCount = (products[i]['count'] / 5).truncate();
+        if (giftCount > 0) {
+          int giftProductId;
           if (products[i]['product']['id'] == 2216) {
-            basket.add({
-              'product_id': 2707,
-              'count': (products[i]['count'] / 5).truncate(),
-              'type': products[i]['type'],
-              'name': products[i]['product']['name'] + " ПОДАРОК",
-              'price': 1 * (products[i]['count'] / 5).truncate(),
-            });
-
-            showGiftAlertDialog(products[i]['product']['name'] +
-                " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
+            giftProductId = 2707;
+          } else if (products[i]['product']['id'] == 2212) {
+            giftProductId = 2708;
+          } else if (products[i]['product']['id'] == 798) {
+            giftProductId = 2709;
+          } else {
+            continue;
           }
 
-          if (products[i]['product']['id'] == 2212) {
-            basket.add({
-              'product_id': 2708,
-              'count': (products[i]['count'] / 5).truncate(),
-              'type': products[i]['type'],
-              'name': products[i]['product']['name'] + " ПОДАРОК",
-              'price': 1 * (products[i]['count'] / 5).truncate(),
-            });
-            showGiftAlertDialog(products[i]['product']['name'] +
-                " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
-          }
+          basket.add({
+            'product_id': giftProductId,
+            'count': giftCount,
+            'type': products[i]['type'],
+            'name': "${products[i]['product']['name']} ПОДАРОК",
+            'price': 1 * giftCount,
+          });
 
-          if (products[i]['product']['id'] == 798) {
-            basket.add({
-              'product_id': 2709,
-              'count': (products[i]['count'] / 5).truncate(),
-              'type': products[i]['type'],
-              'name': products[i]['product']['name'] + " ПОДАРОК",
-              'price': 1 * (products[i]['count'] / 5).truncate(),
-            });
-            showGiftAlertDialog(products[i]['product']['name'] +
-                " ПОДАРОК - ${(products[i]['count'] / 5).truncate()} шт");
-          }
+          showGiftAlertDialog(
+              "${products[i]['product']['name']} ПОДАРОК - $giftCount шт");
         }
       }
     }
 
+    // Обработка возвратов
     for (int i = 0; i < returns.length; i++) {
       basket.add({
         'product_id': returns[i]['product']['id'],
@@ -282,85 +251,66 @@ class _BasketPageState extends State<BasketPage> {
         'name': returns[i]['product']['name'],
         'price': returns[i]['product']['prices'][0]['price'],
         'reason_refund_id': returns[i]['causeId'],
-        'comment': returns[i]['causeComment']
+        'comment': returns[i]['causeComment'],
       });
     }
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return basket;
+  }
+
+  List<dynamic> saveOrderToPreferences(
+      SharedPreferences prefs, List<dynamic> basket) {
     String mobileId = DateTime.now().millisecondsSinceEpoch.toString();
 
-    if (prefs.getString('OrderHistory') == null) {
-      List<Map<String, dynamic>> savedData = [];
-      Map<String, dynamic> thisMap = {};
-      thisMap['basket'] = basket;
-      thisMap['outletId'] = widget.outletId;
-      thisMap['outletName'] = widget.outletName;
-      thisMap['mobileId'] = mobileId;
-      thisMap['purchase_buy'] = sumBuy;
-      thisMap['purchase_return'] = sumReturn;
-      thisMap['isSended'] = false;
-      thisMap['payment_type'] = int.parse(_value.toString());
-      thisMap['payment_partial'] =
-          int.parse(_value2.toString()) == 1 ? true : false;
-      thisMap['amount'] = amountController.text;
-      if (deliveryDate != DateFormat("yyyy-MM-dd").format(DateTime.now())) {
-        thisMap['delivery_date'] = deliveryDate;
-      } else {
-        thisMap['delivery_date'] = "";
-      }
+    // Новый заказ
+    Map<String, dynamic> currentOrder = {
+      'basket': basket,
+      'outletId': widget.outletId,
+      'outletName': widget.outletName,
+      'mobileId': mobileId,
+      'isSended': false,
+      'purchase_buy': sumBuy,
+      'purchase_return': sumReturn,
+      'payment_type': int.parse(_value.toString()),
+      'payment_partial': int.parse(_value2.toString()) == 1,
+      'amount': amountController.text,
+      'delivery_date':
+          deliveryDate != DateFormat("yyyy-MM-dd").format(DateTime.now())
+              ? deliveryDate
+              : "",
+    };
 
-      savedData.add(thisMap);
-      prefs.setString("OrderHistory", jsonEncode(savedData));
-    } else {
-      var data = prefs.getString("OrderHistory")!;
-      if (data != 'Error') {
-        setState(() {
-          List<dynamic> savedData = List.from(jsonDecode(data));
-          Map<String, dynamic> thisMap = {};
-          thisMap['basket'] = basket;
-          thisMap['outletId'] = widget.outletId;
-          thisMap['outletName'] = widget.outletName;
-          thisMap['mobileId'] = mobileId;
-          thisMap['isSended'] = false;
-          thisMap['purchase_buy'] = sumBuy;
-          thisMap['purchase_return'] = sumReturn;
-          thisMap['payment_type'] = int.parse(_value.toString());
-          thisMap['payment_partial'] =
-              int.parse(_value2.toString()) == 1 ? true : false;
-          thisMap['amount'] = amountController.text;
-          if (deliveryDate != DateFormat("yyyy-MM-dd").format(DateTime.now())) {
-            thisMap['delivery_date'] = deliveryDate;
-          } else {
-            thisMap['delivery_date'] = "";
-          }
-
-          savedData.add(thisMap);
-          prefs.setString("OrderHistory", jsonEncode(savedData));
-        });
+    // Чтение предыдущих заказов
+    List<dynamic> orderHistory = [];
+    if (prefs.getString('OrderHistory') != null) {
+      String? savedData = prefs.getString('OrderHistory');
+      if (savedData != null && savedData != 'Error') {
+        orderHistory = List.from(jsonDecode(savedData));
       }
     }
 
-    setState(() {
-      AppConstants.basket = [];
-      AppConstants.basketIDs = [];
-      AppConstants.basket_return = [];
-      AppConstants.basketIDs_return = [];
-    });
-    prefs.setBool("isBasketCompleted", true);
+    // Добавление нового заказа
+    orderHistory.add(currentOrder);
 
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile) {
-      getOrderHistory();
-      sendDataToServer();
-      checkAndSendLocation();
-    } else if (connectivityResult == ConnectivityResult.wifi) {
-      getOrderHistory();
-      sendDataToServer();
-      checkAndSendLocation();
-    } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => HomePage()),
-          (Route<dynamic> route) => false);
+    // Сохранение обновлённой истории
+    prefs.setString("OrderHistory", jsonEncode(orderHistory));
+
+    return orderHistory;
+  }
+
+  void sendLocationData() async {
+    if (widget.outlet['lat'] == null) {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      var response = await SalesRepProvider().updateOutlet(
+        widget.outletId,
+        position.latitude,
+        position.longitude,
+      );
+
+      print(response);
     }
   }
 
