@@ -320,22 +320,6 @@ class _BasketPageState extends State<BasketPage> {
     );
   }
 
-  void sendLocationData() async {
-    if (widget.outlet['lat'] == null) {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      var response = await SalesRepProvider().updateOutlet(
-        widget.outletId,
-        position.latitude,
-        position.longitude,
-      );
-
-      print(response);
-    }
-  }
-
   Future<void> share() async {
     String text = '';
     for (int i = 0; i < products.length; i++) {
@@ -356,6 +340,22 @@ class _BasketPageState extends State<BasketPage> {
       title: 'Первомайские деликатесы',
       text: text,
     );
+  }
+
+  void sendLocationData() async {
+    if (widget.outlet['lat'] == null) {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      var response = await SalesRepProvider().updateOutlet(
+        widget.outletId,
+        position.latitude,
+        position.longitude,
+      );
+
+      print(response);
+    }
   }
 
   @override
