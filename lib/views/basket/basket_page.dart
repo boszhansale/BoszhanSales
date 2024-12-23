@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:boszhan_sales/services/order_isolate_service.dart';
-import 'package:boszhan_sales/services/sales_rep_api_provider.dart';
 import 'package:boszhan_sales/utils/const.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -298,22 +296,6 @@ class _BasketPageState extends State<BasketPage> {
     return orderHistory;
   }
 
-  void sendLocationData() async {
-    if (widget.outlet['lat'] == null) {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      var response = await SalesRepProvider().updateOutlet(
-        widget.outletId,
-        position.latitude,
-        position.longitude,
-      );
-
-      print(response);
-    }
-  }
-
   showGiftAlertDialog(String content) async {
     Widget okButton = TextButton(
       child: const Text("OK"),
@@ -334,6 +316,22 @@ class _BasketPageState extends State<BasketPage> {
         return alert;
       },
     );
+  }
+
+  void sendLocationData() async {
+    if (widget.outlet['lat'] == null) {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      var response = await SalesRepProvider().updateOutlet(
+        widget.outletId,
+        position.latitude,
+        position.longitude,
+      );
+
+      print(response);
+    }
   }
 
   Future<void> share() async {
