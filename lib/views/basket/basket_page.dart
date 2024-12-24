@@ -298,6 +298,22 @@ class _BasketPageState extends State<BasketPage> {
     return orderHistory;
   }
 
+  void sendLocationData() async {
+    if (widget.outlet['lat'] == null) {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      var response = await SalesRepProvider().updateOutlet(
+        widget.outletId,
+        position.latitude,
+        position.longitude,
+      );
+
+      print(response);
+    }
+  }
+
   showGiftAlertDialog(String content) async {
     Widget okButton = TextButton(
       child: const Text("OK"),
@@ -318,22 +334,6 @@ class _BasketPageState extends State<BasketPage> {
         return alert;
       },
     );
-  }
-
-  void sendLocationData() async {
-    if (widget.outlet['lat'] == null) {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      var response = await SalesRepProvider().updateOutlet(
-        widget.outletId,
-        position.latitude,
-        position.longitude,
-      );
-
-      print(response);
-    }
   }
 
   Future<void> share() async {
