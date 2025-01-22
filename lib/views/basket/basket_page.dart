@@ -200,6 +200,46 @@ class _BasketPageState extends State<BasketPage> {
     );
   }
 
+  List<dynamic> saveOrderToPreferences(
+      SharedPreferences prefs, List<dynamic> basket) {
+    String mobileId = DateTime.now().millisecondsSinceEpoch.toString();
+
+    // Новый заказ
+    Map<String, dynamic> currentOrder = {
+      'basket': basket,
+      'outletId': widget.outletId,
+      'outletName': widget.outletName,
+      'mobileId': mobileId,
+      'isSended': false,
+      'purchase_buy': sumBuy,
+      'purchase_return': sumReturn,
+      'payment_type': int.parse(_value.toString()),
+      'payment_partial': int.parse(_value2.toString()) == 1,
+      'amount': amountController.text,
+      'delivery_date':
+          deliveryDate != DateFormat("yyyy-MM-dd").format(DateTime.now())
+              ? deliveryDate
+              : "",
+    };
+
+    // Чтение предыдущих заказов
+    List<dynamic> orderHistory = [];
+    if (prefs.getString('OrderHistory') != null) {
+      String? savedData = prefs.getString('OrderHistory');
+      if (savedData != null && savedData != 'Error') {
+        orderHistory = List.from(jsonDecode(savedData));
+      }
+    }
+
+    // Добавление нового заказа
+    orderHistory.add(currentOrder);
+
+    // Сохранение обновлённой истории
+    prefs.setString("OrderHistory", jsonEncode(orderHistory));
+
+    return orderHistory;
+  }
+
   List<dynamic> prepareBasket() {
     List<dynamic> basket = [];
 
@@ -256,46 +296,6 @@ class _BasketPageState extends State<BasketPage> {
     }
 
     return basket;
-  }
-
-  List<dynamic> saveOrderToPreferences(
-      SharedPreferences prefs, List<dynamic> basket) {
-    String mobileId = DateTime.now().millisecondsSinceEpoch.toString();
-
-    // Новый заказ
-    Map<String, dynamic> currentOrder = {
-      'basket': basket,
-      'outletId': widget.outletId,
-      'outletName': widget.outletName,
-      'mobileId': mobileId,
-      'isSended': false,
-      'purchase_buy': sumBuy,
-      'purchase_return': sumReturn,
-      'payment_type': int.parse(_value.toString()),
-      'payment_partial': int.parse(_value2.toString()) == 1,
-      'amount': amountController.text,
-      'delivery_date':
-          deliveryDate != DateFormat("yyyy-MM-dd").format(DateTime.now())
-              ? deliveryDate
-              : "",
-    };
-
-    // Чтение предыдущих заказов
-    List<dynamic> orderHistory = [];
-    if (prefs.getString('OrderHistory') != null) {
-      String? savedData = prefs.getString('OrderHistory');
-      if (savedData != null && savedData != 'Error') {
-        orderHistory = List.from(jsonDecode(savedData));
-      }
-    }
-
-    // Добавление нового заказа
-    orderHistory.add(currentOrder);
-
-    // Сохранение обновлённой истории
-    prefs.setString("OrderHistory", jsonEncode(orderHistory));
-
-    return orderHistory;
   }
 
   showGiftAlertDialog(String content) async {
