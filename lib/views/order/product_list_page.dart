@@ -131,6 +131,7 @@ class _ProductListPageState extends State<ProductListPage> {
 
   void processProductData(Map<String, dynamic> product) {
     double thisPrice = 0;
+    int nnn = 0;
     if (product['counteragent_prices'] != null) {
       thisPrice = double.parse((discount != 0
               ? product['prices']
@@ -170,6 +171,14 @@ class _ProductListPageState extends State<ProductListPage> {
       productPrices.add(thisPrice);
       products.add(product);
     }
+    // else {
+    //   print(product['name']);
+    //   print(product['prices']);
+    //   print(product['discount']);
+    //   print(product['prices']
+    //       .where((e) => e['price_type_id'] == widget.priceTypeId)
+    //       .toList());
+    // }
   }
 
   void getProductsFromPrefs() {

@@ -533,8 +533,9 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.black),
                                     ),
                                     onPressed: () {
-                                      if (localSavedAppVersion ==
-                                              AppConstants.appVersion ||
+                                      if (num.parse(localSavedAppVersion) <=
+                                              num.parse(
+                                                  AppConstants.appVersion) ||
                                           localSavedAppVersion == '') {
                                         Navigator.push(
                                                 context,
@@ -703,7 +704,9 @@ class _HomePageState extends State<HomePage> {
     // print('-------------------- ${result}');
 
     if (result != 'Error') {
-      if (result['version'] != AppConstants.appVersion) {
+      // print(num.parse(result['version']));
+      // print(num.parse(AppConstants.appVersion));
+      if (num.parse(result['version']) > num.parse(AppConstants.appVersion)) {
         setState(() {
           newVersion = true;
           appVersion = result['version'];
